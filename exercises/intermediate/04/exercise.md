@@ -10,7 +10,7 @@ Plans along with state are the foundational way that Terraform resolves what is 
 
 Go ahead and change directories into the `team1-project` one here. And we'll run the following, as before replacing `[student-alias]` with the one assigned to you:
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ...
 $ terraform show
@@ -60,7 +60,7 @@ A few things to note at this stage:
 * `terraform plan` shows us that our current configuration source in comparison to the empty state tells us and terraform alike that we need to create our `aws_key_pair` resource. It's represented in the plan output clearly.
 * We always have a summary at the end of our plan telling us what needs to be created, changed, or removed: `Plan: 1 to add, 0 to change, 0 to destroy.`
 
-```
+```text
 Note: You didn't specify an "-out" parameter to save this plan, so Terraform
 can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
@@ -70,7 +70,7 @@ Our final bit of plan output echos the idea we covered that specifying a plan fi
 
 Let's go ahead and apply this configuration. Notice that the apply command naturally includes a plan as the step so we can see the changes to be made just before actually running the apply:
 
-```
+```bash
 $ terraform apply
 var.student_alias
   Your student alias
@@ -122,7 +122,7 @@ OK, that's most refresher material though. Let's get into some newer and more in
 
 The easiest way to get a look at the current state of your project is to use the `terraform show` command
 
-```
+```bash
 $ terraform show
 # aws_key_pair.my_key_pair:
 resource "aws_key_pair" "my_key_pair" {
@@ -143,14 +143,14 @@ my_key_pair_id = "key-0f87362ef96c0d8b3"
 
 We can also get the json version of the state using a similar command
 
-```
+```bash
 $ terraform show -json
 {"format_version":"0.1","terraform_version":"0.12.29","values":{"outputs":{"my_key_pair_id":{"sensitive":false,"value":"key-0f87362ef96c0d8b3"}},"root_module":{"resources":[{"address":"aws_key_pair.my_key_pair","mode":"managed","type":"aws_key_pair","name":"my_key_pair","provider_name":"aws","schema_version":1,"values":{"arn":"arn:aws:ec2:us-west-1:946320133426:key-pair/rockholla-di-force","fingerprint":"d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62","id":"rockholla-di-force","key_name":"rockholla-di-force","key_name_prefix":null,"key_pair_id":"key-0f87362ef96c0d8b3","public_key":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 force+di@rockholla.org","tags":{}}}]}}}
 ```
 
 This format obviously designed for machine-readable scenarios, so automated processes that might need access to a given project's current state. A similar option is to use `terraform state pull`
 
-```
+```json
 {
   "version": 4,
   "terraform_version": "0.12.29",
@@ -197,7 +197,7 @@ One last thing to call out as we look at raw state here: notice that the state h
 
 Let's add another resource to our configuration. Update the `main.tf` file here, adding the following resource at the end:
 
-```
+```terraform
 resource "aws_eip" "my_eip" {
   vpc = true
 }
@@ -205,7 +205,7 @@ resource "aws_eip" "my_eip" {
 
 Then run
 
-```
+```bash
 $ terraform plan -out=plan.out
 var.student_alias
   Your student alias
@@ -259,7 +259,7 @@ Per our addition to our source, it also detected this additional resource it nee
 
 Last, we see that our inclusion of `-out=plan.out` gives us some additional instruction at the end:
 
-```
+```text
 This plan was saved to: plan.out
 
 To perform exactly these actions, run the following command to apply:
@@ -268,7 +268,7 @@ To perform exactly these actions, run the following command to apply:
 
 Before we actually apply this plan file, let's actually inspect it:
 
-```
+```bash
 $ terraform show plan.out
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
@@ -300,7 +300,7 @@ The plan file output is a binary, terraform can parse it to show us what it will
 
 Let's apply it
 
-```
+```bash
 $ terraform apply plan.out
 aws_eip.my_eip: Creating...
 aws_eip.my_eip: Creation complete after 1s [id=eipalloc-0cf7da010d5f77406]
@@ -316,13 +316,13 @@ You might notice one thing during this operation: it doesn't prompt for variable
 
 OK, let's remove this `aws_eip` from our configuration now and track what happens with another plan/apply. Remove this from your `main.tf`
 
-```
+```terraform
 resource "aws_eip" "my_eip" {
   vpc = true
 }
 ```
 
-```
+```bash
 $ terraform plan -out=plan.out
 var.student_alias
   Your student alias
@@ -369,7 +369,7 @@ Stepping back out, just like we saw one to add, now we see `1 to destroy`. The p
 
 Let's apply the plan file yet again
 
-```
+```bash
 $ terraform apply plan.out
 aws_eip.my_eip: Destroying... [id=eipalloc-0cf7da010d5f77406]
 aws_eip.my_eip: Destruction complete after 1s
@@ -383,8 +383,8 @@ my_key_pair_id = key-0f87362ef96c0d8b3
 
 Let's go ahead and move over to our other project in this exercise, we'll explore some of the concepts of cross-project state awareness, manual managing state, and the remaining pieces of this exercise:
 
-```
-$ cd ../team2-project
+```bash
+cd ../team2-project
 ```
 
 ### Cross-project state awareness
@@ -393,7 +393,7 @@ Now we're in a different project, one for "team2" and separate from "team1." We 
 
 We'll go ahead and go straight to apply commands for this project
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ...
 $ terraform apply
@@ -445,7 +445,7 @@ We're doing 2 things primarily in this project:
 
 Let's look more closely at the second one. Here's the configuration using the `terraform_remote_state` data source type to query team1's state. From `main.tf`:
 
-```
+```terraform
 data "terraform_remote_state" "team1" {
   backend = "s3"
   config = {
@@ -458,7 +458,7 @@ data "terraform_remote_state" "team1" {
 
 When we applied our team1 project, it created its state file in your student bucket at `intermediate-terraform/exercise-04/team1-project/terraform.tfstate`. It also defined an output, like the following (feel free to look back in the team1-project to find):
 
-```
+```terraform
 output "my_key_pair_id" {
   value = "${aws_key_pair.my_key_pair.key_pair_id}"
 }
@@ -466,7 +466,7 @@ output "my_key_pair_id" {
 
 So, that output can be queried from another project via the `terraform_remote_state` data source. The data source itself storing the outputs of the other project's state in a property called `outputs`. Notice the last part of our apply for this team2 project:
 
-```
+```text
 Outputs:
 
 team1_key_pair_id = key-0f87362ef96c0d8b3
@@ -474,7 +474,7 @@ team1_key_pair_id = key-0f87362ef96c0d8b3
 
 This output is defined as the following within our team2 project:
 
-```
+```terraform
 output "team1_key_pair_id" {
   value = data.terraform_remote_state.team1.outputs.my_key_pair_id
 }
@@ -491,7 +491,7 @@ For the last part of this exercise, we're going to explore some state commands t
 
 Let's start by adding another key pair resource to our team2 project. Add the following to the end of your team2-project `main.tf`
 
-```
+```terraform
 resource "aws_key_pair" "my_key_pair_additional" {
   key_name   = "rockholla-di-${var.student_alias}-team2-additional"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 ${var.student_alias}+di-team2-additional@rockholla.org"
@@ -500,7 +500,7 @@ resource "aws_key_pair" "my_key_pair_additional" {
 
 and then we'll run an apply
 
-```
+```bash
 $ terraform apply
 var.student_alias
   Your student alias
@@ -546,7 +546,7 @@ team1_key_pair_id = key-0f87362ef96c0d8b3
 
 Our additional key pair is created, let's take a look at our state now:
 
-```
+```bash
 $ terraform show
 # aws_key_pair.my_key_pair:
 resource "aws_key_pair" "my_key_pair" {
@@ -591,13 +591,13 @@ team1_key_pair_id = "key-0f87362ef96c0d8b3"
 
 Let's say a team member was asked to remove the additional key pair from infrastructure, but they're really new and didn't understand that they were supposed to do it via Terraform. So, the key pair is gone in AWS, but still in our state. There are a few different ways we could address such a scenario, and one is to use `terraform state rm [resource]` to just remove all awareness of it from our state. So, let's try that:
 
-```
-$ terraform state rm aws_key_pair.my_key_pair_additional
+```bash
+terraform state rm aws_key_pair.my_key_pair_additional
 ```
 
 and let's do another `terraform show` to verify it's removed:
 
-```
+```bash
 $ terraform show
 # aws_key_pair.my_key_pair:
 resource "aws_key_pair" "my_key_pair" {
@@ -634,7 +634,7 @@ It is indeed removed from state. It's still in our configuration though, so we'd
 
 In reality though, our current situation in this exercise is that the key pair is still there in AWS. What would happen if we simply tried another apply? So, the configuration for the resource still in our configuration, no awareness in state of the actual resource in AWS though it's still there:
 
-```
+```bash
 $ terraform apply
 var.student_alias
   Your student alias
@@ -671,7 +671,7 @@ Do you want to perform these actions?
 aws_key_pair.my_key_pair_additional: Creating...
 
 Error: Error import KeyPair: InvalidKeyPair.Duplicate: The keypair 'rockholla-di-force-team2-additional' already exists.
-	status code: 400, request id: 2ef6492c-88df-447b-b7a4-ecb0ae52fa13
+    status code: 400, request id: 2ef6492c-88df-447b-b7a4-ecb0ae52fa13
 
   on main.tf line 23, in resource "aws_key_pair" "my_key_pair_additional":
   23: resource "aws_key_pair" "my_key_pair_additional" {
@@ -683,7 +683,7 @@ Whether or not the above situation creates an error and conflict or just a dupli
 
 Go ahead and remove the following from your `main.tf`:
 
-```
+```terraform
 resource "aws_key_pair" "my_key_pair_additional" {
   key_name   = "rockholla-di-${var.student_alias}-team2-additional"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 ${var.student_alias}+di-team2-additional@rockholla.org"
@@ -692,7 +692,7 @@ resource "aws_key_pair" "my_key_pair_additional" {
 
 The last command we'll look at in this exercise is `terraform state mv`. The most common use-case that I've encountered for this command is standarizing naming and conventions in terraform configuration. Say you have something like this in your legacy terraform config:
 
-```
+```terraform
 resource "aws_instance" "team1-instance" {
   ...
 }
@@ -700,7 +700,7 @@ resource "aws_instance" "team1-instance" {
 
 and maybe your team has decided that all identifiers should be underscore-separated instead of dash-separated. So, you updated your terraform configuration to be:
 
-```
+```terraform
 resource "aws_instance" "team1_instance" {
   ...
 }
@@ -710,7 +710,7 @@ But, your state sees this resource (`aws_instance.team1_instance`) as something 
 
 Let's give it a try. Rename your `aws_key_pair` in `main.tf` to the following:
 
-```
+```terraform
 resource "aws_key_pair" "new_key_pair_name" {
   key_name   = "rockholla-di-${var.student_alias}-team2"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 ${var.student_alias}+di-team2@rockholla.org"
@@ -719,7 +719,7 @@ resource "aws_key_pair" "new_key_pair_name" {
 
 Now, let's go ahead and run a plan to verify that we'll see the old resource get destroyed and the new one created
 
-```
+```bash
 $ terraform plan
 var.student_alias
   Your student alias
@@ -774,7 +774,7 @@ can't guarantee that exactly these actions will be performed if
 
 Indeed we do. This isn't what we want, so let's fix our state file to be aware of the new name:
 
-```
+```bash
 $ terraform state mv aws_key_pair.my_key_pair aws_key_pair.new_key_pair_name
 Move "aws_key_pair.my_key_pair" to "aws_key_pair.new_key_pair_name"
 Successfully moved 1 object(s).
@@ -782,7 +782,7 @@ Successfully moved 1 object(s).
 
 and now, let's try the plan again to ensure that we're all resolved
 
-```
+```bash
 $ terraform plan
 var.student_alias
   Your student alias
@@ -805,11 +805,11 @@ configuration and real physical resources that exist. As a result, no
 actions need to be performed.
 ```
 
-# Finishing up
+## Finishing up
 
 Please do the following to clean up after finishing this exercise:
 
-```
+```bash
 $ terraform destroy
 ...
 $ cd ../team1-project
