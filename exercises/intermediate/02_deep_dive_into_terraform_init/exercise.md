@@ -24,7 +24,7 @@ When your student alias user accounts were created before this course, an s3 buc
 
 One quick aside before we get started working with this project. Notice the file structure introduced in this project:
 
-```
+```text
 .
 ├── README.md
 ├── backend.tfvars
@@ -45,7 +45,7 @@ OK, so we have a Terraform project, and we want to see how it's set up to use an
 
 Let's first look at the contents of our root terraform block/settings in `terraform.tf`:
 
-```
+```terraform
 terraform {
   backend "s3" {}
 }
@@ -59,7 +59,7 @@ Another way we can do so is by passing values in directly to the `terraform init
 
 So, we'll utilize both methods above together in a single command. Make sure to replace `[student-alias]` in the command with your student alias:
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 Initializing the backend...
 
@@ -83,14 +83,14 @@ commands will detect it and remind you to do so if necessary.
 
 We can see in the output, that our init command has successfully prepped our project for use of the s3 remote backend as configured. Let's look more closely at what this actually did.
 
-```
+```bash
 $ ls .terraform
-plugins			terraform.tfstate
+plugins terraform.tfstate
 ```
 
 `.terraform/plugins` storing our provider plugins downloaded. `.terraform/terraform.tfstate` being a state pointer file that init set up for us based on the remote state backend config we provided. Let's look at that file.
 
-```
+```text
 {
     "version": 3,
     "serial": 1,
@@ -159,26 +159,26 @@ By default, terraform will look in the following locations for any pre-downloade
 
 By default, if not found there or already downloaded in a project's `.terraform` directory, it'll find and download the plugin. If you use `-plugin-dir` though, you're basically telling terraform that a required version _must_ be in this location, and that it should never attempt a download. So, let's use a custom location, so we'll "pre-download" our aws provider plugin and then point init at this location
 
-```
-$ mkdir -p custom-plugin-dir
-$ cp $(find .terraform -name terraform-provider-aws*) ./custom-plugin-dir/
+```bash
+mkdir -p custom-plugin-dir
+cp $(find .terraform -name terraform-provider-aws*) ./custom-plugin-dir/
 ```
 
 Next, let's delete our .terraform directory to start fresh
 
-```
-$ rm -rf .terraform
+```bash
+rm -rf .terraform
 ```
 
 Now, let's run init again pointing at our custom plugin directory with pre-downloaded plugins:
 
-```
-$ terraform init -plugin-dir=./custom-plugin-dir -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
+```bash
+terraform init -plugin-dir=./custom-plugin-dir -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ```
 
 And we'll have an updated look at our `.terraform` directory and its contents:
 
-```
+```text
 .terraform/
 ├── plugin_path
 ├── plugins
@@ -189,7 +189,7 @@ And we'll have an updated look at our `.terraform` directory and its contents:
 
 Notice that we no longer have an actual plugin file in our plugins directory here. The `.terraform/plugin_path` instead points terraform to a local location where it can find the provider plugin to use:
 
-```
+```bash
 $ cat .terraform/plugin_path
 [
   "./custom-plugin-dir"
