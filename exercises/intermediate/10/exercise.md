@@ -6,7 +6,7 @@ Remember when we used `terraform state rm` yesterday to essentially abandon a re
 
 Let's init and do an apply to create the single key pair resource defined in this project
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ...
 $ terraform apply
@@ -45,7 +45,7 @@ Alright, so we now have a key pair created up on AWS. We want to abandon it from
 
 First, though, let's figure out the key pair ID by looking at our current state
 
-```
+```bash
 $ terraform show
 # aws_key_pair.my_key_pair:
 resource "aws_key_pair" "my_key_pair" {
@@ -59,7 +59,7 @@ resource "aws_key_pair" "my_key_pair" {
 
 Noting the `id` attribute value here, as we'll need it for our import. We'll go ahead and abandon it from our state.
 
-```
+```bash
 $ terraform state rm aws_key_pair.my_key_pair
 Removed aws_key_pair.my_key_pair
 Successfully removed 1 resource instance(s).
@@ -67,7 +67,7 @@ Successfully removed 1 resource instance(s).
 
 And now let's have a look at our current state:
 
-```
+```bash
 $ terraform state pull
 {
   "version": 4,
@@ -83,7 +83,7 @@ Cool, the resource still exists out there, but the state for our project doesn't
 
 Let's take a moment to look at the help for the import command at this stage:
 
-```
+```bash
 $ terrform import --help
 Usage: terraform import [options] ADDR ID
 
@@ -116,7 +116,7 @@ Usage: terraform import [options] ADDR ID
 
 The `ADDR` mentioned in the usage output is the local terraform configuration `[RESOURCE TYPE].[RESOURCE IDENTIFIER]`. Let's go modify our configuration at this point to make some things clearer. Make our resource block in `main.tf` look like the following, so removing arguments from it
 
-```
+```terraform
 resource "aws_key_pair" "my_key_pair" {}
 ```
 
@@ -124,7 +124,7 @@ So, we have a resource defined, a placeholder for some real piece of infrastruct
 
 Now, the `ID` part noted in the usage of the help. What this is very much depends on the type of resource. For an EC2 instance, it'll be the instance ID as defined by AWS, in our case for a key pair, it'll be the resource `id` we noted in our terraform show above. So, let's try the import as we should have everything we need to do so.
 
-```
+```bash
 $ terraform import aws_key_pair.my_key_pair rockholla-di-force
 aws_key_pair.my_key_pair: Importing from ID "rockholla-di-force"...
 aws_key_pair.my_key_pair: Import prepared!
@@ -139,7 +139,7 @@ your Terraform state and will henceforth be managed by Terraform.
 
 Excellent, so it's seemingly now imported and part of our project state yet again. Let's verify that
 
-```
+```bash
 $ terraform state pull
 {
   "version": 4,
@@ -176,7 +176,7 @@ $ terraform state pull
 
 Nice, but we have an empty block in our configuration. What would happen if I ran an apply now without filling things back out appropriately in the resource definition block?
 
-```
+```bash
 $ terraform plan
 
 Error: Missing required argument
@@ -189,7 +189,7 @@ The argument "public_key" is required, but no definition was found.
 
 OK, yeah we're missing a required argument in the resource itself. We have to fill this back in. In practice, this is usually just done after an import by looking at the state and setting the configuration values appropriately. Hashicorp notes that at some point in the future Terraform will be able to fill in and modify configuration after an import as well. For now, though, it's on us to do so. Let's get values back in:
 
-```
+```terraform
 resource "aws_key_pair" "my_key_pair" {
   key_name   = "rockholla-di-${var.student_alias}"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 ${var.student_alias}+di@rockholla.org"
@@ -198,7 +198,7 @@ resource "aws_key_pair" "my_key_pair" {
 
 And we'll try a terraform plan again
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -236,7 +236,7 @@ can't guarantee that exactly these actions will be performed if
 
 Well, turns out no matter what, for this type of resource, even an import leaves us in a place where the resource is going to be created anew, replaced anyway, namely b/c the import command didn't fill in all of the values in state from the actual resource, if we look back at our state introspection after the import:
 
-```
+```text
 "attributes": {
   "arn": "arn:aws:ec2:us-west-1:946320133426:key-pair/rockholla-di-force",
   "fingerprint": "d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62",
@@ -254,7 +254,7 @@ So, caveats exist for import. EC2 instances happen to not be subject to this sor
 
 ## Let's finish off by running a destroy
 
-```
+```bash
 $ terraform destroy
 ...
 ```
