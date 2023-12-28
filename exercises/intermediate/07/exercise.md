@@ -10,8 +10,8 @@ Go ahead and switch to the `./project-modules` directory
 
 We're yet again using our remote state approach here just to help it set in, and to hopefully make this your default approach instead of local state. So, let's init our project as we've been before. A few things to note as we do so this time, again replacing `[student-alias]` with your assigned alias:
 
-```
-$ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
+```bash
+terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ```
 
 Another aside before we move forward with this exercise specifically
@@ -22,7 +22,7 @@ We're able to use the `-backend-config` argument as many times as we like, and i
 
 Let's test out some things to understand loading precedence of that arg. We have the following, alternative `backend-invalid.tfvars` file here in this directory, and here's what it looks like:
 
-```
+```text
 key = "intermediate-terraform/exercise-07/terraform.tfstate"
 region = "us-west-1"
 encrypt = true
@@ -33,7 +33,7 @@ We've been passing in our bucket value in via the CLI, but let's see if we now u
 
 first, let's just remove our `.terraform` directory to start from scratch. Another useful, alternative to this would be to use the `-reconfigure` argument to the `terraform init` command
 
-```
+```bash
 $ rm -rf .terraform
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-force -backend-config=./backend-invalid.tfvars
 Initializing modules...
@@ -52,14 +52,14 @@ was created within the last minute, please wait for a minute or two and try
 again.
 
 Error: NoSuchBucket: The specified bucket does not exist
-	status code: 404, request id: 1683C8734D432E26, host id: js1qgCynndvqEXidODbkFDVoUH7l789icE5n335UIX+NoIo4V8AP+7bOWg3X2INoThxIjrV3/Rc=
+    status code: 404, request id: 1683C8734D432E26, host id: js1qgCynndvqEXidODbkFDVoUH7l789icE5n335UIX+NoIo4V8AP+7bOWg3X2INoThxIjrV3/Rc=
 ```
 
 The takeaway here is that `-backend-config` can be provided multiple times, and that the order that they are given in a CLI command overrides any settings from before. We've provided a configuration with an invalid bucket name as the final one in the list, thus we get an error telling us our state bucket doesn't exist.
 
 Back to our main line of the exercise, let's get back into a valid state
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias] -reconfigure
 Initializing modules...
 
@@ -87,7 +87,7 @@ Speaking of `-reconfigure`, notice that it's going to re-download the providers 
 
 We're now successfully re-inited, so let's start to look at our project in more detail. First our root project level
 
-#### `variables.tf`
+### `variables.tf`
 
 ```hcl
 variable "student_alias" {
@@ -100,7 +100,7 @@ nothing new here, we're just providing an input that is our student alias, and t
 
 ### Now, `main.tf`
 
-```
+```terraform
 terraform {
   backend "s3" {}
 }
@@ -149,7 +149,7 @@ We're calling the dynamodb module or section of our project to presumably create
 
 Not knowing much about this module, all I need to do is pass it some values that make sense for the project:
 
-```
+```terraform
 module "dynamodb" {
   source        = "./dynamodb"
   unique_prefix = var.student_alias
@@ -179,7 +179,7 @@ Note that managing records in a database is not often what Terraform should do s
 
 Let's look at our next module call
 
-```
+```terraform
 module "ec2" {
   source        = "./ec2"
   unique_prefix = var.student_alias
@@ -204,7 +204,7 @@ In many ways, modules are about abstracting the complexities of managing infrast
 
 Our root project here is very simple and clear about what it intends to manage. So, let's try to actually run a plan against this project and see what we see
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -319,7 +319,7 @@ can't guarantee that exactly these actions will be performed if
 
 Some first things to notice with our plan are items like
 
-```
+```text
 + name             = "force_project"
 + range_key        = "project_range_key"
 ```
@@ -332,7 +332,7 @@ We've done very little within the root of our project to create some reasonably 
 
 ### Let's apply this and look at some things
 
-```
+```bash
 $ terraform apply
 [... our plan from above ...]
 Do you want to perform these actions?
@@ -381,7 +381,7 @@ We'll focus on a few things here related to the apply and then look at state as 
 
 We've gotten some pretty complex output from our project. We're of course not doing much at the project level, simply telling our modules to do stuff for us and then getting some output from those modules. In the case of the `project_keys` output of our root project level, let's look at what's happening. Here are our output definitions at the root project level
 
-```
+```terraform
 output "project_table_arn" {
   value = module.dynamodb.table_arn
 }
@@ -395,7 +395,7 @@ This is really nothing more than us passing the module outputs that were given t
 
 Let's now look at the ec2's module output definition related to `keys` in `ec2/outputs.tf`
 
-```
+```terraform
 output "keys" {
   value = aws_key_pair.project
 }
@@ -403,7 +403,7 @@ output "keys" {
 
 and then the `aws_key_pair.project` resource definition:
 
-```
+```terraform
 resource "aws_key_pair" "project" {
   count      = length(var.keys)
   key_name   = "${var.unique_prefix}-${var.keys[count.index].name}-${uuid()}"
@@ -415,7 +415,7 @@ We're able to just reference that resource as a whole via an output. Which is pr
 
 I want to take this opportunity to note something else interesting that's going on in this `aws_key_pair.project` resource definition as well: we're using an input variable itself to drive the count and the values set for each key being created. Let's look at the input variable declaration:
 
-```
+```terraform
 variable "keys" {
   type = list(object({
     name        = string
@@ -426,7 +426,7 @@ variable "keys" {
 
 So, it's a list of objects. We've opened up the ability to pretty generically create any number of keys to the user of this module. And here's how we're using it in our root project:
 
-```
+```text
 keys          = [
   {
     name = "one",
@@ -441,7 +441,7 @@ keys          = [
 
 This list is driving a pretty simple resource definition in the module itself. Modules can determine the best user experience for things like this based on what the module itself believes needs to be exposed vs abstracted away from the user. Here's the resource definition in the module:
 
-```
+```terraform
 resource "aws_key_pair" "project" {
   count      = length(var.keys)
   key_name   = "${var.unique_prefix}-${var.keys[count.index].name}-${uuid()}"
@@ -453,14 +453,13 @@ Using a built-in terraform function, `length`, we can count the number of `var.k
 
 Before we move on, **make sure to run a destroy to pull down the resources we created above**
 
-```
-$ terraform destroy
-...
+```bash
+terraform destroy
 ```
 
 Let's look at one last thing in this `project-modules` directory. Look at `.terraform/modules/modules.json`
 
-```
+```text
 {"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"dynamodb","Source":"./dynamodb","Dir":"dynamodb"},{"Key":"ec2","Source":"./ec2","Dir":"ec2"}]}
 ```
 
@@ -470,13 +469,13 @@ This is the local project file that tells terraform commands what `init` discove
 
 OK, now switch to the other directory in this exercise directory
 
-```
-$ cd ../third-party-modules
+```bash
+cd ../third-party-modules
 ```
 
 And let's first look at our `main.tf` file in this project:
 
-```
+```terraform
 terraform {
   backend "s3" {}
 }
@@ -516,7 +515,7 @@ We're using 2 modules made available to us by the community:
 
 Let's run a `terraform init` and see what happens:
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 Initializing modules...
 Downloading github.com/terraform-aws-modules/terraform-aws-dynamodb-table?ref=v0.6.0 for dynamodb_table...
@@ -546,7 +545,7 @@ commands will detect it and remind you to do so if necessary.
 
 We're most interested in the top output. We can see `init` doing its job to go out and get the modules that are referenced in our terraform configuration
 
-```
+```text
 Initializing modules...
 Downloading github.com/terraform-aws-modules/terraform-aws-dynamodb-table?ref=v0.6.0 for dynamodb_table...
 - dynamodb_table in .terraform/modules/dynamodb_table
@@ -556,7 +555,7 @@ Downloading terraform-aws-modules/security-group/aws 3.13.0 for security_group..
 
 Let's look more closely then at the contents of our `.terraform` directory related to this:
 
-```
+```bash
 $ ls -la .terraform/modules
 total 8
 drwxr-xr-x   5 patrickforce  staff  160 Aug  9 15:42 .
@@ -570,7 +569,7 @@ Terraform has indeed downloaded the third-party modules here, the directory name
 
 Now, let's look at the contents of our `modules.json`:
 
-```
+```text
 {"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"dynamodb_table","Source":"github.com/terraform-aws-modules/terraform-aws-dynamodb-table?ref=v0.6.0","Dir":".terraform/modules/dynamodb_table"},{"Key":"security_group","Source":"terraform-aws-modules/security-group/aws","Version":"3.13.0","Dir":".terraform/modules/security_group/terraform-aws-security-group-3.13.0"}]}
 ```
 
@@ -578,7 +577,7 @@ Somewhat similar to what we saw with our local, project defined modules, but Ter
 
 Let's go ahead and apply our configuration
 
-```
+```bash
 $ terraform apply
 Error: Missing required argument
 
@@ -590,7 +589,7 @@ The argument "vpc_id" is required, but no definition was found.
 
 Ah! There's something wrong with our configuration. So the security group module that we're using has a required variable that we're not setting on the module call we're making from our project:
 
-```
+```terraform
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "3.13.0"
@@ -598,11 +597,11 @@ module "security_group" {
 }
 ```
 
-If we look at the documentation for this module, we'll notice we have one more required argument to the module, `vpc_id`: https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/3.13.0?tab=inputs#required-inputs
+If we look at the documentation for this module, we'll notice we have one more required argument to the module, `vpc_id`: [](https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/3.13.0?tab=inputs#required-inputs)
 
 So, let's add that. We've already included the data source in our project to query for our default VPC. We need only reference the ID attribute of that data source to add the required argument to our module call:
 
-```
+```terraform
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "3.13.0"
@@ -615,7 +614,7 @@ The main takeaway here is that a missing variable value at the module level will
 
 After making our fix, let's do any apply again
 
-```
+```bash
 $ terraform apply
 data.aws_vpc.default: Refreshing state...
 
@@ -704,7 +703,6 @@ Success! We've created some infrastructure with pretty minimal project configura
 
 Let's do a destroy to finish out this exercise
 
-```
-$ terraform destroy
-...
+```bash
+terraform destroy
 ```
