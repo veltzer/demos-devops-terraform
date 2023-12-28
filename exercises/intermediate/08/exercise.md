@@ -4,7 +4,7 @@ We'll use this exercise to get a chance to see `TF_LOG` and `TF_LOG_PATH` in act
 
 Let's start by running `terraform init` with the normal, default verbosity level, so without `TF_LOG` set:
 
-```
+```bash
 $ terraform init
 
 Initializing the backend...
@@ -24,7 +24,7 @@ commands will detect it and remind you to do so if necessary.
 
 Pretty simple and familiar. Let's try one of the others settings for `TF_LOG`: `ERROR`:
 
-```
+```bash
 $ TF_LOG=ERROR terraform init
 2020/08/09 17:27:05 [WARN] Log levels other than TRACE are currently unreliable, and are supported only for backward compatibility.
   Use TF_LOG=TRACE to see Terraform's internal logs.
@@ -47,7 +47,7 @@ commands will detect it and remind you to do so if necessary.
 
 Interesting, so the current state of Terraform is telling us that anything other than `TRACE` or `TF_LOG` remaining unset would be unreliable. Presumably Hashicorp still has more work to do in this area. We should reliably have the ability to use `TRACE` though, so let's see what that looks like
 
-```
+```bash
 $ TF_LOG=TRACE terraform init
 2020/08/09 17:28:32 [INFO] Terraform version: 0.12.29
 2020/08/09 17:28:32 [INFO] Go runtime version: go1.12.13
@@ -109,7 +109,7 @@ Wow, so we get quite a bit more info on this run, telling us a lot about what Te
 
 First, note the log levels available on each line. So, the following would be info I'd only get when running with `TRACE`:
 
-```
+```text
 2020/08/09 17:28:32 [TRACE] backend/local: state manager for workspace "default" will:
  - read initial snapshot from terraform.tfstate
  - write new snapshots to terraform.tfstate
@@ -118,19 +118,19 @@ First, note the log levels available on each line. So, the following would be in
 
 Let's step through the whole thing though and pick out some particularly noteworthy lines
 
-```
+```text
 2020/08/09 17:28:32 [DEBUG] Attempting to open CLI config file: /Users/patrickforce/.terraformrc
 ```
 
 Ah, so Terraform has the concept of a local CLI config file. We've not covered that in this course, nor will we, but even looking deeper into logs this way can be a good source of learning.
 
-```
+```text
 2020/08/09 17:28:32 [TRACE] Meta.Backend: using default local state only (no backend configuration, and no existing initialized backend)
 ```
 
 We are indeed using a local state configuration in this exercise, no remote state backend. We get some more info about `init` setting up state and awareness, and remote state backend should we have our project configured to use a remote backend.
 
-```
+```text
 2020/08/09 17:28:32 [DEBUG] checking for provider in "."
 2020/08/09 17:28:32 [DEBUG] checking for provider in "/Users/patrickforce/.tfenv/versions/0.12.29"
 2020/08/09 17:28:32 [DEBUG] checking for provider in ".terraform/plugins/darwin_amd64"
@@ -142,7 +142,7 @@ This sort of info gives us more visibility into what Terraform is doing to ident
 
 Let's use this same approach to help us see more about an error. Let's have a look at our `main.tf`
 
-```
+```terraform
 provider "aws" {
   version = "~> 2.0"
 }
@@ -160,7 +160,7 @@ Syntactically all seems OK. But, we're going to attempt to create a resource tha
 
 Let's see the error first without default log verbosity:
 
-```
+```bash
 $ terraform plan
 Error: Invalid resource type
 
@@ -173,7 +173,7 @@ The provider provider.aws does not support resource type
 
 Next, let's just revisit `terraform validate`. It's another root subcommand of the Terraform CLI and gives us the ability to validate our code in isolation from other commands. We talked about `terraform init` being able to do some syntax checking. `terraform validate` goes one step further to make sure that things like our resource definitions are valid:
 
-```
+```bash
 $ terraform validate
 Error: Invalid resource type
 
@@ -188,7 +188,7 @@ The exact same output we got from plan. This suggests that plan also runs just w
 
 Whether it comes from `validate` or `plan`, helpful output even with this log level, should be pretty easy for us to identify the problem in this simple example scenario, but of course the context won't always be this clear. So, let's turn on `TRACE` logging and see what we can see
 
-```
+```bash
 $ TF_LOG=TRACE terraform plan
 2020/08/09 17:45:37 [INFO] Terraform version: 0.12.29
 2020/08/09 17:45:37 [INFO] Go runtime version: go1.12.13
@@ -492,7 +492,7 @@ The provider provider.aws does not support resource type
 
 OK, wow, there's a lot of stuff here. I'm not sure we'd actually need everything from `TRACE` and maybe, despite others being unreliable, maybe we'd only want to use `DEBUG` in this case or maybe even `ERROR`. Nonetheless, let's parse the highly verbose output above and see what we can glean.
 
-```
+```text
 2020/08/09 17:45:38 [ERROR] <root>: eval: *terraform.EvalValidateResource, err: Invalid resource type: The provider provider.aws does not support resource type "aws_invalid_resource_type".
 2020/08/09 17:45:38 [ERROR] <root>: eval: *terraform.EvalSequence, err: Invalid resource type: The provider provider.aws does not support resource type "aws_invalid_resource_type".
 ```
@@ -501,7 +501,7 @@ So, we can see some internal Terraform error log lines that say just a bit more 
 
 Last piece for this exercise is to use `TF_LOG_PATH`. Let's do the same trace we did with plan, but we'll set `TF_LOG_PATH` to output our verbose log to a file called `plan.log`
 
-```
+```bash
 $ TF_LOG=TRACE TF_LOG_PATH=./plan.log terraform plan
 Error: Invalid resource type
 
@@ -514,7 +514,7 @@ The provider provider.aws does not support resource type
 
 Ah, so our console output looks just like it would if we weren't using `TF_LOG` at all. Looking out our `plan.log` file now:
 
-```
+```text
 2020/08/09 17:50:24 [INFO] Terraform version: 0.12.29  
 2020/08/09 17:50:24 [INFO] Go runtime version: go1.12.13
 2020/08/09 17:50:24 [INFO] CLI args: []string{"/Users/patrickforce/.tfenv/versions/0.12.29/terraform", "plan"}

@@ -47,10 +47,10 @@ Can you explain why these aren't conflicting key pair resources? Why can we crea
 
 You'll notice that terraform manages each resource as if there is no module division, meaning the resources are bucketed into one big change list, but under the covers Terraform's dependency graph will show some separation.  It's very difficult, for example, to create dependencies between two resources that are in different modules.  You can, however, use interpolation to create a variable dependency between two modules at the root level, ensuring one is created before the other. Specific applications where direct resource dependency is required really necessitate the grouping of those resources into a single module or project.
 
-### Finishing this exercise
+## Finishing this exercise
 
 Let's run the following to finish:
 
-```
+```bash
 terraform destroy
 ```

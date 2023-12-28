@@ -19,7 +19,7 @@ terraform {
 
 _ASIDE: The above is the first time we're seeing the root `terraform` block or stanza. In many cases, it's sole use will
 be for defining a remote backend, but it also allows you to do things like define a required terraform version via
-semantic version syntax. See https://www.terraform.io/docs/configuration/terraform.html for more info_
+semantic version syntax. See [](https://www.terraform.io/docs/configuration/terraform.html) for more info_
 
 If we look at the s3 backend definition above, what we see are two things that define where state should exist:
 
@@ -28,7 +28,7 @@ If we look at the s3 backend definition above, what we see are two things that d
 
 Without further ado, let's try some of this out
 
-### First, we need to make sure our state bucket exists
+## First, we need to make sure our state bucket exists
 
 We'll actually create the state bucket through Terraform
 
@@ -40,7 +40,7 @@ terraform apply
 
 The output of the apply above should be something like
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -104,7 +104,7 @@ terraform init -backend-config=backend.tfvars
 
 The above will prompt you for the backend bucket name to use
 
-```
+```text
 Initializing the backend...
 bucket
   The name of the S3 bucket
@@ -126,18 +126,17 @@ For fun, we've thrown in an explicit saving of the plan to a file, and then appl
 
 The plan having been saved to the `plan.out` file, we can execute our apply to point to that plan
 
-```
+```bash
 terraform apply plan.out
 ```
 
 And you should get something similar to below
 
-```
+```text
 aws_s3_bucket_object.user_student_alias_object: Creating...
 aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=student.alias]
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
-
 ```
 
 Pretty similar outcome as far as the "infrastructure" is concerned. But, let's finish off by taking a closer look at the state since it now exists remotely. You can either head over the S3 area of the AWS console and navigate to your state bucket to look around, or you could just use the aws cli to look as well:
@@ -148,7 +147,7 @@ aws s3 ls s3://[your s3 state bucket name]/exercise-10/
 
 which should show you something like
 
-```
+```text
 2019-06-22 20:35:33       1186 terraform.tfstate
 ```
 

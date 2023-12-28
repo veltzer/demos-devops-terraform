@@ -102,5 +102,4 @@ Packer has successfully built an image for us, and it's now in our local Docker 
 * Docker saving
 * Docker pushing
 
-See https://packer.io/docs/post-processors/index.html for more info. That gets us to where we need to be for this exercise though, so without further ado...
-
+See [](https://packer.io/docs/post-processors/index.html) for more info. That gets us to where we need to be for this exercise though, so without further ado...
