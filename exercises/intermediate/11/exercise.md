@@ -4,7 +4,7 @@ We're going to create a piece of infrastructure, go make some changes to it via 
 
 ## First, create the infrastructure
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ...
 $ terraform apply
@@ -15,7 +15,7 @@ This is the exact same project configuration content as our previous exercise, j
 
 Let's inspect the state for our project
 
-```
+```bash
 $ terraform state pull
 {
   "version": 4,
@@ -54,14 +54,14 @@ Note especially `"tags": null`. We're going to go add some tags to our key via t
 
 Navigate in the AWS console to key pairs in the us-west-1 region, and locate the one for your student alias. If you need help finding your way, just let your instructor know. Once you've found your key, select the checkbox on that line, then click on the "Actions" dropdown in the top right. Select "Manage Tags" from there. Add a few tags, whatever you like. When you're done, you can navigate back to your Cloud9 environment console so we can run the refresh
 
-```
+```bash
 $ terraform refresh
 aws_key_pair.my_key_pair: Refreshing state... [id=rockholla-di-force]
 ```
 
 Great, so let's see what that did to our state:
 
-```
+```bash
 $ terraform state pull
 {
   "version": 4,
@@ -101,7 +101,7 @@ $ terraform state pull
 
 Our project state is now aware of the tags added manually outside of Terraform. Now, what if we ran a plan now, though? Let's see that
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -142,7 +142,7 @@ can't guarantee that exactly these actions will be performed if
 
 Ah, so our configuration doesn't include these new tags yet though, so Terraform is resolving our state against our configuration, and it sees these tags as "removed" from our configuration at this stage. Similar to import, we have to address some things in most cases where refresh is useful. Namely, let's start managing these tags in our actual configuration. Change your key pair resource in `main.tf` to be:
 
-```
+```terraform
 resource "aws_key_pair" "my_key_pair" {
   key_name   = "rockholla-di-${var.student_alias}"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 ${var.student_alias}+di@rockholla.org"
@@ -154,7 +154,7 @@ resource "aws_key_pair" "my_key_pair" {
 
 and then run an plan again
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -175,7 +175,6 @@ State and project configuration are now in sync!
 
 ## Finish off by destroying
 
-```
-$ terraform destroy
-...
+```bash
+terraform destroy
 ```

@@ -6,7 +6,7 @@ Taints are a good way to force replace a resource. Destroy targets give us a way
 
 Let's start by creating our infrastructure, which will create 2 distinct key pairs
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ...
 $ terraform apply
@@ -55,14 +55,14 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
 So, we have our two key pairs created. Let's say we wanted to force recreate the second one. We might change a value on the resource that would do so or update it in place, but in certain cases, for certain resources, you simply want to force recreate with the same values in one action. Let's taint the second one and see what happens
 
-```
+```bash
 $ terraform taint aws_key_pair.my_key_pair_02
 Resource instance aws_key_pair.my_key_pair_02 has been marked as tainted.
 ```
 
 Much like `state rm`, `import`, etc. dealing with single resources at a time is all about referencing the resource identifier as written in our configuration. So, I've marked this resource from configuration as tainted. Let's run a plan to see what that output tells us will happen on our next apply
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -101,14 +101,14 @@ can't guarantee that exactly these actions will be performed if
 
 We do indeed see that it will be replaced on our next apply with a `-/+` which means the previous resource will be removed, and the new one will be created after it. What if we changed our mind or realized we want the existing one to stick around. We've set ourselves up for the next apply to perform the above operation. We can simply `untaint` though if we need to back out of this:
 
-```
+```bash
 $ terraform untaint aws_key_pair.my_key_pair_02
 Resource instance aws_key_pair.my_key_pair_02 has been successfully untainted.
 ```
 
 And the plan again
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -132,7 +132,7 @@ Back to where we were, no changes needed, the resource is going to stick around.
 
 Now, let's look at the case where we just want to fully remove our second key, but we'd like the first one to stay around. Now, you might be saying "why don't we just remove it from configuration source and apply"? And you'd be right to ask this. I've found that this feature isn't so often used for destroying indefinitely, rather when you need to remove/recreate a resource, but the taint model doesn't necessarily work for your needs. Maybe you need to recreate it from scratch, but not just yet. You don't want the configuration to go away from your source, because you will be re-creating. In reality I've used this feature NEVER :) But you should know it's there and how to use it
 
-```
+```bash
 $ terraform destroy -target aws_key_pair.my_key_pair_02
 aws_key_pair.my_key_pair_02: Refreshing state... [id=rockholla-di-force-02]
 
@@ -193,7 +193,7 @@ Destroy complete! Resources: 1 destroyed.
 
 There's some interesting output here related to `-target` and potentially-incomplete changes. The best thing for us to do is just run a plan again to continue to make sense of it:
 
-```
+```bash
 $ terraform plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -232,7 +232,6 @@ our second key remains in configuration, now removed from state and the resource
 
 ## Finish by destroying the rest
 
-```
-$ terraform destroy
-...
+```bash
+terraform destroy
 ```
