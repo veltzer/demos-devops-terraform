@@ -12,7 +12,7 @@ and are pretty simple. Using variables and their types in 0.11 don't require muc
 
 We have good examples of all variable/data types defined/declared in our `variables.tf` file:
 
-```
+```terraform
 # Primitives
 variable "string_var" {
   type = string
@@ -85,7 +85,7 @@ Let's just look at our primitives first and play a little bit with them. We'll s
 
 Here are our primitive variable declarations:
 
-```
+```terraform
 variable "string_var" {
   type = string
 }
@@ -101,7 +101,7 @@ variable "bool_var" {
 
 Pretty straightforward. Notice also that we have a `terraform.tfvars` file in this project with some defaults set. We've opted to set defaults here instead of the variable declarations themselves so it's easier to see them separately, and to just get a chance to continue some work with a tfvars file. Here are the related defaults for these primitives:
 
-```
+```terraform
 string_var = "this value is a string"
 number_var = 1
 bool_var = true
@@ -109,7 +109,7 @@ bool_var = true
 
 Probably nothing too surprising or ground-breaking going on here, but again, let's play around with this a bit. Simply by way of setting types for our variables, we've added some early validation capabilities in terraform. So, let's try passing in some non-numeric value to our `number_var` and see what happens:
 
-```
+```bash
 $ terraform apply -var number_var="not a number"
 
 Error: Invalid value for input variable
@@ -132,7 +132,7 @@ So, our `-var number_var="not a number"` being used instead of the value set in 
 
 OK, back to our main exercise path. We see that variable typing gives us a way to have added validation for our terraform configuration. What if we tried to pass a number to the string_var?
 
-```
+```bash
 $ terraform apply -var string_var=20
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
@@ -142,7 +142,7 @@ string_var = 20
 
 Hmm, no error, why is that? Well, the string data type really being one of the more foundational, and type conversion can happen for just about any value you pass in via the command line, so even something like the following works:
 
-```
+```bash
 $ terraform apply -var string_var=[1,2,3]
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
@@ -156,7 +156,7 @@ Really, it's just seeing anything we pass into that value on the command line as
 
 OK, on to our complex collection types
 
-```
+```terraform
 variable "list_any_var" {
   type = list(any)
 }
@@ -184,7 +184,7 @@ variable "set_string_var" {
 
 Let's look at our terraform.tfvars defaults being set
 
-```
+```terraform
 list_any_var = [false, true, true]
 list_number_var = [2, 3, 8]
 map_any_var = {
@@ -201,7 +201,7 @@ set_string_var = ["first", "second", "third"]
 
 So, these are all complex collection types, meaning they represent some list or some set of things. One primary important, common aspect of these types is that the content of any variable must be of the same type. So, a list must include all numbers, or all strings, a map must include values in the key/value pairs that are all strings or all booleans. Let's see what happens when we try to set something of mixed type:
 
-```
+```bash
 $ terraform apply -var list_number_var='["one", 2, 3]'
 
 Error: Invalid value for input variable
@@ -212,13 +212,13 @@ variable "list_number_var": a number is required.
 
 We're attempting to mix numbers and strings in a list that is strictly typed as a list of numbers, so we get the expected error. What if we did this though?
 
-```
-$ terraform apply -var list_any_var='["one", 2, 3]'
+```bash
+terraform apply -var list_any_var='["one", 2, 3]'
 ```
 
 Do you expect an error? You might, but we actually won't get one for a similar reason to our `string_var` value setting just about any string of characters. When attempting the above we get:
 
-```
+```bash
 $ terraform apply -var list_any_var='["one", 2, 3]'
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
@@ -237,7 +237,7 @@ list_any_var = [
 
 Terraform is really just seeing `2` and `3` as strings, so no error. It's a list variable that accepts any type, so string is just fine. What about this though?
 
-```
+```bash
 $ terraform apply -var list_any_var='[1, 2, 3]'
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
@@ -257,7 +257,7 @@ Since we are passing a value whose items can all be identified as numeric, we ca
 
 Let's do one last thing here, have a look at the `terraform apply` output for our variables of type `set`:
 
-```
+```terraform
 set_any_var = [
   "first",
   "second",
@@ -276,7 +276,7 @@ You may or may not see the same ordering in your output. Remember that one of th
 
 The last set of types are complex structural types, whose common trait would be support for content that has mixed type. Let's look at both `variables.tf` and `terraform.tfvars` for these types:
 
-```
+```terraform
 variable "object_person_var" {
   type = object({
     name = string,
@@ -293,7 +293,7 @@ variable "tuple_line_item_var" {
 }
 ```
 
-```
+```terraform
 object_person_var = {
   name = "Tom",
   age = 20
@@ -311,7 +311,7 @@ Try to break an apply similar to how we've been doing with above examples for bo
 
 We can also set embedded types for variables. For example
 
-```
+```terraform
 variable "list_object_people_var" {
   type = list(object({
     name = string,
@@ -322,7 +322,7 @@ variable "list_object_people_var" {
 
 So, similar to our person object variable type we saw before, but just a list of these things now. And here's how we're setting our default value:
 
-```
+```terraform
 list_object_people_var = [
   {
     name = "Beth",
@@ -337,13 +337,13 @@ list_object_people_var = [
 
 Now is a time to call out the benefit of using tfvars files when your project deals in complex variables. Writing out these vars files tends to be a nicer automation experience than say having to pass these values in via the alternative mechansims of environment variable:
 
-```
-$ TF_VAR_list_object_people_var='[{name="Beth",age=35},{name="Priya",age=30}]' terraform apply
+```bash
+TF_VAR_list_object_people_var='[{name="Beth",age=35},{name="Priya",age=30}]' terraform apply
 ```
 
 or
 
-```
+```bash
 terraform apply -var list_object_people_var='[{name="Beth",age=35},{name="Priya",age=30}]'
 ```
 
@@ -353,19 +353,19 @@ Shell string escaping, how to quote items, etc. can get messy really quick in su
 
 Getting close to the end of this exercise, we want to look at some cases of untyped variables. An untyped variable in Terraform >= 0.12 means that the type will attempt to be inferred. Let's look at the bottom of our `variables.tf` at the variable example that is untyped
 
-```
+```terraform
 variable "untyped_var" {}
 ```
 
 So, no type explicitly set, and we do still have a `terraform.tfvars` value set for it
 
-```
+```terraform
 untyped_var = ["one", 2, 3]
 ```
 
 So, let's see what we get as an output, so how terraform sees this variable type:
 
-```
+```bash
 $ terraform apply
 ...
 untyped_var = [
@@ -381,7 +381,7 @@ In short, Terraform is able to see this value as a tuple
 
 One last topic to cover, and related to outputs, what if you have an output that contains sensitive content, like a password or key? You can declare the output as a sensitive value:
 
-```
+```terraform
 output "generated_password" {
   value = "${local.generated_password}"
   sensitive = true
@@ -390,7 +390,7 @@ output "generated_password" {
 
 And we can see in our apply logs, it being handled accordingly:
 
-```
+```bash
 $ terraform apply
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
@@ -404,7 +404,7 @@ generated_password = <sensitive>
 
 This feature is really **just about protecting sensitive items from being present in logs**. Note that it will still be in plain text in the state file. You can verify this by opening the `terraform.tfstate` file in this project directory:
 
-```
+```text
 {
   "version": 4,
   "terraform_version": "0.12.29",
