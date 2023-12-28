@@ -93,7 +93,7 @@ git clone https://github.com/rockholla/terraform-packer-workshop workshop
 
 ## Set up your environment credentials to connect to AWS
 
-place the following in your `$HOME/.bash_profile` file at the bottom, and replace the values in brackets with your generated creds:
+place the following in your `$HOME/.bash_profile` file at the bottom, and replace the values in brackets with your generated credentials:
 
 ```bash
 export AWS_ACCESS_KEY_ID=[The access key ID you created above]

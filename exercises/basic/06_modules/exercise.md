@@ -2,9 +2,9 @@
 
 Terraform is *ALL* about modules.  Every terraform working directory is really just a module that could be reused by others. This is one of the key capabilities and organizational precepts of Terraform.
 
-In this exercise, we are going to modularize the code that we have been playing with during this whole workshop, but instead of constantly redeclaring everything, we are just going to reference the module that we've created and see if it works.
+In this exercise, we are going to modularize the code that we have been playing with during this whole workshop, but instead of constantly re-declaring everything, we are just going to reference the module that we've created and see if it works.
 
-First, create a main.tf file in the main directory for this 6th exercise.  Inside this `main.tf`, please add the following:
+First, create a main.tf file in the main directory for this 6TH exercise.  Inside this `main.tf`, please add the following:
 
 ```hcl
 provider "aws" {

@@ -335,7 +335,7 @@ list_object_people_var = [
 ]
 ```
 
-Now is a time to call out the benefit of using tfvars files when your project deals in complex variables. Writing out these vars files tends to be a nicer automation experience than say having to pass these values in via the alternative mechansims of environment variable:
+Now is a time to call out the benefit of using tfvars files when your project deals in complex variables. Writing out these vars files tends to be a nicer automation experience than say having to pass these values in via the alternative mechanisms of environment variable:
 
 ```bash
 TF_VAR_list_object_people_var='[{name="Beth",age=35},{name="Priya",age=30}]' terraform apply

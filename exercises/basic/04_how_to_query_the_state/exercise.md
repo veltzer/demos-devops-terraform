@@ -15,7 +15,7 @@ terraform apply
 
 ### Command Line
 
-Terraform has a CLI command called "show", which allows users to export useful information from the state in a way that can be easily grep'ed or awk'ed.
+Terraform has a CLI command called "show", which allows users to export useful information from the state in a way that can be easily grepped or awked.
 
 ```bash
 terraform show
@@ -57,7 +57,7 @@ Maybe even more helpful, Terraform also supports outputting state in a more mach
 terraform show -json
 ```
 
-Terraform stores state as json, so this is mostly just returning a very similar structure and set of values that you might find in your `terraform.tfstate` file as well, assuming you're using local state. We'll talk more about remote states a little later.
+Terraform stores state as JSON, so this is mostly just returning a very similar structure and set of values that you might find in your `terraform.tfstate` file as well, assuming you're using local state. We'll talk more about remote states a little later.
 
 ### Remote State Data Type
 

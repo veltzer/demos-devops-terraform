@@ -6,7 +6,7 @@ Let's start by reviewing and using one of the more important operations around s
 
 ## Terraform Plans and Applies
 
-Plans along with state are the foundational way that Terraform resolves what is currently running in your infrastrucure, vs what should be. The declarative model in practice. Let's use this exercise to create some infrastructure in two different, distinct projects. We'll work our way through state awareness, state management, planning, and even cross-project state awareness.
+Plans along with state are the foundational way that Terraform resolves what is currently running in your infrastructure, vs what should be. The declarative model in practice. Let's use this exercise to create some infrastructure in two different, distinct projects. We'll work our way through state awareness, state management, planning, and even cross-project state awareness.
 
 Go ahead and change directories into the `team1-project` one here. And we'll run the following, as before replacing `[student-alias]` with the one assigned to you:
 
@@ -141,7 +141,7 @@ Outputs:
 my_key_pair_id = "key-0f87362ef96c0d8b3"
 ```
 
-We can also get the json version of the state using a similar command
+We can also get the JSON version of the state using a similar command
 
 ```bash
 $ terraform show -json
@@ -690,7 +690,7 @@ resource "aws_key_pair" "my_key_pair_additional" {
 }
 ```
 
-The last command we'll look at in this exercise is `terraform state mv`. The most common use-case that I've encountered for this command is standarizing naming and conventions in terraform configuration. Say you have something like this in your legacy terraform config:
+The last command we'll look at in this exercise is `terraform state mv`. The most common use-case that I've encountered for this command is standardizing naming and conventions in terraform configuration. Say you have something like this in your legacy terraform config:
 
 ```terraform
 resource "aws_instance" "team1-instance" {
@@ -706,7 +706,7 @@ resource "aws_instance" "team1_instance" {
 }
 ```
 
-But, your state sees this resource (`aws_instance.team1_instance`) as something different, and your previous resource (`aws_instance.team1-instance`) as removed. So, it's going to create the new one from scratch and get rid of the old one. Obviously something we might not want for a server that shouldn't be brought down. But, after renaming the resource in configuration, we can modify the state so that both spots have the new identifer and terraform will see this as no change on the next plan/apply.
+But, your state sees this resource (`aws_instance.team1_instance`) as something different, and your previous resource (`aws_instance.team1-instance`) as removed. So, it's going to create the new one from scratch and get rid of the old one. Obviously something we might not want for a server that shouldn't be brought down. But, after renaming the resource in configuration, we can modify the state so that both spots have the new identifier and terraform will see this as no change on the next plan/apply.
 
 Let's give it a try. Rename your `aws_key_pair` in `main.tf` to the following:
 

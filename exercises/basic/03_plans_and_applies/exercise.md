@@ -118,7 +118,7 @@ You should notice a couple differences:
 
 * Terraform informs you that it is Refreshing the State.
     * after the first apply, any subsequent plans and applies will check the infrastructure it created and updates the terraform state with any new information about the resource.
-* Next, you'll notice that Terraform informed you that there are no changes to be made.  This is because the infrastructure was just created and there were no changes detected, no changes to your instructure code instructions.
+* Next, you'll notice that Terraform informed you that there are no changes to be made.  This is because the infrastructure was just created and there were no changes detected, no changes to your infrastructure code instructions.
 
 ### Handling Changes
 
@@ -222,5 +222,5 @@ aws_key_pair.my_key_pair: Destruction complete after 1s
 Destroy complete! Resources: 1 destroyed.
 ```
 
-You'l notice that the destroy process if very similar to apply, just the other way around! And it also requires
+You'll notice that the destroy process if very similar to apply, just the other way around! And it also requires
 confirmation, which is a good thing.

@@ -11,10 +11,10 @@ Our `microservice` module here is designed to be a generic module for spinning s
 and be load balanced in AWS. Some key components to this module:
 
 * **AWS Launch Configuration**: a launch configuration defines a standard way in which an EC2 instance should be launched, such as the base AMI, the instance type, the user data (launch script), security groups or firewall rules, etc.
-* **AWS Autoscaling Group**: an autoscaling group will use rules and other properties to make decisions on how many of the above launch configurations, or actual servers will be running for our service
+* **AWS Auto-scaling Group**: an auto-scaling group will use rules and other properties to make decisions on how many of the above launch configurations, or actual servers will be running for our service
 * **AWS Application Load Balancer**: a load balancer will listen for the actual user or service requests coming in and decide where these requests should go
-    * **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the autoscaling group to ensure that the load balancer routes appropriately
-    * **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the autoscaling group instances
+    * **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the auto-scaling group to ensure that the load balancer routes appropriately
+    * **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the auto-scaling group instances
 * **user-data directory**: stores the startup scripts for the servers, one for each of a backend server and the frontend server
 
 ## The project calling the `microservice` module
@@ -66,7 +66,7 @@ module "backend" {
 }
 ```
 
-We've abstracted almost everything into our module, and we see here a pretty nice reusability pattern. It also makes it easy
+We've abstracted almost everything into our module, and we see here a pretty nice re-usability pattern. It also makes it easy
 to see our intention for the project as whole in the code itself (documented infrastructure code through the code itself?):
 
 * We're setting up a backend service that should have at most 3 servers, a minimum of 1 server; we're telling it to use the startup script of `user-data-backend.sh` and we're passing the text that will be served through the service as the output of the app/page
@@ -133,7 +133,7 @@ terraform init
 ```
 
 We should no longer see the warning during init. Let's look at just one other thing here that's related. Say a module does define
-a provider with some settings that we don't want. We do have another option to explictly pass a provider to a module by doing
+a provider with some settings that we don't want. We do have another option to explicitly pass a provider to a module by doing
 something like:
 
 ```hcl
@@ -161,7 +161,7 @@ module "example" {
 This particular example is defining the default provider for this module or terraform project with a region of us-west-1, but an
 alternate provider that can then be passed to the example module.
 
-OK, back to our main exercise though, as soon as you're done with your `init` command, we can move the acutal apply:
+OK, back to our main exercise though, as soon as you're done with your `init` command, we can move the actual apply:
 
 ```bash
 terraform apply
@@ -335,7 +335,7 @@ Response from backend:
 {"text": "Hello from backend"}
 ```
 
-_If your frontend endpoint isn't up yet, just give it a little time. Autoscaling groups in combination with launch configurations can take
+_If your frontend endpoint isn't up yet, just give it a little time. Auto-scaling groups in combination with launch configurations can take
 some time to actually spin up the EC2 instances. In addition, we also have a boot script running that is run to bring up the server(s) once
 the EC2 instances themselves are up. So, yeah, it could take just a bit._
 
@@ -353,7 +353,7 @@ If you have more time, feel free to play around with the project and/or module c
 * Can you trigger certain things that require fully recreating resources vs just changing them in place?
 * Can you break your app? I'm sure you can, but can you break it in a way where you can fix it again?
 
-Feel free to poke around in the AWS console. It can be particularly interesting to look at EC2-related stuff there when it comes to autoscaling
+Feel free to poke around in the AWS console. It can be particularly interesting to look at EC2-related stuff there when it comes to auto-scaling
 groups, load balancers and such. It's useful to see that other students have their resources intermingled with yours. Be respectful of them.
 Your Terraform state is completely separate from your fellow students, and even though very common resources can live beside each other like this,
 we can manage them with a completely different state.

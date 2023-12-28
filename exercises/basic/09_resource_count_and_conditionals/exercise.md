@@ -1,10 +1,10 @@
 # Exercise #9: Resource Counts and Conditional HCL
 
-The idea of "looping" or repeated resource capabilities in Terraform is one of the most encountered gotchas. Declarative infrastructure tools and languages often require or encourage more explicit definition of things rather than supporting logic where other languages might have an "easier" way of doing things. Nonetheless, there's still a good deal you can accomplish via Terraform's `count` concept that mimicks the idea of loops and creating multiple copies or versions of a single thing.
+The idea of "looping" or repeated resource capabilities in Terraform is one of the most encountered gotchas. Declarative infrastructure tools and languages often require or encourage more explicit definition of things rather than supporting logic where other languages might have an "easier" way of doing things. Nonetheless, there's still a good deal you can accomplish via Terraform's `count` concept that mimics the idea of loops and creating multiple copies or versions of a single thing.
 
-Modules, as we saw, are another key aspect of reusability in Terraform.
+Modules, as we saw, are another key aspect of re-usability in Terraform.
 
-But let's take a look at `count` in action for the sake of reusability and list of common infrastructure objects, and related logical support for the sake of dynamic resource management.
+But let's take a look at `count` in action for the sake of re-usability and list of common infrastructure objects, and related logical support for the sake of dynamic resource management.
 
 Run the following in this directory
 

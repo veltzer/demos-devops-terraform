@@ -35,7 +35,7 @@ Let's start by running the default build of our `template.json` file here. First
 
 Our `content` variable has a default value of "". Remember from our previous exercise, that we could set this default value to `null` instead to make it a required variable, but we'll default it to a blank string for the case of our exercise.
 
-Before we go further, what do you expect this defintion to do? Are you able to start seeing how Packer works well enough to make an educated guess?
+Before we go further, what do you expect this definition to do? Are you able to start seeing how Packer works well enough to make an educated guess?
 
 Let's run our build and see what we get
 

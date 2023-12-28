@@ -139,7 +139,7 @@ aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=s
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-Pretty similar outcome as far as the "infrastructure" is concerned. But, let's finish off by taking a closer look at the state since it now exists remotely. You can either head over the S3 area of the AWS console and navigate to your state bucket to look around, or you could just use the aws cli to look as well:
+Pretty similar outcome as far as the "infrastructure" is concerned. But, let's finish off by taking a closer look at the state since it now exists remotely. You can either head over the S3 area of the AWS console and navigate to your state bucket to look around, or you could just use the AWS cli to look as well:
 
 ```bash
 aws s3 ls s3://[your s3 state bucket name]/exercise-10/

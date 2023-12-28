@@ -118,9 +118,9 @@ Error: Missing required argument
 The argument "bucket" is required, but no definition was found.
 ```
 
-So, our provider is actually giving us this. The AWS provider defines what a `aws_s3_bucket_object` should include, and what is required. The `bucket` property is required, so it's tell us we have a problem with this resource defintion.
+So, our provider is actually giving us this. The AWS provider defines what a `aws_s3_bucket_object` should include, and what is required. The `bucket` property is required, so it's tell us we have a problem with this resource definition.
 
-### Provider Errors or Passthrough
+### Provider Errors or Pass-through
 
 And now to the most frustrating ones! These may be random, intermittent. They will be very specific to the provider and problems that happen when actually trying to do the work of setting up or maintaining your resources. In short, they happen on the infrastructure API side, e.g. a problem on the AWS side either be it a usage problem on your part, or a problem with AWS itself.
 

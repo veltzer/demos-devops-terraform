@@ -145,7 +145,7 @@ module "ec2" {
 
 Our project, in this case, is little more than calling other modules that will do things for us. We talked about composability. At a project's best, it might just piece together functionality from a number of different modules or sources to create complex infrastructure, as flat as we can make it. The power of re-usability, organization, etc.
 
-We're calling the dynamodb module or section of our project to presumably create all of the dynamodb-related resources. As the root project owner, I probably don't care about the complexities of what lies within this module or directory. Someone else on my team, or maybe even another team might, and we collaboratively maintain this source.
+We're calling the DynamoDB module or section of our project to presumably create all of the DynamoDB-related resources. As the root project owner, I probably don't care about the complexities of what lies within this module or directory. Someone else on my team, or maybe even another team might, and we collaboratively maintain this source.
 
 Not knowing much about this module, all I need to do is pass it some values that make sense for the project:
 
@@ -511,7 +511,7 @@ module "dynamodb_table" {
 We're using 2 modules made available to us by the community:
 
 * The security group one is hosted at Terraform Registry, we're locking to version 3.13.0
-* The dynamodb table module we'll pull directly from github, and tell Terraform that we want to lock to version v0.6.0 of that module
+* The DynamoDB table module we'll pull directly from GitHub, and tell Terraform that we want to lock to version v0.6.0 of that module
 
 Let's run a `terraform init` and see what happens:
 

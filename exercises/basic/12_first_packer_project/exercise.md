@@ -53,7 +53,7 @@ If we step through the parts of this template, we'll get a better understanding 
 },
 ```
 
-This block defines user, or input, variables to our template and utimately their use in the defined `builders`. Our first two variables here are, of course, about how Packer will authenticate. In this case, we're making use of built-in Packer template engine capabilities of using environment variables on the machine running the Packer CLI. We'll cover the template engine and more on this type of syntax and other available template engine capabilities later in the day.
+This block defines user, or input, variables to our template and ultimately their use in the defined `builders`. Our first two variables here are, of course, about how Packer will authenticate. In this case, we're making use of built-in Packer template engine capabilities of using environment variables on the machine running the Packer CLI. We'll cover the template engine and more on this type of syntax and other available template engine capabilities later in the day.
 
 The last variable, `username`, has one very important part of it's definition: the fact this it's set to `null`. A default value of `null` makes this variable required, and you must pass a value for it at build time. So, let's try to run our build without it just to see what happens:
 
@@ -115,7 +115,7 @@ This tells Packer that we want to spin up our build machine with this `source_am
 "ssh_username": "ubuntu",
 ```
 
-The instance type to use for our builder EC2 instance. And the username that Packer should use to connect to the instance in the case of running provisioners. Being our first example, we're not yet including any provisioners in our template defintion. But, if we were, Packer would use this username to connect. AWS, depending on the type of distro underlying, has some specific standards for default machine users/usernames set up. E.g. Amazon Linux distro images would use `ec2-user` here instead of `ubuntu`.
+The instance type to use for our builder EC2 instance. And the username that Packer should use to connect to the instance in the case of running provisioners. Being our first example, we're not yet including any provisioners in our template definition. But, if we were, Packer would use this username to connect. AWS, depending on the type of distro underlying, has some specific standards for default machine users/usernames set up. E.g. Amazon Linux distro images would use `ec2-user` here instead of `ubuntu`.
 
 ```json
 "ami_name": "{{ user `username` }}-first-ami"

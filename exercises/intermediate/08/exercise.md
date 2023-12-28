@@ -171,7 +171,7 @@ The provider provider.aws does not support resource type
 "aws_invalid_resource_type".
 ```
 
-Next, let's just revisit `terraform validate`. It's another root subcommand of the Terraform CLI and gives us the ability to validate our code in isolation from other commands. We talked about `terraform init` being able to do some syntax checking. `terraform validate` goes one step further to make sure that things like our resource definitions are valid:
+Next, let's just revisit `terraform validate`. It's another root sub-command of the Terraform CLI and gives us the ability to validate our code in isolation from other commands. We talked about `terraform init` being able to do some syntax checking. `terraform validate` goes one step further to make sure that things like our resource definitions are valid:
 
 ```bash
 $ terraform validate

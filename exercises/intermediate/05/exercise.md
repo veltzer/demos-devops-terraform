@@ -127,7 +127,7 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
-We can see that our key pair name is set as we expect it to be with the `-dev` sufix, and the related tag set as expected. Let's apply and actually create our key pair for the dev environment
+We can see that our key pair name is set as we expect it to be with the `-dev` suffix, and the related tag set as expected. Let's apply and actually create our key pair for the dev environment
 
 ```bash
 $ terraform apply
@@ -194,7 +194,7 @@ so if you run "terraform plan" Terraform will not see any existing state
 for this configuration.
 ```
 
-We've created and switched to this new workspace, so we should simply be able to run another apply to create entirely new infrastructure from scratch with a brand new state file, and a non-conflicting key pair name in AWS since it's name/identifer will be suffixed with our unique workspace name:
+We've created and switched to this new workspace, so we should simply be able to run another apply to create entirely new infrastructure from scratch with a brand new state file, and a non-conflicting key pair name in AWS since it's name/identifier will be suffixed with our unique workspace name:
 
 ```bash
 $ terraform apply

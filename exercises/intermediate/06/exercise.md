@@ -66,7 +66,7 @@ resource "aws_key_pair" "my_key_pair_secondary_region" {
 
 So, let's talk through this. First, we have two different providers of the same type. This is strictly so that we can create resources in multiple AWS regions. If we didn't include the `alias` argument to the second provider definition, terraform would error out. The support for this is strictly based on aliasing so that we can provide some instruction to resources or modules about what provider config to actually use.
 
-We have our alias `secondary_region` provider for aws. Which means we can override resources to use this provider instead of the default one which is
+We have our alias `secondary_region` provider for AWS. Which means we can override resources to use this provider instead of the default one which is
 
 ```terraform
 provider "aws" {
@@ -191,7 +191,7 @@ $ terraform state pull
 }
 ```
 
-Ah, so our arns for the key pairs verify the region for each key!
+Ah, so our ARNs for the key pairs verify the region for each key!
 
 ## *Please destroy before moving to the next section*
 
@@ -270,7 +270,7 @@ output "template_rendered" {
 
 ```
 
-We have some input variables, they get passed in to the template, and rendered accordingly to produce a string. In most cases, this sort of thing is used for resources like `aws_instance` and it's [user_data argument](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#user_data). So, you can render templated-muti-string-content for other things to ingest.
+We have some input variables, they get passed in to the template, and rendered accordingly to produce a string. In most cases, this sort of thing is used for resources like `aws_instance` and it's [user_data argument](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#user_data). So, you can render templated-multi-string-content for other things to ingest.
 
 Let's look at it as as standard terraform output nonetheless...
 

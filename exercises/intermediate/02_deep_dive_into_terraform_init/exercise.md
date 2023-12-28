@@ -38,7 +38,7 @@ One quick aside before we get started working with this project. Notice the file
 We've gone even a bit further than we have previously to do some organization of files for purpose. This can be a useful approach, especially in projects that are large or that promise to be large eventually:
 
 * `terraform.tf`: containing our root `terraform` block and its settings, root terraform configuration
-* `providers.tf`: including any provider declaration/defintion blocks, as a project could contain 1 or many
+* `providers.tf`: including any provider declaration/definition blocks, as a project could contain 1 or many
 * `ec2.tf`, `s3.tf`: a single `main.tf` or similar monolithic project config file might not be appropriate for larger projects. Splitting up by purpose and resource types to manage can be a good pattern to follow. This is not entirely unlike the benefits of encapsulating concerns in modules
 
 OK, so we have a Terraform project, and we want to see how it's set up to use an s3 backend. We'll make sure it's configured correctly to do so for our student alias bucket and then create some infrastructure making use of our backend and remote state.
@@ -157,7 +157,7 @@ By default, terraform will look in the following locations for any pre-downloade
 * `~/.terraform.d/plugins` on \*nix
 * `~\AppData\Roaming\terraform.d\plugins` on Windows
 
-By default, if not found there or already downloaded in a project's `.terraform` directory, it'll find and download the plugin. If you use `-plugin-dir` though, you're basically telling terraform that a required version _must_ be in this location, and that it should never attempt a download. So, let's use a custom location, so we'll "pre-download" our aws provider plugin and then point init at this location
+By default, if not found there or already downloaded in a project's `.terraform` directory, it'll find and download the plugin. If you use `-plugin-dir` though, you're basically telling terraform that a required version _must_ be in this location, and that it should never attempt a download. So, let's use a custom location, so we'll "pre-download" our AWS provider plugin and then point init at this location
 
 ```bash
 mkdir -p custom-plugin-dir
