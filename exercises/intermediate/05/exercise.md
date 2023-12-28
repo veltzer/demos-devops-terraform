@@ -4,7 +4,7 @@ Workspaces are simple but powerful. This exercise will demonstrate both.
 
 ## The basics of workspaces
 
-```
+```bash
 $ terraform workspace --help
 Usage: terraform workspace
 
@@ -20,19 +20,18 @@ Subcommands:
 
 Even without knowing you're using a workspace, you always are in terraform. One named default:
 
-```
+```bash
 $ terraform workspace show
 default
 $ terraform workspace list
 * default
-
 ```
 
 The asterisk in the `workspace list` above denotes the current workspace.
 
 Let's start by looking at our project structure, first `variables.tf`
 
-```
+```terraform
 variable "student_alias" {
   description = "Your student alias"
 }
@@ -40,7 +39,7 @@ variable "student_alias" {
 
 Nothing new here really, just a way for us to pass in our student alias to create a uniquely-named resource. Looking at `main.tf`
 
-```
+```terraform
 provider "aws" {
   version = "~> 2.0"
 }
@@ -58,7 +57,7 @@ Mostly familiar here, too, except we're referencing something new, a built-in va
 
 Good, but wait, we could change workspace to be "dev" vs "prod", etc. but in the normal flow of a single project, changing that value will simply create or alter a single key pair with the new name. Enter workspaces so we can maintain separate state files per environment:
 
-```
+```bash
 $ terraform workspace new dev
 Created and switched to workspace "dev"!
 
@@ -79,14 +78,14 @@ Note that the above works just the same for remote state. We're using the defaul
 
 Let's go ahead and init
 
-```
+```bash
 $ terraform init
 ...
 ```
 
 A normal init operation, no different really in the context of isolated workspaces since modules used, providers/plugins used, etc. will be common across all workspaces at the source level and will go into our `.terraform` directory.
 
-```
+```bash
 $ terraform plan
 var.student_alias
   Your student alias
@@ -130,7 +129,7 @@ can't guarantee that exactly these actions will be performed if
 
 We can see that our key pair name is set as we expect it to be with the `-dev` sufix, and the related tag set as expected. Let's apply and actually create our key pair for the dev environment
 
-```
+```bash
 $ terraform apply
 var.student_alias
   Your student alias
@@ -173,7 +172,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 Our key pair is created for our dev environment. Let's quickly note that we have an isolated state file now stored in our `terraform.tfstate.d` directory for dev:
 
-```
+```bash
 $ ls -la terraform.tfstate.d/dev/
 total 8
 drwxr-xr-x  3 patrickforce  staff    96 Aug  7 17:39 .
@@ -185,7 +184,7 @@ Note that this `terraform.tfstate.d` directory would be stored in our remote bac
 
 Time to switch workspaces and test some further things out. Let's switch to a new `prod` workspace
 
-```
+```bash
 $ terraform workspace new prod
 terraform workspace new prod
 Created and switched to workspace "prod"!
@@ -197,8 +196,7 @@ for this configuration.
 
 We've created and switched to this new workspace, so we should simply be able to run another apply to create entirely new infrastructure from scratch with a brand new state file, and a non-conflicting key pair name in AWS since it's name/identifer will be suffixed with our unique workspace name:
 
-
-```
+```bash
 $ terraform apply
 var.student_alias
   Your student alias
@@ -243,7 +241,7 @@ A brand new key pair was created `rockholla-di-force-prod`
 
 And we have a totally different state file managed for this run/workspace:
 
-```
+```bash
 $ ls -la terraform.tfstate.d/prod/
 total 8
 drwxr-xr-x  3 patrickforce  staff    96 Aug  7 17:50 .
@@ -255,11 +253,11 @@ Know that the term "workspace" is a bit overloaded when it comes to terraform CL
 
 One last thing to clarify: your workspace selection is only persisted in a Terraform project directory. So, moving between projects means you'll simply be using the workspace that was last being used in a project directory.
 
-# Finishing up
+## Finishing up
 
 We want to clean up the resources we've created here:
 
-```
+```bash
 $ terraform destroy
 ...
 $ terraform workspace select dev
