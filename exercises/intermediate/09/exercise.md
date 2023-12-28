@@ -4,13 +4,13 @@ We don't want to use provisioners unless we have to. And there are many cases wh
 
 ## A look at the different types of provisioners available to us via Terraform out-of-the-box
 
-* `chef`: https://www.terraform.io/docs/provisioners/chef.html
-* `file`: https://www.terraform.io/docs/provisioners/file.html
-* `habitat`: https://www.terraform.io/docs/provisioners/habitat.html
-* `local-exec`: https://www.terraform.io/docs/provisioners/local-exec.html
-* `puppet`: https://www.terraform.io/docs/provisioners/puppet.html
-* `remote-exec`: https://www.terraform.io/docs/provisioners/remote-exec.html
-* `salt-masterless`: https://www.terraform.io/docs/provisioners/salt-masterless.html
+* [chef](https://www.terraform.io/docs/provisioners/chef.html)
+* [file](https://www.terraform.io/docs/provisioners/file.html)
+* [habitat](https://www.terraform.io/docs/provisioners/habitat.html)
+* [local-exec](https://www.terraform.io/docs/provisioners/local-exec.html)
+* [puppet](https://www.terraform.io/docs/provisioners/puppet.html)
+* [remote-exec](https://www.terraform.io/docs/provisioners/remote-exec.html)
+* [salt-masterless](https://www.terraform.io/docs/provisioners/salt-masterless.html)
 
 What about Ansible? Well, the recommended path for running Ansible provisioning would be one of 2 different ways depending your needs or wants:
 
@@ -19,7 +19,7 @@ What about Ansible? Well, the recommended path for running Ansible provisioning 
 
 Let's look at the `local-exec` approach via an example. It'll be a good way to become familiar with provisioner configuration and patterns:
 
-```
+```terraform
 resource "aws_instance" "web_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -50,7 +50,7 @@ Let's work with an example and actually create an EC2 instance to look more clos
 
 We'll switch to the remote-exec provisioner type as we jump into a working example. Let's first look at our main.tf here:
 
-```
+```terraform
 terraform {
   backend "s3" {}
 }
@@ -154,7 +154,7 @@ Next, we have another provisioner defined that will then make that script file e
 
 Worth noting, that we'd probably opt for a single provisioner if we were doing this for real, something like
 
-```
+```terraform
 resource "aws_instance" "server" {
 
   ...
@@ -175,14 +175,14 @@ As it would do everything we're doing with the file approach. It's helpful to se
 
 Let's see what our alternative looks like from a terraform apply perspective. First, let's initialize our project.
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 ...
 ```
 
 And now we can run our apply
 
-```
+```bash
 $ terraform apply
 data.aws_ami.ubuntu: Refreshing state...
 
@@ -373,7 +373,7 @@ So, our instance is now created _and_ provisioned/configured. So, imagine we cha
 
 Change your `provisioner.sh` script to be
 
-```
+```bash
 #!/bin/bash
 
 echo "Setting up our server configuration"
@@ -385,7 +385,7 @@ sudo touch /etc/config-file-additional
 
 and run the apply again:
 
-```
+```bash
 $ terraform apply
 tls_private_key.server: Refreshing state... [id=2601f2097b227c76df257c593f8c10c5df5417e0]
 aws_key_pair.server: Refreshing state... [id=force-key]
@@ -396,11 +396,11 @@ aws_instance.server: Refreshing state... [id=i-0b834ef7aab941806]
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 ```
 
-People typically solve this by decoupling the instance resource from another that contains the provisioner or provisioners: https://www.terraform.io/docs/provisioners/null_resource.html.
+People typically solve this by decoupling the instance resource from another that contains the provisioner or provisioners [null](https://www.terraform.io/docs/provisioners/null_resource.html).
 
 Looking at the example from that link, we see:
 
-```
+```terraform
 resource "aws_instance" "cluster" {
   count = 3
 
@@ -434,7 +434,7 @@ The key here is something called a `null_resource` that also has a meta argument
 
 Please run a destroy on your project to bring down the EC2 instance, security group, key pair, etc.
 
-```
+```bash
 $ terraform destroy
 ...
 ```
@@ -448,7 +448,7 @@ There are two main alternatives to provisioners that you should _seriously_ cons
 
 For the first one, this is what it looks like in Terraform
 
-```
+```terraform
 resource "aws_instance" "nginx_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
