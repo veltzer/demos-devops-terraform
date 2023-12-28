@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/bash -e
 
-export TF_VAR_pgp_key=$(gpg --export "rockholla-di" | base64)
+TF_VAR_pgp_key=$(gpg --export "rockholla-di" | base64)
+export TF_VAR_pgp_key
 terraform init
-terraform $@
+terraform "$@"

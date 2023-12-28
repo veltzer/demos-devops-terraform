@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 region="us-west-2"
 source_ami_id="ami-02d0ea44ae3fe9561"
