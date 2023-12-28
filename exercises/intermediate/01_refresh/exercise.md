@@ -17,7 +17,7 @@ Some intro topics refreshed in this exercise:
 
 Go ahead run `terraform init` in this project directory:
 
-```
+```bash
 $ terraform init
 Initializing modules...
 Downloading terraform-aws-modules/security-group/aws 3.13.0 for security_group...
@@ -58,7 +58,7 @@ commands will detect it and remind you to do so if necessary.
 
 Let's look at the individual pieces of this output to re-familiarize ourselves with some pieces of `terraform init`
 
-```
+```text
 Initializing modules...
 Downloading terraform-aws-modules/security-group/aws 3.13.0 for security_group...
 - security_group in .terraform/modules/security_group/terraform-aws-security-group-3.13.0
@@ -66,7 +66,7 @@ Downloading terraform-aws-modules/security-group/aws 3.13.0 for security_group..
 
 One of `terraform init`'s jobs is to identify modules defined in configuration source and pull them in to the .terraform directory so they can be used when running further `terraform` commands. Here we see `init` identifying a third-party module defined in source and pulling it appropriately. Here's what the module call/definition looks like in our source:
 
-```
+```terraform
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "3.13.0"
@@ -79,7 +79,7 @@ This is a pretty standard module block, using a [Terraform Registry](https://reg
 
 Let's look at where and how our `init` command downloaded the module:
 
-```
+```bash
 $ ls -lah .terraform/modules/
 total 8
 drwxr-xr-x  4 patrickforce  staff   128B Aug  7 07:45 .
@@ -92,7 +92,7 @@ We see the module itself downloaded to the `security_group` directory, so there'
 
 OK, on to the next part of the `init` output
 
-```
+```text
 Initializing the backend...
 
 Initializing provider plugins...
@@ -104,7 +104,7 @@ Initializing the backend: we'll refresh more on later, but this is Terraform pre
 
 Along with identifying and downloading modules, `init` also identifies providers defined in source and downloads the provider plugins. Remember that providers are key to Terraform. They're the things to define a bulk of the actual functionality when using Terraform, and are supported via a plugin architecture. For example, I want to create and manage resources in AWS, so I make use of the AWS provider which encapsulates all of the functionality to have Terraform interact with the AWS APIs to run these creation and management operations. If we look at our Terraform source for the provider definition:
 
-```
+```terraform
 provider "aws" {
   version = "~> 2.0" # this version constraint says that we need to use the most recent 2.x version of the provider
   region  = "${var.region}" # we're using 0.12, and newer versions will warn us if we write this "${var.region}" instead of var.region
@@ -114,7 +114,7 @@ provider "aws" {
 
 `terraform init` sees this provider block defined with a version constraint of `version = "~> 2.0"` and knows that it needs to go get the AWS provider matching this version constraint if it's not already available locally. `Downloading plugin for provider "aws" (hashicorp/aws) 2.70.0...` from the logs indicates that it found the version it needs and is downloading it. This provider, or plugin is also pulled into the `.terraform` directory:
 
-```
+```bash
 $ ls -la .terraform/plugins/linux_amd64/
 total 371144
 drwxr-xr-x  4 patrickforce  staff        128 Aug  7 07:45 .
@@ -127,7 +127,7 @@ A provider or plugin is nothing more than a compiled binary that Terraform calls
 
 Next, we see some output from our `init` command that implies that `init` does some basic syntax checking, which indeed it does!
 
-```
+```text
 Warning: Interpolation-only expressions are deprecated
 
   on main.tf line 10, in provider "aws":
@@ -146,7 +146,7 @@ to templates that consist entirely of a single interpolation sequence.
 
 This will be a common warning that will appear in any project where you're transitioning from Terraform <=0.11 to >= 0.12. HCL and Terraform 0.12 have deprecated a number of syntactical approaches in previous versions. One of them being the above, where 0.12 wants you to use string interpolation only when you're actually interpolating. In the case of `"${var.region}"`, we're really only dealing with a variable value, nothing that needs to be concatenated, interpolated, etc. So, we'd want to update it to `var.region` while working with 0.12. Let's do that, and also update any others you find like this that need fixing, and then re-run init:
 
-```
+```bash
 $ terraform init
 Initializing modules...
 
@@ -167,7 +167,7 @@ commands will detect it and remind you to do so if necessary.
 
 If you've fixed all, you should see output like the above. No more warnings. It's also worth noting that we no longer get output, nothing really happened during the module and provider plugin initialization. This is because the `terraform init` command is idempotent. We've already downloaded the versions of modules and provider plugins needed. Terraform is able to determine that and not attempt a download again. If you wanted to force re-download modules and plugins, you could use the `-upgrade=true` arg for the `init` command
 
-```
+```bash
 $ terraform init -upgrade=true
 Upgrading modules...
 Downloading terraform-aws-modules/security-group/aws 3.13.0 for security_group...
@@ -194,7 +194,7 @@ commands will detect it and remind you to do so if necessary.
 
 OK, let's go start to actually look at our configuration source. You'll notice in `main.tf` there's a root `terraform` block defined like:
 
-```
+```terraform
 terraform {
   required_version = ">= 0.12.26"
 }
@@ -213,7 +213,7 @@ We have some additional files here in source:
 
 Let's look at the rest of `main.tf`
 
-```
+```terraform
 data "aws_vpc" "default" {
   default = true
 }
@@ -250,7 +250,7 @@ our first block, or stanza is a data source, and one that's going to query the A
 
 We can then reference the VPC's ID in other places. And we see that happen as we're setting a local variable:
 
-```
+```terraform
 locals {
   vpc_id_tag = "default-vpc-${data.aws_vpc.default.id}"
 }
@@ -266,7 +266,7 @@ The final 3 blocks in this file represent resources we want to create and manage
 
 Let's run a `terraform plan` now and look through the output:
 
-```
+```bash
 $ terraform plan
 var.region
   the region where resources will be created
@@ -353,7 +353,7 @@ can't guarantee that exactly these actions will be performed if
 
 You've been prompted for values to the defined input variables in the `variables.tf` file:
 
-```
+```terraform
 # we keep variables in a separate file simply as a matter of best-practice
 # under-the-hood Terraform will merge all files together, and doesn't really care whether
 # HCL is in one file or many
@@ -370,7 +370,7 @@ variable "student_alias" {
 
 We have no defaults defined for these variables, thus Terraform needs values for them, so it's prompting us. Something we can do to prevent being prompted is to put values in our `terraform.tfvars` file. Open that file and edit with the following info, replacing `[student-alias]` with your assigned student alias:
 
-```
+```terraform
 # fill in your variables accordingly here
 student_alias="[student-alias]"
 region="us-west-1"
@@ -380,7 +380,7 @@ And run `terraform plan` again. You should not be prompted. Terraform will read 
 
 Finally, let's take a look at our `outputs.tf` file:
 
-```
+```terraform
 output "eip_public_ip" {
   value = "${aws_eip.my_eip.public_ip}"
 }

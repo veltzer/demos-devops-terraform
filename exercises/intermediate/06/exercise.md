@@ -12,7 +12,7 @@ We'll work and think through some approaches to each of the above here, while al
 
 We've set up a project directory here in this exercise for this section: `./aws-multi-region`. Switch to that directory, and we'll begin.
 
-```
+```bash
 $ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla-di-[student-alias]
 
 Initializing the backend...
@@ -37,7 +37,7 @@ commands will detect it and remind you to do so if necessary.
 
 The same init result we've seen for a few exercises. We're using a remote s3 bucket yet again here. Let's look at our source now to see what we have:
 
-```
+```terraform
 terraform {
   backend "s3" {}
 }
@@ -68,7 +68,7 @@ So, let's talk through this. First, we have two different providers of the same 
 
 We have our alias `secondary_region` provider for aws. Which means we can override resources to use this provider instead of the default one which is
 
-```
+```terraform
 provider "aws" {
   version = "~> 2.0"
 }
@@ -82,7 +82,7 @@ The `provider = aws.secondary_region` within the `aws_key_pair` resource is call
 
 Let's go ahead and apply this configuration and see what happens
 
-```
+```bash
 $ terraform apply
 var.student_alias
   Your student alias
@@ -134,7 +134,7 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
 Great, both of our key pair resources were created. Though we don't have clear indication of the different regions where these key pairs were created from the resource/provider output here, we can be pretty confident that they are indeed in different regions, otherwise AWS would've given us an error attempting to create two key names of `rockholla-di-[student-alias]` in the same region. For fun though, let's see if we can find out any more info, maybe see if we can see the region for these resources from state:
 
-```
+```bash
 $ terraform state pull
 {
   "version": 4,
@@ -193,9 +193,9 @@ $ terraform state pull
 
 Ah, so our arns for the key pairs verify the region for each key!
 
-**Please destroy before moving to the next section**
+## *Please destroy before moving to the next section*
 
-```
+```bash
 $ terraform destroy
 ...
 ```
@@ -208,7 +208,7 @@ Change your directory to the `./template-provider` one here. Looking at the cont
 
 The answer is yes. Because we're using a provider, and thus a plugin requires `terraform init`, so let's run it:
 
-```
+```bash
 $ terraform init
 
 Initializing the backend...
@@ -230,7 +230,7 @@ commands will detect it and remind you to do so if necessary.
 
 So, we've downloaded the template provider plugin, just like we've done so for the AWS one. They're all just plugins. And depending on our project we may or may not need them. For the template one we've got it locally:
 
-```
+```bash
 $ ls -la .terraform/plugins/linux_amd64/
 total 46168
 drwxr-xr-x  4 patrickforce  staff       128 Aug  7 20:39 .
@@ -241,8 +241,7 @@ drwxr-xr-x  3 patrickforce  staff        96 Aug  7 20:39 ..
 
 And so further Terraform commands are ready to use the plugin. So let's review the source first, all in main.tf
 
-
-```
+```terraform
 variable "network_on" {
   type    = bool
   default = false
@@ -271,12 +270,11 @@ output "template_rendered" {
 
 ```
 
-
 We have some input variables, they get passed in to the template, and rendered accordingly to produce a string. In most cases, this sort of thing is used for resources like `aws_instance` and it's [user_data argument](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#user_data). So, you can render templated-muti-string-content for other things to ingest.
 
 Let's look at it as as standard terraform output nonetheless...
 
-```
+```bash
 $ terraform apply
 data.template_file.config: Refreshing state...
 
