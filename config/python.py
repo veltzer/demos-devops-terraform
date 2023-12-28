@@ -5,4 +5,5 @@ make_requires = [
     "pymakehelper",
     "pydmt",
     "pycmdtools",
+    "mypy",
 ]
