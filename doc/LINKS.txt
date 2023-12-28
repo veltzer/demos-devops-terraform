@@ -1,0 +1,3 @@
+https://github.com/davewadestein/terraform-workshop
+https://github.com/rockholla/terraform-packer-workshop
+https://github.com/nubbthedestroyer/terraform-workshop
