@@ -4,7 +4,7 @@ Terraform's state is the way in which it is able to keep a cache of infrastructu
 
 There are many reasons why you would want to query a state for information, either via CLI or using Terraform's interpolation.  We will experiment with 3 ways this can be done.
 
-### Launch Infrastructure
+## Launch Infrastructure
 
 ```bash
 terraform init
@@ -23,7 +23,7 @@ terraform show
 
 You should see something like this below:
 
-```
+```terraform
 # aws_key_pair.my_key_pair:
 resource "aws_key_pair" "my_key_pair" {
     fingerprint = "d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62"

@@ -2,7 +2,7 @@
 
 Providers are plugins that Terraform uses to understand various external APIs and cloud providers.  Thus far in this workshop, we've used the AWS provider. In this exercise, we're going to modify the AWS provider we've been using to create a key pair in a different region.
 
-### Add the second provider
+## Add the second provider
 
 Add this variable stanza to the "variables.tf" file:
 
@@ -29,6 +29,7 @@ terraform init
 terraform apply
 terraform show
 ```
+
 The above should show that you have a key pair `rockholla-di-[your student alias]` that was created. The terraform resource/state itself doesn't actually tell us what region where the key pair lives, but you could easily verify that it was created in the expected region by visiting the appropriate console location: [https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#KeyPairs:](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#KeyPairs:)
 
 *NOTE:* that at the beginning of our course we set the `AWS_DEFAULT_REGION` environment variable in your Cloud9 environment. Along with this variable and the access key and secret key, terraform is able to use these environment variables for the AWS provider as defaults **unless you override them in the HCL provider stanza** which is exactly what we just did.
@@ -39,6 +40,6 @@ We'll be looking more at using providers in other exercises as we move along.
 
 Let's run the following to finish:
 
-```
+```bash
 terraform destroy
 ```

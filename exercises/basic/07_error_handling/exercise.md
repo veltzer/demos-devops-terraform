@@ -2,7 +2,7 @@
 
 We'll take some time to look at what the different types of errors we discussed look like. In each part of this exercise you'll get a feel for some common error scenarios and how to fix or address them.
 
-### Process Errors
+## Process Errors
 
 So, as mentioned, process errors are really about just something problematic in way that terraform is being run. So, what happens when you run `apply` before `init`? Let's run apply here before init:
 
@@ -12,7 +12,7 @@ terraform apply
 
 You should see something like:
 
-```
+```text
 Error: Could not satisfy plugin requirements
 
 
@@ -45,7 +45,7 @@ terraform apply -input=false
 
 Which should give you something like:
 
-```
+```text
 Error: No value for required variable
 
   on variables.tf line 4:
@@ -66,13 +66,13 @@ resource "aws_s3_bucket_object" "an_invalid_resource_definition" {
 
 Clearly a syntax problem, so let's run
 
-```
+```bash
 terraform plan
 ```
 
 And you should see something like
 
-```
+```text
 Error: Argument or block definition required
 
   on main.tf line 17, in resource "aws_s3_bucket_object" "an_invalid_resource_definition":
@@ -102,14 +102,14 @@ terraform validate
 
 First, here we see the `terraform validate` command at work. We could just as easily do a `terraform plan` and get a similar result. Two benefits of validate:
 
-1. It allows validation of things without having to worry about everything we would in the normal process of plan or apply. For example, variables don't need to be set.
-2. Related to the above, it's a good tool to consider for a continuous integration and/or delivery/deployment pipeline. Failing fast is an important part of any validation or testing tool.
+* It allows validation of things without having to worry about everything we would in the normal process of plan or apply. For example, variables don't need to be set.
+* Related to the above, it's a good tool to consider for a continuous integration and/or delivery/deployment pipeline. Failing fast is an important part of any validation or testing tool.
 
 If you were to have run `terraform plan` here, you would've still been prompted for the `student_alias` value (assuming of course you haven't set it in otherwise).
 
 Having run `terraform validate` you should see immediately something like the following:
 
-```
+```text
 Error: Missing required argument
 
   on main.tf line 17, in resource "aws_s3_bucket_object" "an_invalid_resource_definition":
@@ -136,13 +136,13 @@ resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 
 Then run
 
-```
+```bash
 terraform apply
 ```
 
 And you should see something like:
 
-```
+```bash
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -186,7 +186,7 @@ aws_s3_bucket_object.a_resource_that_will_fail: Creating...
 aws_key_pair.my_key_pair: Creation complete after 1s [id=rockholla-di-force]
 
 Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-own): NoSuchBucket: The specified bucket does not exist
-	status code: 404, request id: B2D0563D9BBE5E53, host id: I5Fs207kx9mlshGs6IAsKu0y3y3Dp/qIssf8REoK8rM6uvVV8CugYfg596HhG3m4liDn/IPuzOM=
+    status code: 404, request id: B2D0563D9BBE5E53, host id: I5Fs207kx9mlshGs6IAsKu0y3y3Dp/qIssf8REoK8rM6uvVV8CugYfg596HhG3m4liDn/IPuzOM=
 
   on main.tf line 16, in resource "aws_s3_bucket_object" "a_resource_that_will_fail":
   16: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
@@ -196,13 +196,13 @@ Where is this error actually coming from? In this case, it's the AWS S3 API. It'
 
 One other thing worth noting: did it all fail?
 
-```
+```text
 aws_key_pair.my_key_pair: Creating...
 aws_s3_bucket_object.a_resource_that_will_fail: Creating...
 aws_key_pair.my_key_pair: Creation complete after 1s [id=rockholla-di-force]
 
 Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-own): NoSuchBucket: The specified bucket does not exist
-	status code: 404, request id: B2D0563D9BBE5E53, host id: I5Fs207kx9mlshGs6IAsKu0y3y3Dp/qIssf8REoK8rM6uvVV8CugYfg596HhG3m4liDn/IPuzOM=
+    status code: 404, request id: B2D0563D9BBE5E53, host id: I5Fs207kx9mlshGs6IAsKu0y3y3Dp/qIssf8REoK8rM6uvVV8CugYfg596HhG3m4liDn/IPuzOM=
 
   on main.tf line 16, in resource "aws_s3_bucket_object" "a_resource_that_will_fail":
   16: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
@@ -214,7 +214,7 @@ Nope, our key pair that was valid and successful got created, only the bucket ob
 
 First, remove the offending HCL now in `main.tf`
 
-```
+```terraform
 resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
   bucket  = "a-bucket-that-doesnt-exist-or-i-dont-own"
   key     = "file"
@@ -224,6 +224,6 @@ resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 
 And then
 
-```
+```bash
 terraform destroy
 ```

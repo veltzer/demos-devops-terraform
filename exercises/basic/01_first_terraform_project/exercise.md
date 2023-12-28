@@ -8,7 +8,7 @@ ls -lah
 
 You'll see two .tf files:
 
-### main.tf
+## main.tf
 
 Though the name of a terraform config file is mostly arbitrary, this is generally the name ascribed to the major configuration file within a Terraform working directory.
 

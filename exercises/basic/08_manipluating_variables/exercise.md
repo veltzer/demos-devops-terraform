@@ -8,7 +8,7 @@ This is one part of the course where we'll look at some very brand new stuff. Pr
 
 As we just saw in our discussion, there are a number of others now, so let's look at them in action. As you go along in this exercise, you're encouraged to change the HCL to experiment a bit with the different data types and using them in action.
 
-### Primitive Types
+## Primitive Types
 
 Terraform has restructured to include variable types in a category "primitive." These are quite similar to what you'd find in other language primitives. Let's change into the `primitives` directory and run some terraform to see primitives in action
 
@@ -19,7 +19,7 @@ terraform apply
 
 We're not really creating any infrastructure in this exercise, rather just looking at the processing and output of variables and data. You should see something like the following when running the above:
 
-```
+```text
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
 Outputs:
@@ -85,7 +85,7 @@ terraform apply
 
 Running the above should give you something like
 
-```
+```text
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
 Outputs:
@@ -162,7 +162,7 @@ terraform apply
 
 And you should get something like the following as the output
 
-```
+```text
 data.aws_availability_zones.available: Refreshing state...
 data.aws_ami.ubuntu: Refreshing state...
 
@@ -208,7 +208,7 @@ Don't worry too much about all the pieces here, the most important part to under
 
 After the data source resource is declared, we can then access it's attributes that have been populated by actually making the query to AWS
 
-```
+```text
 ${data.aws_ami.ubuntu.id}
 ```
 
@@ -225,7 +225,7 @@ Availability zones are specific to a particular region, and we're not passing in
 
 Similar to the AMI data source, this one also has attributes that have been populated and can be accessed after the query to the AWS api actually happens. So in our subsequent HCL, we can access the `names` attribute, giving us all AZ names
 
-```
+```text
 ${data.aws_availability_zones.available.names}
 ```
 
@@ -233,8 +233,8 @@ ${data.aws_availability_zones.available.names}
 
 We're gonna do a little bit of experimenting as a way to finish off this exercise. This will give you an opportunity to play a bit with things that look interesting to you in the HCL syntax, variable, and data usage areas:
 
-1. Conditionals like ternary syntax, other expressions: https://www.terraform.io/docs/configuration/expressions.html
+1. Conditionals like ternary syntax, other expressions: [expressions](https://www.terraform.io/docs/configuration/expressions.html)
 1. Interpolation, figuring what you can and can't do here
-1. Built-in functions: https://www.terraform.io/docs/configuration/functions.html
+1. Built-in [functions](https://www.terraform.io/docs/configuration/functions.html)
 
 Maybe try some of the above out with `terraform console`?

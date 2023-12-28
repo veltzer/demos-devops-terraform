@@ -160,13 +160,13 @@ If we look at the contents of the template:
 
 So, we have a slightly different template here to play with the built-in function `replace`. It's one, in my experience, that is under-documented. Especially in relation to using with other dynamic values, so getting a chance to see and work with this one specifically is useful.
 
-*NOTE: Hashicorp has some documentation in a few cases like the one mentioned above. Much of their documentation ends up being auto-generated, which is a very useful model for their business, but leaves us scratching our heads sometimes. Know that you're not the only one if you end up running into dead ends with Hashicorp tool documentation. Sometimes you just have to play to get your answer*
+NOTE: Hashicorp has some documentation in a few cases like the one mentioned above. Much of their documentation ends up being auto-generated, which is a very useful model for their business, but leaves us scratching our heads sometimes. Know that you're not the only one if you end up running into dead ends with Hashicorp tool documentation. Sometimes you just have to play to get your answer
 
 What our `template-functions.json` is doing is taking our `content` variable and passing it through the built-in `replace` function.
 
 I encourage you to search for alternate ways to solve this same problem during our experimentation time. As mentioned in the note above, figuring out paths to solutions that are undocumented or under-documented will be the toughest part in your journey with Hashicorp tools like Terraform and Packer. It's worth getting used to it sooner rather than later.
 
-## Playing with `validate`, `console`, etc.
+## Playing with `validate`, `console`, etc
 
 If you have time, start playing around with the other Packer CLI commands we discussed against our `template.json` here, see what you get, what other questions you might be able to spark by starting to use them.
 

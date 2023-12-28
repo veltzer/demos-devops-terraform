@@ -92,7 +92,7 @@ Again, Packer gives us some handy output to tell us what is happening, and the o
 
 ```bash
 $ cat ./artifact.sum
-8e5b948a454515dbabfc7eb718daa52f	artifact.txt
+8e5b948a454515dbabfc7eb718daa52f  artifact.txt
 ```
 
 A checksum was created by our post-processor, so we're good to go. Let's move onto the final part of our exercise.

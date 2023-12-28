@@ -60,12 +60,8 @@ The last variable, `username`, has one very important part of it's definition: t
 ```bash
 $ packer build ./template.json
 Error initializing core: 1 error occurred:
-	* required variable not set: username
-
-
-
+    * required variable not set: username
 ==> Builds finished but no artifacts were created.
-
 ```
 
 The built-in Packer validation has trapped the fact that we've not passed in a value for `username`. It's required per our template definition, so all we need to do is pass in a value for it. Pass the username/alias that was provided to you for exercises:
@@ -80,7 +76,7 @@ force-first-ami: output will be in this color.
 
 The build should now proceed as normal, and your first AMI is in the making.
 
-*NOTE: if you receive any authentication-related errors, you likely don't have the environment variables `AWS_ACCESS_KEY_ID` and/or `AWS_SECRET_ACCESS_KEY` set, thus they haven't been provided to Packer appropriately via the template logic*
+NOTE: if you receive any authentication-related errors, you likely don't have the environment variables `AWS_ACCESS_KEY_ID` and/or `AWS_SECRET_ACCESS_KEY` set, thus they haven't been provided to Packer appropriately via the template logic*
 
 While we're waiting for our AMI builds to actually complete, let's look through the rest of the template to make sense of the rest...
 
@@ -91,34 +87,40 @@ You'll notice our `builders` section is an array with a single object: our singl
 ```json
 "name": "{{ user `username` }}-first-ami"
 ```
+
 We're using built-in template interpolation to generate our `name` property. Again, name is only used internally and for Packer output.
 
 ```json
 "type": "amazon-ebs"
 ```
+
 This tells Packer the type of builder to use
 
 ```json
 "access_key": "{{user `aws_access_key`}}",
 "secret_key": "{{user `aws_secret_key`}}",
 ```
+
 This type of builder exposes these properties so that we can pass in credentials for authenticating to AWS. Again, the builder can determine configured credentials on the machine such as the environment variables directly or an AWS CLI profile.
 
 ```json
 "region": "us-west-1",
 "source_ami": "ami-0dd655843c87b6930",
 ```
+
 This tells Packer that we want to spin up our build machine with this `source_ami` as the base image, the one to build upon. So, we'll build our custom/final AMI from this AMI. It happens to be a standard Ubuntu AMI in the us-west-1 region. `region` instructs AWS to create our final AMI in the us-west-1 region. It's worth noting that Packer has some ways to create identical AMIs in a number of regions at a time using a builder (one of which is [a copy feature](https://www.packer.io/docs/builders/amazon-ebs.html#ami_regions))
 
 ```json
 "instance_type": "t2.micro",
 "ssh_username": "ubuntu",
 ```
+
 The instance type to use for our builder EC2 instance. And the username that Packer should use to connect to the instance in the case of running provisioners. Being our first example, we're not yet including any provisioners in our template defintion. But, if we were, Packer would use this username to connect. AWS, depending on the type of distro underlying, has some specific standards for default machine users/usernames set up. E.g. Amazon Linux distro images would use `ec2-user` here instead of `ubuntu`.
 
 ```json
 "ami_name": "{{ user `username` }}-first-ami"
 ```
+
 And finally, we're telling Packer what to call the artifact AMI image ultimately created in our AWS account. We're interpolating the provided user variable here so that you all don't have conflicting AMI names being created at the same time.
 
 ## Back to the `build` output

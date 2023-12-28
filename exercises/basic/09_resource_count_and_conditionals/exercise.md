@@ -15,7 +15,7 @@ terraform plan
 
 You should see something like the following
 
-```
+```text
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
@@ -94,7 +94,7 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
-### The `count` parameter
+## The `count` parameter
 
 Let's look at the `main.tf` file here to see what's going on. First, the `aws_s3_bucket_object.dynamic_file` definition
 
@@ -119,7 +119,7 @@ variable "object_count" {
 
 And it has a default value of *3*, so our `aws_s3_bucket_object` resource uses the `count` property to dynamically define the number of "copies" of this resource we'd like. This all adds up to our plan telling us that the following would be created:
 
-```
+```text
 aws_s3_bucket_object.dynamic_file[0] will be created
 aws_s3_bucket_object.dynamic_file[1] will be created
 aws_s3_bucket_object.dynamic_file[2] will be created
@@ -142,7 +142,7 @@ So, our `count   = "${var.include_optional_file ? 1 : 0}"` syntax says: if the `
 
 We see in our plan output
 
-```
+```text
   # aws_s3_bucket_object.optional_file[0] will be created
   + resource "aws_s3_bucket_object" "optional_file" {
       + acl                    = "private"
@@ -169,7 +169,7 @@ variable "include_optional_file" {
 
 So, indeed our optional file/object would be created/maintained since we're using the default `include_optional_file=true`. Try another plan, but with
 
-```
+```bash
 terraform plan -var include_optional_file=false
 ```
 

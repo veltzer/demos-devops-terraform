@@ -94,20 +94,23 @@ git clone https://github.com/rockholla/terraform-packer-workshop workshop
 ## Set up your environment credentials to connect to AWS
 
 place the following in your `$HOME/.bash_profile` file at the bottom, and replace the values in brackets with your generated creds:
-```
+
+```bash
 export AWS_ACCESS_KEY_ID=[The access key ID you created above]
 export AWS_SECRET_ACCESS_KEY=[The secret access key you created above]
 export AWS_DEFAULT_REGION=us-west-1
 ```
 
-Then source your new .bash_profile and ensure environment has the appropriate env vars set:
-```
+Then source your new `.bash_profile` and ensure environment has the appropriate env vars set:
+
+```bash
 . $HOME/.bash_profile
 printenv | grep AWS
 ```
 
 The printenv above should output something like:
-```
+
+```bash
 AWS_DEFAULT_REGION=us-west-1
 AWS_SECRET_ACCESS_KEY=********
 AWS_CLOUDWATCH_HOME=/opt/aws/apitools/mon

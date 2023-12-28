@@ -13,10 +13,9 @@ and be load balanced in AWS. Some key components to this module:
 * **AWS Launch Configuration**: a launch configuration defines a standard way in which an EC2 instance should be launched, such as the base AMI, the instance type, the user data (launch script), security groups or firewall rules, etc.
 * **AWS Autoscaling Group**: an autoscaling group will use rules and other properties to make decisions on how many of the above launch configurations, or actual servers will be running for our service
 * **AWS Application Load Balancer**: a load balancer will listen for the actual user or service requests coming in and decide where these requests should go
-	* **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the autoscaling group to ensure that the load balancer routes appropriately
-	* **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the autoscaling group instances
+    * **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the autoscaling group to ensure that the load balancer routes appropriately
+    * **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the autoscaling group instances
 * **user-data directory**: stores the startup scripts for the servers, one for each of a backend server and the frontend server
-
 
 ## The project calling the `microservice` module
 
@@ -81,7 +80,7 @@ terraform init
 
 which should give you output that includes something like:
 
-```
+```text
 The following providers do not have any version constraints in configuration,
 so the latest version was installed.
 
@@ -116,7 +115,7 @@ necessary in many cases.
 So, should the block be defined in the module or the thing using the module? The answer depends, but Hashicorp recommends that
 only the _root_ module, or calling Terraform define provider blocks. In this way, those using a module can decide on what
 version of the provider they need to use. Modules will inherit provider definitions implicitly by default. See
-https://www.terraform.io/docs/configuration/modules.html#providers-within-modules for more info.
+[providers-within-modules](https://www.terraform.io/docs/configuration/modules.html#providers-within-modules) for more info.
 
 Let's add the provider block for the `template` provider and re-run init. Add the following to our root main.tf file at the top:
 
@@ -127,6 +126,7 @@ provider "template" {
 ```
 
 Then we can re-run init:
+
 ```bash
 rm -rf .terraform
 terraform init
@@ -167,7 +167,7 @@ OK, back to our main exercise though, as soon as you're done with your `init` co
 terraform apply
 ```
 
-**Remember the Exercise 11 AWS Region you were provided along with your username and password? The apply will ask you for a region. Enter that region here**
+## **Remember the Exercise 11 AWS Region you were provided along with your username and password? The apply will ask you for a region. Enter that region here**
 
 The apply will present you with the plan and ask you to accept it to continue with the actual apply. Type "yes" and we'll
 see the actual creation of resources on AWS start to happen. This will take a little while, so let's look through some other
@@ -177,7 +177,7 @@ things in the meantime
 
 #### Dependencies
 
-```
+```terraform
 depends_on = ["aws_alb_listener.http"]
 ```
 
@@ -189,7 +189,7 @@ or updated before the dependent ones)
 
 #### Lifecycle definitions
 
-```
+```terraform
 lifecycle {
   create_before_destroy = true
 }
@@ -208,7 +208,7 @@ We haven't seen these yet, but there's yet another type of data source: a `data 
 template file and pass values into for rendering and then for use in another resource. In this case, we pass in our rendered templates
 as the startup scripts for our servers
 
-#### Terraform 0.12 only syntax?
+#### Terraform 0.12 only syntax
 
 Can you identify the syntax in our project and the `microservice` module that would only work in Terraform v0.12?
 
@@ -216,7 +216,7 @@ Can you identify the syntax in our project and the `microservice` module that wo
 
 OK, your apply should have finished by now, so let's look at some of what happened
 
-```
+```text
 module.backend.aws_security_group.web_server: Creating...
 module.frontend.aws_security_group.web_server: Creating...
 module.frontend.aws_security_group.alb: Creating...
@@ -328,7 +328,7 @@ The last thing to note are the outputs. Our computed backend and frontend URLs a
 seeing if everything is up-and-running using these values. Let's check the frontend URL first. Open your browser and navigate to the
 frontend URL. You should get something like:
 
-```
+```text
 Hello from frontend
 Response from backend:
 
@@ -346,7 +346,7 @@ in the browser.
 
 Did it work? Wait, can you figure out why not?
 
-### What else?
+### What else
 
 If you have more time, feel free to play around with the project and/or module code to change things in the infrastructure you just brought up.
 
@@ -362,6 +362,6 @@ we can manage them with a completely different state.
 
 Let's destroy everything before we move on. **PLEASE make sure you do it for this exercise especially**
 
-```
+```bash
 terraform destroy
 ```

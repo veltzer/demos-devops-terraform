@@ -4,7 +4,7 @@ For this exercise, we will revisit the terraform project from the previous exerc
 
 There are many schools of thought on how to use variables to configure reusable terraform, but we'll be exploring the core mechanics so that you can get a grasp on how to use them in various ways.
 
-### Looking at the variable stanza
+## Looking at the variable stanza
 
 In order to leverage the mechanics around the variable concept in terraform, you must declare each variable.
 
@@ -23,17 +23,17 @@ The name of the variable above would be `student_alias`.
 
 The possible properties of a variable:
 
-1. `default`: allows for setting a default value, otherwise terraform requires it to be set:
+* `default`: allows for setting a default value, otherwise terraform requires it to be set:
     * via the CLI (`-var student_alias=my-alias`),
     * defined in a \*.tfvars file
     * defined in an environment variable like `TF_VAR_[variable name]`
     * or it will prompt for the input
-2. `description`: a useful descriptor for the variable
-3. `type`: we'll discuss types in depth later
+* `description`: a useful descriptor for the variable
+* `type`: we'll discuss types in depth later
 
 We've only set the description, so there's no default value, and it will use the default type of: `string`.
 
-### Adding the values statically in the variables stanza.
+### Adding the values statically in the variables stanza
 
 You might notice that there is no "value" parameter in the syntax for the variable object. This is because the variables stanzas are not meant to be inputs themselves, but rather placeholders that handle input and allow for reference throughout the working directory.  Though it is true that variable stanzas can be used this way by simply setting the "default" to the desired value, this negates the benefits of Terraform's native re-usability.  Instead, try using one of the below methods.
 
@@ -47,8 +47,7 @@ terraform init
 
 you should get an output similar to this:
 
-```
-
+```text
 Initializing the backend...
 
 Initializing provider plugins...
@@ -82,11 +81,14 @@ In each terraform working directory, there can be a file named `terraform.tfvars
 
 * create a file called terraform.tfvars in this directory
 * insert the following code into it:
+
 ```hcl
 # swap "[your alias]" with your provided alias
 student_alias = "[your alias]"
 ```
+
 * then run this in the same directory
+
 ```bash
 terraform plan
 ```
@@ -95,7 +97,7 @@ You should see that the `terraform plan` output includes an AWS key pair resourc
 
 Remove your `terraform.tfvars` file so we can look at other ways of passing in the variable:
 
-```
+```bash
 rm terraform.tfvars
 ```
 
@@ -128,7 +130,7 @@ This can be a useful method for secrets handling, or other automated use cases.
 
 Try just running the plan without having a pre-populated value set, see what happens:
 
-```
+```bash
 terraform plan
 ```
 

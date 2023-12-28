@@ -7,7 +7,7 @@ So now we are actually going to get into it and make some infrastructure happen.
 1. Actually apply our infrastructure, in this case a creating an AWS EC2 key pair, or ssh key for connecting to instances
 1. Destroy what we created
 
-### Initialization
+## Initialization
 
 First, we need to run init since we're starting in a new exercise, or project directory:
 
@@ -29,7 +29,7 @@ terraform plan
 
 Your output should look something like this:
 
-```
+```text
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
@@ -78,7 +78,7 @@ terraform apply
 Terraform will execute another plan, and then ask you if you would like to apply the changes. Type "yes" to approve, then
 let it do its magic.  Your output should look like the following:
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -144,7 +144,7 @@ terraform apply
 
 The important output for the plan portion of the apply that you should note, something that looks like:
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
 -/+ destroy and then create replacement
@@ -189,7 +189,7 @@ terraform destroy
 
 You should get the following:
 
-```
+```text
 aws_key_pair.my_key_pair: Refreshing state... [id=rockholla-di-force]
 
 An execution plan has been generated and is shown below.
