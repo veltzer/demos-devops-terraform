@@ -6,4 +6,5 @@ make_requires = [
     "pydmt",
     "pycmdtools",
     "mypy",
+    "pylint",
 ]
