@@ -7,4 +7,5 @@ make_requires = [
     "pycmdtools",
     "mypy",
     "pylint",
+    "flake8",
 ]
