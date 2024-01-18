@@ -10,3 +10,6 @@ Using workspaces
    Make development deploy t3.micro machines while production
 	will deploy t3.small.
 7. Demonstrate how you deploy "development" vs "production".
+
+## References
+[workspaces](https://developer.hashicorp.com/terraform/language/state/workspaces)
