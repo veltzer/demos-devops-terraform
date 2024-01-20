@@ -1,5 +1,6 @@
-Install terraform on your linux
-This requires three steps:
-1. wget [the_right_url.zip]
-2. unzip [thefile.zip]
-3. cp terraform [somewhere in your path]
+# Install terraform on your Linux
+
+## Stages
+* `wget [the_right_url.zip]`
+* `unzip [thefile.zip]`
+* `cp terraform [somewhere in your path]`
