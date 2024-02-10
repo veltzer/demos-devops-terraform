@@ -10,7 +10,20 @@ The purpose of the exercise is to bring up a small machine on aws of type `t2.mi
 * write a main.tf files according to the slides.
     give your machine a name that you could recognize.
 * add a provider section that states that you are using aws.
-* use terraform init and terraform apply
+* use
+
+```shell
+terraform init
+```
+
+to start using terraform in your folder.
+* use:
+
+```shell
+terraform apply
+```
+
+to bring up your machine.
 * see that your machine is indeed up via the console.
 * destroy your machine via
     `$ terraform destroy`
