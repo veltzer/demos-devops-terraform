@@ -1,0 +1,7 @@
+# THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT!
+pymakehelper
+pydmt
+pycmdtools
+mypy
+pylint
+flake8
