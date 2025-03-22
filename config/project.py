@@ -1,3 +1,4 @@
+""" project definitions """
 name = "demos-terraform"
 description_short = "Demos for the terraform system"
 keywords = [
