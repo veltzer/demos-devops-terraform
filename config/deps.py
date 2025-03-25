@@ -1,6 +1,7 @@
 """
 os level dependencies for this project
 """
+
 packages = [
     # for checking my shell scripts
     "shellcheck",
