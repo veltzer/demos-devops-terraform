@@ -1,7 +1,5 @@
 # THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT!
-pymakehelper
-pydmt
-pycmdtools
 mypy
+pydmt
 pylint
-flake8
+pymakehelper
