@@ -4,7 +4,6 @@
 Script to check the correctness of a course syllabus written in .md format
 """
 
-from typing import List
 import sys
 
 if len(sys.argv) != 2:
