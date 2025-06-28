@@ -1,13 +1,10 @@
-config_requires = []
-dev_requires = []
-install_requires = []
-build_requires = [
-    "pymakehelper",
+""" python deps for this project """
+
+build_requires: list[str] = [
     "pydmt",
-    "pycmdtools",
+    "pymakehelper",
+
     "mypy",
     "pylint",
-    "flake8",
 ]
-test_requires = []
-requires = config_requires + install_requires + build_requires + test_requires
+requires = build_requires
