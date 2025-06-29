@@ -3,8 +3,11 @@
 build_requires: list[str] = [
     "pydmt",
     "pymakehelper",
+    "pycmdtools",
 
-    "mypy",
+    "pytest",
     "pylint",
+    "mypy",
+    "ruff",
 ]
 requires = build_requires
