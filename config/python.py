@@ -1,13 +1,7 @@
 """ python deps for this project """
 
-build_requires: list[str] = [
-    "pydmt",
-    "pymakehelper",
-    "pycmdtools",
+import config.shared
 
-    "pytest",
-    "pylint",
-    "mypy",
-    "ruff",
-]
-requires = build_requires
+build_requires: list[str] = config.shared.BUILD
+test_requires: list[str] = config.shared.TEST
+requires = build_requires + test_requires
