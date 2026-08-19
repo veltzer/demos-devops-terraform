@@ -2,9 +2,9 @@
 
 By Default, Terraform will store the state for you infrastructure in a local file, but there's a problem with this:
 
-What if you work on a team where different people will run terraform at different times from different places? This 
-would mean you'd need to share your state file in some way. Some people have done it as encrypted local files in source 
-control, but this is generally not maintainable or scalable. So, enter the idea of central remote options for storing 
+What if you work on a team where different people will run terraform at different times from different places? This
+would mean you'd need to share your state file in some way. Some people have done it as encrypted local files in source
+control, but this is generally not maintainable or scalable. So, enter the idea of central remote options for storing
 your state files.
 
 Since this course is about Terraform in AWS specifically, let's look at a relevant option that Terraform provides: S3
@@ -32,7 +32,7 @@ If we look at the s3 backend definition above, what we see are two things that d
 
 Without further ado, let's try some of this out
 
-### First, we need to make sure our state bucket exists
+## First, we need to make sure our state bucket exists
 
 We'll actually create the state bucket through Terraform
 
@@ -44,7 +44,7 @@ terraform apply
 
 The output of the apply above should be something like
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -92,10 +92,10 @@ Outputs:
 state_bucket_name = dws-di-bane-20190623022126911700000001
 ```
 
-Now, before we move on, you may be asking yourself: so what about the state for this state bucket? And it's a good 
-question. In this case, we're just accepting that we're maintaining a local state for the bucket itself. There are a 
-number of different paths you can take here including just ensuring that the bucket exists manually. The general idea 
-is that whatever manages this state bucket, be it manual or automated, should be by itself, easily recreateable and 
+Now, before we move on, you may be asking yourself: so what about the state for this state bucket? And it's a good
+question. In this case, we're just accepting that we're maintaining a local state for the bucket itself. There are a
+number of different paths you can take here including just ensuring that the bucket exists manually. The general idea
+is that whatever manages this state bucket, be it manual or automated, should be by itself, easily recreateable and
 not buried in a bunch of other automation.
 
 Copy the value of your `state_bucket_name` output from the output of your apply, we'll use it for setting the remote
@@ -113,7 +113,7 @@ terraform init -backend-config=backend.tfvars
 
 The above will prompt you for the backend bucket name to use
 
-```
+```text
 Initializing the backend...
 bucket
   The name of the S3 bucket
@@ -123,7 +123,7 @@ bucket
 
 You'll want to enter the bucket name that was output from your `state-bucket` terraform run.
 
-Let's just focus on this slightly-different init command. It accepts backend configuration variables. The 
+Let's just focus on this slightly-different init command. It accepts backend configuration variables. The
 terraform settings and backend configuration block in a .tf file **CANNOT** accept or process interpolations. We can,
 however, still parameterize this stuff. This is particularly useful for things like secrets or other secure stuff
 you might pass into backend configuration. You can store it temporarily outside of your infrastructure code and
@@ -143,13 +143,13 @@ like CI/CD pipelines for recording the plan artifact as an example.
 
 The plan having been saved to the `plan.out` file, we can execute our apply to point to that plan
 
-```
+```text
 terraform apply plan.out
 ```
 
 And you should get something similar to below
 
-```
+```text
 aws_s3_bucket_object.user_student_alias_object: Creating...
 aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=student.alias]
 
@@ -167,7 +167,7 @@ aws s3 ls s3://[your s3 state bucket name]/exercise-10/
 
 which should show you something like
 
-```
+```text
 2019-06-22 20:35:33       1186 terraform.tfstate
 ```
 

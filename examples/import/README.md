@@ -2,7 +2,7 @@
 
 see https://www.terraform.io/docs/import/usage.html for more info
 
-```
+```text
 Usage: terraform import [options] ADDR ID
 
   Import existing infrastructure into your Terraform state.
@@ -31,7 +31,7 @@ Usage: terraform import [options] ADDR ID
   the resource being imported.
 ```
 
-```
+```text
 $ terraform import aws_instance.example i-abcd1234
 ```
 

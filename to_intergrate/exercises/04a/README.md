@@ -16,14 +16,14 @@ terraform {
 ```
 
 We need to specify the S3 bucket which stores the state, and we can't use a variable or a local, so you'll need to
-first edit `main.tf` to enter the actual name of your bucket. 
+first edit `main.tf` to enter the actual name of your bucket.
 
 Now run `terraform apply` in your Cloud9 IDE. This will create an instance. (You might want to take note of the instance
 ID which is shown in the EC2 console.)
 
 Run `terraform plan` and confirm that Terraform says nothing needs to be done. You should see something like this:
 
-```
+```text
 data.aws_ami.ubuntu: Refreshing state...
 aws_instance.web: Refreshing state... [id=INSTANCE_ID]
 ```
@@ -38,21 +38,21 @@ Run `terraform plan` and confirm that Terraform says nothing needs to be done. I
 this could not be the case, but since the state is stored in an S3 bucket, it's being shared across both copies of
 the Terraform project.
 
-# Workspaces
+## Workspaces
 
 Now let's go further with a simple example of workspaces. Remember that workspaces are just distinct copies of the
-state. Rather than making our own copies, we'll let Terraform do it for us. 
+state. Rather than making our own copies, we'll let Terraform do it for us.
 
 Terraform always starts with a workspace called `default`. Let's create a new workspace and name it `sandbox`. To do
 that we'll use this command
 
-```
+```text
 terraform workspace new sandox
 ```
 
 You should see output like this:
 
-```
+```text
 Created and switched to workspace "sandbox"!
 
 You're now on a new, empty workspace. Workspaces isolate their state,
@@ -69,7 +69,7 @@ Go ahead and `terraform apply` to create a new instance and take note of the ins
 
 Switch back to the `default` workspace and destroy its instance:
 
-```
+```text
 terraform workspace select default
 terraform destroy
 ```
@@ -78,9 +78,7 @@ Confirm that the `sandbox` instance is still running on AWS.
 
 Finally, switch back to the `sandbox` workspace and destroy its instance:
 
-```
+```text
 terraform workspace select sandbox
 terraform destroy
 ```
-
-

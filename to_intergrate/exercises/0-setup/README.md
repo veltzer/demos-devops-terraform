@@ -24,7 +24,6 @@ create a Cloud9 server/environment where we'll run further exercises.
 1. Wait for your environment to start. In this step, AWS is provisioning an EC2 instance on which your IDE environment will run. This gives us the distinct advantage of having a consistent and concontrolled environment for development regardless of client hardware and OS. It also allows us to connect to our instances and AWS's API without worrying about port availability in a corporate office. :-)
 1. Once your IDE loads, you should see a Welcome document. Your instructor will give you a walkthrough of the visible panel. Feel free to take a moment to read through the welcome document.
 
-
 ## Configure your environment
 
 1. Below the Welcome Document, you should see a terminal panel.
@@ -57,7 +56,7 @@ If you get an error, inform your instructor.
 
 ## Pull the exercises repository
 
-The next thing we need to do is pull this repository down so we can use it in future modules. Run the following to 
+The next thing we need to do is pull this repository down so we can use it in future modules. Run the following to
 do this:
 
 ```bash
@@ -69,20 +68,20 @@ git clone https://github.com/davewadestein/terraform-workshop .
 ## Set up your environment credentials to connect to AWS
 
 place the following in your `~/.bash_profile` file at the bottom, and replace the values in brackets with your generated creds:
-```
+```text
 export AWS_ACCESS_KEY_ID=[The access key ID you created above]
 export AWS_SECRET_ACCESS_KEY=[The secret access key you created above]
 export AWS_DEFAULT_REGION=us-east-2
 ```
 
 Then source your new .bash_profile and ensure environment has the appropriate env vars set:
-```
+```text
 source ~/.bash_profile
 env | grep AWS
 ```
 
 The printenv above should output something like:
-```
+```text
 AWS_SECRET_ACCESS_KEY=xxxxxxx
 AWS_DEFAULT_REGION=us-east-2
 AWS_CLOUDWATCH_HOME=/opt/aws/apitools/mon

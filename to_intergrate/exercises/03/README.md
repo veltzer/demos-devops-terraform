@@ -7,7 +7,7 @@ So now we are actually going to get into it and create some infrastructure! For 
 1. Actually apply our infrastructure, in this case a single object within our s3 bucket
 1. Destroy what we stood up
 
-### Initialization
+## Initialization
 
 First, we need to run init since we're starting in a new exercise, or project directory:
 
@@ -17,7 +17,7 @@ terraform init
 
 ### Plan
 
-Next step is to run a plan, which is a dry run that helps us understand what terraform intends to change when it 
+Next step is to run a plan, which is a dry run that helps us understand what terraform intends to change when it
 runs an apply.  
 
 Remember from the previous exercise that we'll need to make sure our `student_alias` value gets passed in appropriately.
@@ -29,7 +29,7 @@ terraform plan
 
 Your output should look something like this:
 
-```
+```text
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
@@ -66,10 +66,10 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
-From the above output, we can see that terraform will create a single S3 object in our bucket.  An important line 
-to note is the one beginning with "Plan:".  We see that 1 resource will be created, 0 will be changed, and 0 destroyed.  
+From the above output, we can see that terraform will create a single S3 object in our bucket. An important line
+to note is the one beginning with "Plan:". We see that 1 resource will be created, 0 will be changed, and 0 destroyed.  
 
-Terraform is designed to detect when there is configuration drift in resources that it created and then intelligently 
+Terraform is designed to detect when there is configuration drift in resources that it created and then intelligently
 determine how to correct the difference. This will be covered in more detail a little later.
 
 ### Apply
@@ -82,9 +82,9 @@ terraform apply
 ```
 
 Terraform will execute another plan, and then ask you if you would like to apply the changes. Type "yes" to approve, then
-let it do its magic.  Your output should look like the following:
+let it do its magic. Your output should look like the following:
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -129,11 +129,11 @@ You should notice a couple differences:
 
 * Terraform informs you that it is Refreshing the State.
     * after the first apply, any subsequent plans and applies will check the infrastructure it created and updates the terraform state with any new information about the resource.
-* Next, you'll notice that Terraform informed you that there are no changes to be made.  This is because the infrastructure was just created and there were no changes detected.
+* Next, you'll notice that Terraform informed you that there are no changes to be made. This is because the infrastructure was just created and there were no changes detected.
 
 ### Handling Changes
 
-Now, let's try making a change to the s3 bucket object and allow Terraform to correct it.  Let's change the content of our object.
+Now, let's try making a change to the s3 bucket object and allow Terraform to correct it. Let's change the content of our object.
 
 Find `main.tf` and modify the s3 bucket stanza to reflect the following:
 
@@ -154,7 +154,7 @@ terraform apply
 
 The important output for the plan portion of the apply that you should note, something that looks like:
 
-```
+```text
 Terraform will perform the following actions:
 
   # aws_s3_bucket_object.user_student_alias_object will be updated in-place
@@ -184,14 +184,14 @@ A terraform plan informs you with a few symbols to tell you what will happen
 
 So our above plan will modify our s3 object in place per our requested update to the file.
 
-Some resources or some changes require that a resource be recreated to facilitate that change, and those cases are usually expected. One example of this would be an AWS launch configuration. In AWS, launch configurations cannot be changed, only copied and modified once during the creation of the copy. Terraform is generally made aware of these caveats and 
+Some resources or some changes require that a resource be recreated to facilitate that change, and those cases are usually expected. One example of this would be an AWS launch configuration. In AWS, launch configurations cannot be changed, only copied and modified once during the creation of the copy. Terraform is generally made aware of these caveats and
 handles those changes gracefully, including updating dependent resources to link to the newly created resource. This
 greatly simplifies complex or frequent changes to any size infrastructure and reduces the possibility of human error.
 
 ### Destroy
 
 When infrastructure is retired, Terraform can destroy that infrastructure gracefully, ensuring that all resources
-are removed and in the order that their dependencies require.  Let's destroy our s3 bucket object.
+are removed and in the order that their dependencies require. Let's destroy our s3 bucket object.
 
 ```bash
 terraform destroy
@@ -199,7 +199,7 @@ terraform destroy
 
 You should get the following:
 
-```
+```text
 aws_s3_bucket_object.user_student_alias_object: Refreshing state... [id=student.alias]
 
 An execution plan has been generated and is shown below.
@@ -237,4 +237,3 @@ Destroy complete! Resources: 1 destroyed.
 
 You'll notice that the destroy process if very similar to apply, just the other way around! And it also requires
 confirmation, which is a good thing.
-

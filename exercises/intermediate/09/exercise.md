@@ -148,7 +148,7 @@ A few other things to note are that we're creating a security group or firewall 
 
 The main thing we want to look at for this exercise is the actual AWS instance resource, and specifically the provisioner blocks.
 
-We can have multiple provisioners in a resource.  In this case, we're including one that will first copy in our `provisioner.sh` script from our project. This file provisioner copies up that script to the `tmp` location on the EC2 instance once that instance is running and Terraform can connect to it.
+We can have multiple provisioners in a resource. In this case, we're including one that will first copy in our `provisioner.sh` script from our project. This file provisioner copies up that script to the `tmp` location on the EC2 instance once that instance is running and Terraform can connect to it.
 
 Next, we have another provisioner defined that will then make that script file executable on the instance, and then finally run it.
 

@@ -7,16 +7,15 @@ Terraform
 
 ## The `microservice` module
 
-Our `microservice` module here is designed to be a generic module for spinning some sort of application that can scale 
+Our `microservice` module here is designed to be a generic module for spinning some sort of application that can scale
 and be load balanced in AWS. Some key components to this module:
 
 * **AWS Launch Configuration**: a launch configuration defines a standard way in which an EC2 instance should be launched, such as the base AMI, the instance type, the user data (launch script), security groups or firewall rules, etc.
 * **AWS Autoscaling Group**: an autoscaling group will use rules and other properties to make decisions on how many of the above launch configurations, or actual servers will be running for our service
 * **AWS Application Load Balancer**: a load balancer will listen for the actual user or service requests coming in and decide where these requests should go
-	* **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the autoscaling group to ensure that the load balancer routes appropriately
-	* **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the autoscaling group instances
+    * **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the autoscaling group to ensure that the load balancer routes appropriately
+    * **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the autoscaling group instances
 * **user-data directory**: stores the startup scripts for the servers, one for each of a backend server and the frontend server
-
 
 ## The project calling the `microservice` module
 
@@ -67,7 +66,7 @@ module "backend" {
 }
 ```
 
-We've abstracted almost everything into our module, and we see here a pretty nice reusability pattern. It also makes it easy 
+We've abstracted almost everything into our module, and we see here a pretty nice reusability pattern. It also makes it easy
 to see our intention for the project as whole in the code itself (documented infrastructure code through the code itself?):
 
 * We're setting up a backend service that should have at most 3 servers, a minimum of 1 server; we're telling it to use the startup script of `user-data-backend.sh` and we're passing the text that will be served through the service as the output of the app/page
@@ -81,7 +80,7 @@ terraform init
 
 which should give you output that includes something like:
 
-```
+```text
 The following providers do not have any version constraints in configuration,
 so the latest version was installed.
 
@@ -107,15 +106,15 @@ data "template_file" "user_data" {
 }
 ```
 
-this resource is making use of the `template` provider, but our module doesn't define a specific provider block for it, nor 
-does our terraform using the module, thus we're presented with this message. It's considered best practice to explicitly 
+this resource is making use of the `template` provider, but our module doesn't define a specific provider block for it, nor
+does our terraform using the module, thus we're presented with this message. It's considered best practice to explicitly
 define provider blocks with some sort of explicit version requirement. Things have been changing fast in terraform and all of
 it's available providers, thus locking down to a particular version or at least major version can be helpful if not
 necessary in many cases.
 
 So, should the block be defined in the module or the thing using the module? The answer depends, but Hashicorp recommends that
 only the _root_ module, or calling Terraform define provider blocks. In this way, those using a module can decide on what
-version of the provider they need to use. Modules will inherit provider definitions implicitly by default. See 
+version of the provider they need to use. Modules will inherit provider definitions implicitly by default. See
 https://www.terraform.io/docs/configuration/modules.html#providers-within-modules for more info.
 
 Let's add the provider block for the `template` provider and re-run init. Add the following to our root main.tf file at the top:
@@ -158,7 +157,7 @@ module "example" {
 }
 ```
 
-This particular example is defining the default provider for this module or terraform project with a region of us-west-1, but an 
+This particular example is defining the default provider for this module or terraform project with a region of us-west-1, but an
 alternate provider that can then be passed to the example module.
 
 OK, back to our main exercise though, as soon as you're done with your `init` command, we can move the acutal apply:
@@ -177,7 +176,7 @@ things in the meantime
 
 #### Dependencies
 
-```
+```text
 depends_on = ["aws_alb_listener.http"]
 ```
 
@@ -189,17 +188,17 @@ or updated before the dependent ones)
 
 #### Lifecycle definitions
 
-```
+```text
 lifecycle {
   create_before_destroy = true
 }
 ```
 
-Lifecycles are another common meta attribute across terraform resources. They define how terraform internally processes changes to the 
-resource. In this case, we're telling Terraform that if a new resource needs to be created, and one already exists, ensure that 
+Lifecycles are another common meta attribute across terraform resources. They define how terraform internally processes changes to the
+resource. In this case, we're telling Terraform that if a new resource needs to be created, and one already exists, ensure that
 the new resource gets created before the previous one gets destroyed. One major caveat and gotcha of terraform exists in this flow:
 
-**If a resource defines a lifecycle rule of `create_before_destroy = true`, all of the related resource dependencies must also explicitly 
+**If a resource defines a lifecycle rule of `create_before_destroy = true`, all of the related resource dependencies must also explicitly
 define the same lifecycle rule for terraform internal processing to happen as expected**
 
 #### Template Files
@@ -216,7 +215,7 @@ Can you identify the syntax in our project and the `microservice` module that wo
 
 OK, your apply should have finished by now, so let's look at some of what happened
 
-```
+```text
 module.backend.aws_security_group.web_server: Creating...
 module.frontend.aws_security_group.web_server: Creating...
 module.frontend.aws_security_group.alb: Creating...
@@ -328,7 +327,7 @@ The last thing to note are the outputs. Our computed backend and frontend URLs a
 seeing if everything is up-and-running using these values. Let's check the frontend URL first. Open your browser and navigate to the
 frontend URL. You should get something like:
 
-```
+```text
 Hello from frontend
 Response from backend:
 
@@ -362,6 +361,6 @@ we can manage them with a completely different state.
 
 Let's destroy everything before we move on. **PLEASE make sure you do it for this exercise especially**
 
-```
+```text
 terraform destroy
 ```

@@ -1,6 +1,6 @@
 # Exercise #1: Your First Terraform Project
 
-Take a look at this directory.  You should see a couple of files aside from this README.
+Take a look at this directory. You should see a couple of files aside from this README.
 
 ```bash
 ls -lah
@@ -31,7 +31,7 @@ resource "aws_key_pair" "my_key_pair" {
 
 ### variables.tf
 
-Now look into the "variables.tf" file.  You should see this:
+Now look into the "variables.tf" file. You should see this:
 
 ```hcl
 # Declare a variable so we can use it
@@ -44,7 +44,7 @@ This directory is a very simple example of a terraform project or module.
 
 ### Commands
 
-So we have these files that make up our project, now what?  Well, let's try to run some terraform commands against them
+So we have these files that make up our project, now what? Well, let's try to run some terraform commands against them
 
 ```bash
 # init is generally the first command you run after writing your config files.  It does

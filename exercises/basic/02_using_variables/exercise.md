@@ -1,6 +1,6 @@
 # Exercise #2: Using Variables
 
-For this exercise, we will revisit the terraform project from the previous exercise.  There are a few ways to accomplish what we want in this exercise, try doing each one independently. If you get stuck or have questions, let your instructor know.
+For this exercise, we will revisit the terraform project from the previous exercise. There are a few ways to accomplish what we want in this exercise, try doing each one independently. If you get stuck or have questions, let your instructor know.
 
 There are many schools of thought on how to use variables to configure reusable terraform, but we'll be exploring the core mechanics so that you can get a grasp on how to use them in various ways.
 
@@ -35,11 +35,11 @@ We've only set the description, so there's no default value, and it will use the
 
 ### Adding the values statically in the variables stanza
 
-You might notice that there is no "value" parameter in the syntax for the variable object. This is because the variables stanzas are not meant to be inputs themselves, but rather placeholders that handle input and allow for reference throughout the working directory.  Though it is true that variable stanzas can be used this way by simply setting the "default" to the desired value, this negates the benefits of Terraform's native re-usability.  Instead, try using one of the below methods.
+You might notice that there is no "value" parameter in the syntax for the variable object. This is because the variables stanzas are not meant to be inputs themselves, but rather placeholders that handle input and allow for reference throughout the working directory. Though it is true that variable stanzas can be used this way by simply setting the "default" to the desired value, this negates the benefits of Terraform's native re-usability. Instead, try using one of the below methods.
 
 ### Initialization
 
-Every time a new terraform working directory is created, we need to initialize it to prepare it to run against the designated external API.  This does not need to happen after the first apply, just for new working directories. Before continuing, make sure you're in the same directory as this README.
+Every time a new terraform working directory is created, we need to initialize it to prepare it to run against the designated external API. This does not need to happen after the first apply, just for new working directories. Before continuing, make sure you're in the same directory as this README.
 
 ```bash
 terraform init
@@ -77,7 +77,7 @@ One of init's jobs here is to ensure that it downloads the necessary provider to
 
 ### tfvars file
 
-In each terraform working directory, there can be a file named `terraform.tfvars` (or `*.auto.tfvars`) that contains HCL that defines values for variables for that working directory.  tfvar files can also be referenced via command line. Let's try a few things.
+In each terraform working directory, there can be a file named `terraform.tfvars` (or `*.auto.tfvars`) that contains HCL that defines values for variables for that working directory. tfvar files can also be referenced via command line. Let's try a few things.
 
 * create a file called terraform.tfvars in this directory
 * insert the following code into it:
@@ -103,7 +103,7 @@ rm terraform.tfvars
 
 ### Command Line Arguments
 
-Another method you can use is to insert variables via the CLI.  This allows for quick variable substitution and testing because values entered via CLI override values from other methods.
+Another method you can use is to insert variables via the CLI. This allows for quick variable substitution and testing because values entered via CLI override values from other methods.
 
 * run the following in this working directory (if you were able to complete the previous), swapping for your
 identifier like before.
@@ -138,7 +138,7 @@ The above should prompt you for your `student_alias` value. The last way in whic
 
 ### Locals
 
-A related concept that we'll get into a bit more a little later is something called a local. Locals act like variables, in that they can be referenced from multiple locations, but locals can't take inputs like variables. Locals also allow for interpolation, like merging strings or basing value on chained dependencies of locals. Locals act more similarly to the standard variable you might be working with in Python or another programming language, for example.  Here is an example:
+A related concept that we'll get into a bit more a little later is something called a local. Locals act like variables, in that they can be referenced from multiple locations, but locals can't take inputs like variables. Locals also allow for interpolation, like merging strings or basing value on chained dependencies of locals. Locals act more similarly to the standard variable you might be working with in Python or another programming language, for example. Here is an example:
 
 ```hcl
 locals {

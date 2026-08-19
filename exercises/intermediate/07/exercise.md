@@ -17,8 +17,8 @@ terraform init -backend-config=./backend.tfvars -backend-config=bucket=rockholla
 Another aside before we move forward with this exercise specifically
 
 We're able to use the `-backend-config` argument as many times as we like, and in multiple contexts. That arg can accept one of two things:
-  * a path to a file containing HCL name/values, very much like a tfvars file
-  * or an explicit setting of a value. In the case of `-backend-config=bucket=rockholla-di-[student-alias]` we're providing an explicit value setting along with our `backend.tfvars`
+* a path to a file containing HCL name/values, very much like a tfvars file
+* or an explicit setting of a value. In the case of `-backend-config=bucket=rockholla-di-[student-alias]` we're providing an explicit value setting along with our `backend.tfvars`
 
 Let's test out some things to understand loading precedence of that arg. We have the following, alternative `backend-invalid.tfvars` file here in this directory, and here's what it looks like:
 

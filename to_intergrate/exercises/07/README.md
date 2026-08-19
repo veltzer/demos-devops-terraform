@@ -1,11 +1,11 @@
 # Exercise #7: Error Handling, Troubleshooting
 
-We'll take some time to look at what the different types of errors we discussed look like. In each part of this 
+We'll take some time to look at what the different types of errors we discussed look like. In each part of this
 exercise you'll get a feel for some common error scenarios and how to fix or address them.
 
-### Process Errors
+## Process Errors
 
-So, as mentioned, process errors are really about just something problematic in way that terraform is being run. 
+So, as mentioned, process errors are really about just something problematic in way that terraform is being run.
 So, what happens when you run `apply` before `init`? Let's run apply here before init:
 
 ```bash
@@ -49,7 +49,7 @@ unset TF_VAR_student_alias && terraform apply -input=false
 
 Which should give you something like:
 
-```
+```text
 Error: Unassigned variable
 
 The input variable "student_alias" has not been assigned a value. This is a
@@ -66,13 +66,13 @@ resource "aws_s3_bucket_object" "an_invalid_resource_definition" {
 
 Clearly a syntax problem, so let's run
 
-```
+```text
 terraform plan
 ```
 
 And you should see something like
 
-```
+```text
 Error: Argument or block definition required
 
   on main.tf line 17, in resource "aws_s3_bucket_object" "an_invalid_resource_definition":
@@ -81,7 +81,7 @@ Error: Argument or block definition required
 An argument or block definition is required here.
 ```
 
-The goal is to get used to what things look like depending on the type of error encountered. These syntax 
+The goal is to get used to what things look like depending on the type of error encountered. These syntax
 errors happen early in the processing of Terraform commands.
 
 ### Validation Errors
@@ -116,7 +116,7 @@ If you were to have run `terraform plan` here, you would've still been prompted 
 
 Having run `terraform validate` you should see immediately something like the following:
 
-```
+```text
 Error: Missing required argument
 
   on main.tf line 17, in resource "aws_s3_bucket_object" "an_invalid_resource_definition":
@@ -144,13 +144,13 @@ resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 
 Then run
 
-```
+```text
 terraform apply
 ```
 
 And you should see something like:
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -204,13 +204,13 @@ Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-o
   17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 ```
 
-Where is this error actually coming from? In this case, it's the AWS S3 API. It's trying to put an object to a bucket that 
-doesn't exist. Terraform is making the related API call to try and create the object, but AWS can't do it because the bucket 
+Where is this error actually coming from? In this case, it's the AWS S3 API. It's trying to put an object to a bucket that
+doesn't exist. Terraform is making the related API call to try and create the object, but AWS can't do it because the bucket
 in which we're trying to put the object either doesn't exist or we don't own it, so we get this error passed back to us.
 
 One other thing worth noting–Did everything fail?
 
-```
+```text
 aws_s3_bucket_object.a_resource_that_will_fail: Creating...
 aws_s3_bucket_object.user_student_alias_object: Creating...
 aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=student.alias]
@@ -222,15 +222,15 @@ Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-o
   17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 ```
 
-Nope! Our first bucket object that was valid was created, only the second one failed. Terraform will complete 
-what it can and fail on what it can't. Sometimes the solution to failures can sometimes just be running 
+Nope! Our first bucket object that was valid was created, only the second one failed. Terraform will complete
+what it can and fail on what it can't. Sometimes the solution to failures can sometimes just be running
 the same Terraform multiple times (e.g., if there's a network issue between where you're running Terraform and AWS).
 
 ### Finishing this exercise
 
 First, remove the offending HCL now in `main.tf`
 
-```
+```text
 resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
   bucket  = "a-bucket-that-doesnt-exist-or-i-dont-own"
   key     = "file"
@@ -240,7 +240,6 @@ resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 
 And then
 
-```
+```text
 terraform destroy
 ```
-

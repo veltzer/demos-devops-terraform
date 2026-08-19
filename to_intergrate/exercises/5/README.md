@@ -1,11 +1,11 @@
 # Interacting with Providers
 
-Providers are plugins that Terraform uses to understand various external APIs and cloud providers.  Thus far in this
-workshop, we've used the AWS provider.  In this exercise we are going to create s3 buckets in multiple regions in a
-single terraform working directory.  Running multiple providers in a single project is nifty but not always the recommended
-approach.  For example, it may be more reasonable to use the remote_state features to access values in each module.
+Providers are plugins that Terraform uses to understand various external APIs and cloud providers. Thus far in this
+workshop, we've used the AWS provider. In this exercise we are going to create s3 buckets in multiple regions in a
+single terraform working directory. Running multiple providers in a single project is nifty but not always the recommended
+approach. For example, it may be more reasonable to use the remote_state features to access values in each module.
 
-### Add the second provider
+## Add the second provider
 
 Add this variable stanza to the "variables.tf" file:
 

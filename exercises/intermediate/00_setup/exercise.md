@@ -21,8 +21,8 @@ a Cloud9 server/environment set up where you'll run further exercises.
 1. Give your environment a unique name (your student alias is suggested) and, optionally, a description. Click "Next Step"
 1. Keep the settings as their defaults on this screen, then click "Next Step"
 1. Review your settings on the next screen, and then click "Create Environment"
-1. Wait for your environment to start.  In this step, AWS is provisioning an EC2 instance that your IDE environment will run on.  This gives us the distinct advantage of having a controlled environment for development regardless of client hardware and OS.  In the case of this workshop, it also allows us to connect to our instances and AWS's API without worrying about port availability in a corporate office. :-)
-1. Once your IDE loads, you should see a Welcome document.  Your instructor will give you a walkthrough of the visible panel.  Feel free to take a moment to read through the welcome document.
+1. Wait for your environment to start. In this step, AWS is provisioning an EC2 instance that your IDE environment will run on. This gives us the distinct advantage of having a controlled environment for development regardless of client hardware and OS. In the case of this workshop, it also allows us to connect to our instances and AWS's API without worrying about port availability in a corporate office. :-)
+1. Once your IDE loads, you should see a Welcome document. Your instructor will give you a walkthrough of the visible panel. Feel free to take a moment to read through the welcome document.
 
 ## Resize your Cloud9 disk
 
@@ -84,7 +84,7 @@ If you get an error, inform your instructor.
 
 ## Pull the exercises repository
 
-The next thing we need to do is pull this repository down so we can use it in future modules.  Run the following to
+The next thing we need to do is pull this repository down so we can use it in future modules. Run the following to
 do this:
 
 ```bash

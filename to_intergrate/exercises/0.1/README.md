@@ -5,20 +5,19 @@ This is an exercise in which we will launch a Cloud9 IDE in your AWS account.
 ## Launch your Environment
 
 1. Log into the Console
-1. At the main screen, under "AWS services", click in the search bar and type "Cloud9".  Click on the result below
+1. At the main screen, under "AWS services", click in the search bar and type "Cloud9". Click on the result below
 to go to the Cloud9 service portal.
 1. Click on "Create Environment"
-1. Give your environment a name and, optionally, a description.  Click Next
+1. Give your environment a name and, optionally, a description. Click Next
 1. Accept all the default values on this screen and click "Next".
 1. Review your settings and click "Create"
-1. Wait for your environment to start.  In this step, AWS is provisioning an EC2 instance that 
-your IDE environment will run on.  This gives us the distinct advantage of having a controlled 
-environment for development regardless of client hardware and OS.  In the case of this workshop,
-it also allows us to connect to our instances and AWS's API without worrying about port 
-availability in a corporate office.  :-)
-1. Once your IDE loads, you should see a Welcome document.  Your instructor will give you a 
-walkthrough of the visible panel.  Feel free to take a moment to read through the welcome document.
-
+1. Wait for your environment to start. In this step, AWS is provisioning an EC2 instance that
+your IDE environment will run on. This gives us the distinct advantage of having a controlled
+environment for development regardless of client hardware and OS. In the case of this workshop,
+it also allows us to connect to our instances and AWS's API without worrying about port
+availability in a corporate office. :-)
+1. Once your IDE loads, you should see a Welcome document. Your instructor will give you a
+walkthrough of the visible panel. Feel free to take a moment to read through the welcome document.
 
 ## Configure your environment
 
@@ -53,7 +52,7 @@ If you get an error, inform your instructor.
 
 ## Pull your resources repository
 
-The next thing we need to do is pull this repository down so we can use it in future modules.  Run the following to 
+The next thing we need to do is pull this repository down so we can use it in future modules. Run the following to
 do this:
 
 ```bash

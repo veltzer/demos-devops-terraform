@@ -2,7 +2,7 @@
 
 Per Hashicorp's guidance, flat, composable module structures are recommended, meaning if you find yourself with highly-nested structures of modules, you're likely organizing or architecting your Terraform projects in a way that will be hard to manage over time:
 
-```
+```text
 $ tree .
 .
 ├── README.md

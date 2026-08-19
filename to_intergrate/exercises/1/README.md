@@ -1,6 +1,6 @@
 # Exercise #1: Your First Terraform Project
 
-Take a look at this directory.  You should see a couple files aside from this README.
+Take a look at this directory. You should see a couple files aside from this README.
 
 ```bash
 ls -lah
@@ -8,10 +8,10 @@ ls -lah
 
 You'll see two files:
 
-### main.tf
+## main.tf
 
-Though the name of a terraform config file is mostly arbitrary, 
-this is generally the name ascribed to the major configuration 
+Though the name of a terraform config file is mostly arbitrary,
+this is generally the name ascribed to the major configuration
 file within a Terraform working directory.
 
 Inside, you will see the following:
@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "user_bucket" {
 
 ### variables.tf
 
-Now look into the "variables.tf" file.  You should see this:
+Now look into the "variables.tf" file. You should see this:
 
 ```hcl
 # Declare a variable so we can use it.
@@ -41,7 +41,7 @@ variable "region" {
 
 ### Commands
 
-So we have these files, now what?  Well, let's try to run some commands against them
+So we have these files, now what? Well, let's try to run some commands against them
 
 ```bash
 # init is generally the first command you run after writing your config files.  It does 
@@ -59,4 +59,4 @@ terraform validate
 ```
 
 If your "terraform init" command was successful, then you should be ready for the next exercises.  
-For now, don't run an apply.  We will get to this in a future exercise.
+For now, don't run an apply. We will get to this in a future exercise.

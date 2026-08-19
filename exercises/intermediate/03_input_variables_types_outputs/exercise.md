@@ -270,7 +270,7 @@ set_string_var = [
 ]
 ```
 
-You may or may not see the same ordering in your output. Remember that one of the attributes of sets is that they are _unordered_. This is the primary difference b/w sets and lists. Lists always being ordered.
+You may or may not see the same ordering in your output. Remember that one of the attributes of sets is that they are *unordered*. This is the primary difference b/w sets and lists. Lists always being ordered.
 
 ### Complex Types: Structural
 

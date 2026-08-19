@@ -1,10 +1,10 @@
 # Exercise #9: Resource Counts and Conditional HCL
 
-The idea of "looping" or repeated resource capabilities in Terraform is one of the most encountered gotchas. 
-Declarative infrastructure tools and languages often require or encourage more explicit definition of things 
-rather than supporting logic where other languages might have an "easier" way of doing things. Nonetheless, 
-there's still a good deal you can accomplish via Terraform's `count` concept that mimicks the idea of loops 
-and creating multiple copies or versions of a single thing. 
+The idea of "looping" or repeated resource capabilities in Terraform is one of the most encountered gotchas.
+Declarative infrastructure tools and languages often require or encourage more explicit definition of things
+rather than supporting logic where other languages might have an "easier" way of doing things. Nonetheless,
+there's still a good deal you can accomplish via Terraform's `count` concept that mimicks the idea of loops
+and creating multiple copies or versions of a single thing.
 
 Modules, as we saw, are another key aspect of reusability in Terraform.
 
@@ -20,7 +20,7 @@ terraform plan
 
 You should see something like the following
 
-```
+```text
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
@@ -99,7 +99,7 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
-### The `count` parameter
+## The `count` parameter
 
 Let's look at the `main.tf` file here to see what's going on. First, the `aws_s3_bucket_object.dynamic_file` definition
 
@@ -126,7 +126,7 @@ variable "object_count" {
 And it has a default value of *3*, so our `aws_s3_bucket_object` resource uses the `count` property to dynamically define the number
 of "copies" of this resource we'd like. This all adds up to our plan telling us that the following would be created:
 
-```
+```text
 aws_s3_bucket_object.dynamic_file[0] will be created
 aws_s3_bucket_object.dynamic_file[1] will be created
 aws_s3_bucket_object.dynamic_file[2] will be created
@@ -152,7 +152,7 @@ you had to do it before the `bool` data type came around.
 
 We see in our plan output
 
-```
+```text
   # aws_s3_bucket_object.optional_file[0] will be created
   + resource "aws_s3_bucket_object" "optional_file" {
       + acl                    = "private"
@@ -177,14 +177,14 @@ variable "include_optional_file" {
 }
 ```
 
-So, indeed our optional file/object would be created/maintained since we're using the default `include_optional_file=true`. Try 
+So, indeed our optional file/object would be created/maintained since we're using the default `include_optional_file=true`. Try
 another plan, but with
 
-```
+```text
 terraform plan -var include_optional_file=false
 ```
 
-Is it what you expected? If you have a little extra time, play around more with count and other ways that you might achieve 
+Is it what you expected? If you have a little extra time, play around more with count and other ways that you might achieve
 conditional logic in HCL. Ask questions if you have them.
 
 Then, let's move on!

@@ -11,7 +11,7 @@ As we just saw in our discussion, there are a number of others now, so let's loo
 along in this exercise, you're encouraged to change the HCL to experiment a bit with the different data types
 and using them in action.
 
-### Primitive Types
+## Primitive Types
 
 Terraform has restructured to include variable types in a category "primitive." These are quite similar to
 what you'd find in other language primitives. Let's change into the `primitives` directory and run some terraform
@@ -25,7 +25,7 @@ terraform apply
 We're not really creating any infrastructure in this exercise, rather just looking at the processing and output
 of variables and data. You should see something like the following when running the above:
 
-```
+```text
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
 Outputs:
@@ -95,7 +95,7 @@ terraform apply
 
 Running the above should give you something like
 
-```
+```text
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
 Outputs:
@@ -231,7 +231,7 @@ We've covered HCL data and variable concepts pretty completely at this point, bu
 at one other thing: Terraform data sources and referencing these data sources.
 
 Remember earlier when we queried the state of another terraform project? That was a Terraform data source. We want to look at how
-providers allow you the ability to query particular sources to get things you need at runtime with the same mechanism. 
+providers allow you the ability to query particular sources to get things you need at runtime with the same mechanism.
 Two very common examples in the AWS provider:
 
 1. Querying available AMI images in AWS to get the AMI ID to use for your EC2 instance
@@ -247,7 +247,7 @@ terraform apply
 
 And you should get something like the following as the output
 
-```
+```text
 data.aws_ami.ubuntu: Refreshing state...
 data.aws_availability_zones.available: Refreshing state...
 
@@ -297,7 +297,7 @@ source type so that we can query AMIs available in AWS.
 After the data source resource is declared, we can then access it's attributes that have been populated by actually making the
 query to AWS
 
-```
+```text
 ${data.aws_ami.ubuntu.id}
 ```
 
@@ -316,7 +316,7 @@ can't figure out, ask your instructor for a little help.
 Similar to the AMI data source, this one also has attributes that have been populated and can be accessed after the query to
 the AWS api actually happens. So in our subsequent HCL, we can access the `names` attribute, giving us all AZ names
 
-```
+```text
 ${data.aws_availability_zones.available.names}
 ```
 
@@ -330,4 +330,3 @@ a bit with things that look interesting to you in the HCL syntax, variable, and 
 1. Built-in functions: https://www.terraform.io/docs/configuration/functions.html
 
 Maybe try some of the above out with `terraform console`?
-

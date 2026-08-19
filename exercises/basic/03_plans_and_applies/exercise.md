@@ -1,6 +1,6 @@
 # Exercise #3: Plans and Applies
 
-So now we are actually going to get into it and make some infrastructure happen.  For this exercise, we are going to:
+So now we are actually going to get into it and make some infrastructure happen. For this exercise, we are going to:
 
 1. Initialize our project directory that is this exercise directory
 1. Run a plan to understand why planning makes sense, and should always be a part of your terraform workflow
@@ -61,8 +61,8 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
-From the above output, we can see that terraform will create a key pair.  An important line
-to note is the one beginning with "Plan:".  We see that 1 resource will be created, 0 will be changed, and 0 destroyed.  
+From the above output, we can see that terraform will create a key pair. An important line
+to note is the one beginning with "Plan:". We see that 1 resource will be created, 0 will be changed, and 0 destroyed.  
 Terraform is designed to detect when there is configuration drift in resources that it created and then intelligently
 determine how to correct the difference. This will be covered in more detail a little later.
 
@@ -76,7 +76,7 @@ terraform apply
 ```
 
 Terraform will execute another plan, and then ask you if you would like to apply the changes. Type "yes" to approve, then
-let it do its magic.  Your output should look like the following:
+let it do its magic. Your output should look like the following:
 
 ```text
 An execution plan has been generated and is shown below.
@@ -118,11 +118,11 @@ You should notice a couple differences:
 
 * Terraform informs you that it is Refreshing the State.
     * after the first apply, any subsequent plans and applies will check the infrastructure it created and updates the terraform state with any new information about the resource.
-* Next, you'll notice that Terraform informed you that there are no changes to be made.  This is because the infrastructure was just created and there were no changes detected, no changes to your infrastructure code instructions.
+* Next, you'll notice that Terraform informed you that there are no changes to be made. This is because the infrastructure was just created and there were no changes detected, no changes to your infrastructure code instructions.
 
 ### Handling Changes
 
-Now, lets try making a change to the key pair and allow Terraform to correct it.  Let's change the content of our public key.
+Now, lets try making a change to the key pair and allow Terraform to correct it. Let's change the content of our public key.
 
 Find `main.tf` and modify the key pair resource definition:
 
@@ -176,12 +176,12 @@ A terraform plan informs you with a few symbols to tell you what will happen
 So our above plan will "modify" our key pair by deleting the previous one and creating a new one in its place.
 
 Some resources or some changes require that a resource be recreated to facilitate that change, and those cases are usually expected.
-One example of this would be an AWS launch configuration, or our key pair type resource as we saw above. In AWS, launch configurations and key pairs are 2 examples of resources that are immutable, cannot be changed.  Terraform is generally made aware of these caveats and handles those changes gracefully, including updating dependent resources to link to the newly created resource.  This greatly simplifies complex or frequent changes to any size infrastructure and reduces the possibility of human error.
+One example of this would be an AWS launch configuration, or our key pair type resource as we saw above. In AWS, launch configurations and key pairs are 2 examples of resources that are immutable, cannot be changed. Terraform is generally made aware of these caveats and handles those changes gracefully, including updating dependent resources to link to the newly created resource. This greatly simplifies complex or frequent changes to any size infrastructure and reduces the possibility of human error.
 
 ### Destroy
 
 When infrastructure is retired, Terraform can destroy that infrastructure gracefully, ensuring that all resources
-are removed and in the order that their dependencies require.  Let's destroy our key pair.
+are removed and in the order that their dependencies require. Let's destroy our key pair.
 
 ```bash
 terraform destroy

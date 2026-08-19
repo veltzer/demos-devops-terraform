@@ -1,10 +1,10 @@
 # Exercise #5: Interacting with Providers
 
-Providers are plugins that Terraform uses to understand various external APIs and cloud providers.  Thus far in this
+Providers are plugins that Terraform uses to understand various external APIs and cloud providers. Thus far in this
 workshop, we've used the AWS provider. In this exercise, we're going to modify the AWS provider we've been
 using to create our bucket in a different region.
 
-### Add the second provider
+## Add the second provider
 
 Add this variable stanza to the "variables.tf" file:
 
@@ -50,6 +50,6 @@ We'll be looking more at using providers in other exercises as we move along.
 
 Let's run the following to finish:
 
-```
+```text
 terraform destroy
 ```

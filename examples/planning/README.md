@@ -6,14 +6,13 @@
 
 First, assume the roll of jane, and we'll "pull" source code from our terraform project repo into our workspace
 
-```
+```text
 ./pull.sh jane
 ```
 
 jane now is working from a local workstation with a current version of the terraform source. jane will init her new workspace and then apply...
 
-
-```
+```text
 cd ./jane
 terraform init
 terraform apply
@@ -31,7 +30,7 @@ infrastructure initially created
 
 now to tim, we'll say he wants to make a change, so he's going to "pull" from source to do so
 
-```
+```text
 cd ../
 ./pull.sh tim
 cd ./tim
@@ -41,7 +40,7 @@ cd ../
 
 We'll make a change to the instance type, changing to t2.medium and apply
 
-```
+```text
 resource "aws_instance" "instance" {
   ami           = data.aws_ami.ubuntu.id
 - instance_type = "t2.micro"
@@ -54,7 +53,7 @@ resource "aws_instance" "instance" {
 
 Meanwhile jane just made the following change to her source locally and wants to apply
 
-```
+```text
 resource "aws_instance" "instance" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -67,7 +66,7 @@ resource "aws_instance" "instance" {
 
 So, just changing the tag name on the instance, she happens to run her apply command before tim finishes doing his apply, so let's mimic that
 
-```
+```text
 cd ./jane
 terraform apply
 ...
@@ -150,7 +149,7 @@ Do you want to perform these actions?
 
 jane gets pulled away for something for 10 minutes before she has a chance to accept this plan and actually apply it. Meanwhile, tim is actually applying his change
 
-```
+```text
 cd ../tim
 terraform apply
 ...
@@ -240,7 +239,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 
 tim has successfully updated the ec2 instance type to t2.medium. jane makes it back to what she was doing and is ready to say yes to her plan which just included a change to a tag
 
-```
+```text
 Do you want to perform these actions?
   Terraform will perform the actions described above.
   Only 'yes' will be accepted to approve.
@@ -255,8 +254,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 
 So, will jane's actions have reverted tim's instance type changes? Let's do a state pull to see if it did:
 
-
-```
+```text
 terraform state pull
 ...
 "instance_type": "t2.medium",
@@ -270,7 +268,7 @@ Ah, so everything is as it should be! A plan out file wasn't strictly needed in 
 
 The plan out file is still a best practice when using `terraform plan` itself, so let's go back through the above from a different route and see the actual pitfall that still exists with this
 
-```
+```text
 terraform destroy
 ...
 cd ../
@@ -290,7 +288,7 @@ jane's workflow in this scenario is one of running `terraform plan` to see what 
 
 If we look at a version of terraform as recent as `0.9.11`, we'll notice the auto-approve argument wasn't there for the `apply` command:
 
-```
+```text
 mac:jane patrickforce$ terraform --version
 Terraform v0.9.11
 
@@ -356,7 +354,7 @@ Auto-approve was really the default, so one of the points here is that more-mode
 
 jane has just created the infrastructure anew. She realizes she needs to change the tag name, so she does so in your local repo clone
 
-```
+```text
 resource "aws_instance" "instance" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -369,7 +367,7 @@ resource "aws_instance" "instance" {
 
 she runs her plan
 
-```
+```text
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   ~ update in-place
@@ -445,7 +443,7 @@ can't guarantee that exactly these actions will be performed if
 
 great, just the tag change. jane doesn't even get pulled away in this scenario. Simply, tim happens to be applying his instance type change at the exact moment that jane's plan output was presented to her
 
-```
+```text
 resource "aws_instance" "instance" {
   ami           = data.aws_ami.ubuntu.id
 - instance_type = "t2.micro"
@@ -456,7 +454,7 @@ resource "aws_instance" "instance" {
 }
 ```
 
-```
+```text
 cd ../tim
 terraform apply
 ...
@@ -546,7 +544,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 
 meanwhile, seconds later, jane runs her `terraform apply -auto-approve` b/c how could anything happen differently than what my plan told me?
 
-```
+```text
 cd ../jane
 terraform apply -auto-approve
 ...
@@ -563,7 +561,7 @@ aws_instance.instance: Modifications complete after 55s [id=i-0ca5be7bc21a9342d]
 Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 ```
 
-```
+```text
 terraform state pull
 ...
 "instance_type": "t2.micro",
@@ -575,7 +573,7 @@ terraform state pull
 
 Well, our tag change made it, but uh oh, we overwrote tim's change. Using a plan out file would've prevented this, so let's see that in action
 
-```
+```text
 terraform destroy
 ...
 cd ../
@@ -585,7 +583,7 @@ cd ../
 
 ## Plan out files and outdated plan files
 
-```
+```text
 cd ./jane
 terraform apply
 ...
@@ -599,8 +597,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 OK, so we're back with our freshly-created infrastructure, we'll go through almost the exact same flow of changes again, first jane does a plan after changing the tag name of the instance, but now we're going to use a plan out file
 
-
-```
+```text
 terraform plan -out=plan.out
 ...
 data.aws_ami.ubuntu: Refreshing state...
@@ -684,7 +681,7 @@ To perform exactly these actions, run the following command to apply:
 
 back to tim, so we'll put his changes in place before jane actually applies hers
 
-```
+```text
 cd ../tim
 terraform apply
 ...
@@ -777,7 +774,7 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 
 the instance type change is in place, and now jane happens to be running her apply of the plan file seconds later
 
-```
+```text
 cd ../jane
 terraform apply plan.out
 
@@ -791,7 +788,7 @@ Ah! something in tim's changes now makes my plan stale, or outdated. We can see 
 
 The real takeaway from this, at this level, is to just know that this is a protection against clobbering changes unknowingly, Terraform working towards a path of more predictable and safe operations related to apply. And that when we see this, we simply know that we need to generate a plan (file) again, so let's do it
 
-```
+```text
 terraform plan -out=plan.out
 terraform show plan.out
 
@@ -866,7 +863,7 @@ We see that there's some indication that jane's code is outdated, at the very le
 
 In our case, jane will simply update her code to match what seemingly has been an intended change elsewhere:
 
-```
+```text
 resource "aws_instance" "instance" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.medium"
@@ -878,7 +875,7 @@ resource "aws_instance" "instance" {
 
 Then rerun our plan with an out file again:
 
-```
+```text
 terraform plan -out=plan.out
 terraform show plan.out
 
@@ -951,7 +948,7 @@ Plan: 0 to add, 1 to change, 0 to destroy.
 
 Now we're back to the only change being applied being our tag change.
 
-```
+```text
 terraform apply plan.out
 aws_instance.instance: Modifying... [id=i-0d02d00e96e27d752]
 aws_instance.instance: Still modifying... [id=i-0d02d00e96e27d752, 10s elapsed]
@@ -968,9 +965,9 @@ We could yet again see the indication of a stale plan file if a similar situatio
 
 These are some indications that putting Terraform into more automated, pipeline, CI/CD workflows makes A LOT of sense. Your instructor highly recommends doing so from the very beginning of any project, no matter how complex or simple the project.
 
-# DESTROY
+## DESTROY
 
-```
+```text
 terraform destroy
 ...
 ```
