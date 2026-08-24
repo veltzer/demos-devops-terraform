@@ -7,10 +7,6 @@
 
 [analyzer.markdown]
 
-[analyzer.python]
-
-# ─── templating ──────────────────────────────────────────────────────────────
-
 # Convention: tera configs are Lua (config/*.lua). dep_auto entries are
 # silently skipped where absent. Repos still on config/*.py keep a
 # dep_inputs override in their local overlay until converted.
@@ -33,22 +29,6 @@ src_dirs = ["exercises"]
 [processor.zspell]
 src_dirs = ["exercises"]
 
-# ─── python ──────────────────────────────────────────────────────────────────
-
-[processor.ruff]
-src_dirs = ["config", "exercises"]
-
-[processor.pylint]
-src_dirs = ["config", "exercises"]
-
-[processor.mypy]
-src_dirs = ["config", "exercises"]
-
-[processor.requirements]
-src_dirs = ["config"]
-
-# ─── shell ───────────────────────────────────────────────────────────────────
-
 [processor.shellcheck]
 src_dirs = ["exercises", "config"]
 args = ["--severity=error", "--shell=bash"]
@@ -62,7 +42,3 @@ src_dirs = ["config"]
 
 [processor.taplo]
 src_dirs = ["."]
-
-[processor.eslint]
-src_dirs = ["config"]
-args = ["-c", "config/eslint.config.js"]
