@@ -166,7 +166,7 @@ OK, back to our main exercise though, as soon as you're done with your `init` co
 terraform apply
 ```
 
-**Remember the Exercise 11 AWS Region you were provided along with your username and password? The apply will ask you for a region. Enter that region here**
+Remember the Exercise 11 AWS Region you were provided along with your username and password? The apply will ask you for a region. Enter that region here.
 
 The apply will present you with the plan and ask you to accept it to continue with the actual apply. Type "yes" and we'll
 see the actual creation of resources on AWS start to happen. This will take a little while, so let's look through some other

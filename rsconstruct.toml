@@ -21,14 +21,14 @@ src_dirs = ["tera.templates"]
 # ─── markdown ────────────────────────────────────────────────────────────────
 
 [processor.rumdl]
-src_dirs = ["exercises"]
+src_dirs = ["exercises", "examples", "to_intergrate/exercises"]
+src_files = ["README.md"]
 
 [processor.zspell]
 src_dirs = ["exercises"]
 
 [processor.shellcheck]
-src_dirs = ["exercises", "config"]
-args = ["--severity=error", "--shell=bash"]
+src_dirs = ["exercises", "config", "examples", "scripts-teaching", "to_intergrate"]
 
 # ─── lua ─────────────────────────────────────────────────────────────────────
 
@@ -43,3 +43,24 @@ src_dirs = ["."]
 # lint the GitHub Actions workflow files with actionlint
 [processor.actionlint]
 src_dirs = [".github/workflows"]
+
+# ─── docker ──────────────────────────────────────────────────────────────────
+
+[processor.hadolint]
+src_dirs = ["scripts-teaching/tests"]
+
+# ─── json ────────────────────────────────────────────────────────────────────
+
+[processor.ijsonlint]
+src_dirs = ["examples/packer-experiment", "exercises/basic", "scripts-teaching/org-idea"]
+
+# ─── xml / svg ───────────────────────────────────────────────────────────────
+
+[processor.xmllint]
+src_dirs = ["examples/experiment-01-intermediate"]
+
+# ─── javascript ──────────────────────────────────────────────────────────────
+
+[processor.eslint]
+src_dirs = ["scripts-teaching/org-idea"]
+args = ["-c", ".eslint.config.js"]
