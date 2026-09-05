@@ -16,13 +16,9 @@ RUN apk add --no-cache git jq curl \
 RUN curl -O https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
 	unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/bin/
 
-# hadolint ignore=DL3064
-ENV AWS_DEFAULT_REGION=
-# hadolint ignore=DL3064
-ENV AWS_ACCESS_KEY_ID=
-# hadolint ignore=DL3064
-ENV AWS_SECRET_ACCESS_KEY=
-ENV TF_VAR_student_alias=
+# AWS_DEFAULT_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and
+# TF_VAR_student_alias are supplied at run time (docker run -e ...); the image
+# does not bake in empty placeholders for them.
 
 RUN mkdir -p /workdir
 WORKDIR /workdir
