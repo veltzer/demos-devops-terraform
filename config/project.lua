@@ -1,3 +1,3 @@
-NAME = "demos-terraform"
+NAME = "demos-devops-terraform"
 DESCRIPTION_SHORT = "Demos for the terraform system"
-KEYWORDS = {"terraform", "infrastructure as code", "cloud formation"}
+KEYWORDS = {"terraform", "infrastructure-as-code", "cloudformation"}
