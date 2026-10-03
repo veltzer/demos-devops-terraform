@@ -65,6 +65,6 @@ src_dirs = ["examples/experiment-01-intermediate"]
 
 # ─── javascript ──────────────────────────────────────────────────────────────
 
-[processor.eslint]
+[processor.oxlint]
 src_dirs = ["scripts-teaching/org-idea"]
-args = ["-c", ".eslint.config.js"]
+args = ["-c", ".oxlintrc.json"]
