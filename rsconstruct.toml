@@ -14,7 +14,7 @@ reject_dot_src_dirs = true
 # listed here must exist: rsconstruct rejects a missing one at config load.
 # Repos still on config/*.py keep a dep_inputs override in their local
 # overlay until converted.
-[processor.tera]
+[processor.generator.tera]
 dep_auto = [
 	"config/project.lua",
 	"config/personal.lua",
@@ -24,47 +24,47 @@ src_dirs = ["tera.templates"]
 
 # ─── markdown ────────────────────────────────────────────────────────────────
 
-[processor.rumdl]
+[processor.checker.rumdl]
 src_dirs = ["exercises", "examples", "to_intergrate/exercises"]
 src_files = ["README.md"]
 
-[processor.zspell]
+[processor.checker.zspell]
 src_dirs = ["exercises"]
 
-[processor.shellcheck]
+[processor.checker.shellcheck]
 src_dirs = ["exercises", "config", "examples", "scripts-teaching", "to_intergrate"]
 
 # ─── lua ─────────────────────────────────────────────────────────────────────
 
-[processor.luacheck]
+[processor.checker.luacheck]
 src_dirs = ["config"]
 
 # ─── toml / yaml / json ──────────────────────────────────────────────────────
 
-[processor.taplo]
+[processor.checker.taplo]
 src_files = [".rumdl.toml", "rsconstruct.toml"]
 
 # lint the GitHub Actions workflow files with actionlint
-[processor.actionlint]
+[processor.checker.actionlint]
 src_dirs = [".github/workflows"]
 
 # ─── docker ──────────────────────────────────────────────────────────────────
 
-[processor.hadolint]
+[processor.checker.hadolint]
 src_dirs = ["scripts-teaching/tests"]
 
 # ─── json ────────────────────────────────────────────────────────────────────
 
-[processor.ijsonlint]
+[processor.checker.ijsonlint]
 src_dirs = ["examples/packer-experiment", "exercises/basic", "scripts-teaching/org-idea"]
 
 # ─── xml / svg ───────────────────────────────────────────────────────────────
 
-[processor.xmllint]
+[processor.checker.xmllint]
 src_dirs = ["examples/experiment-01-intermediate"]
 
 # ─── javascript ──────────────────────────────────────────────────────────────
 
-[processor.oxlint]
+[processor.checker.oxlint]
 src_dirs = ["scripts-teaching/org-idea"]
 args = ["-c", ".oxlintrc.json"]
