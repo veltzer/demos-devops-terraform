@@ -50,7 +50,7 @@ src_dirs = [".github/workflows"]
 
 # ─── docker ──────────────────────────────────────────────────────────────────
 
-[processor.checker.hadolint]
+[processor.checker.idockerfile]
 src_dirs = ["scripts-teaching/tests"]
 
 # ─── json ────────────────────────────────────────────────────────────────────
