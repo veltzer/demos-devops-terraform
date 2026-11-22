@@ -1,6 +1,6 @@
 # terraform import example
 
-see https://www.terraform.io/docs/import/usage.html for more info
+see <https://www.terraform.io/docs/import/usage.html> for more info
 
 ```text
 Usage: terraform import [options] ADDR ID

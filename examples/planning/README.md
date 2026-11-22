@@ -784,7 +784,7 @@ The given plan file can no longer be applied because the state was changed by
 another operation after the plan was created.
 ```
 
-Ah! something in tim's changes now makes my plan stale, or outdated. We can see some indication in source of how we get to this error from terraform source code itself: https://github.com/hashicorp/terraform/blob/master/backend/local/backend_local.go#L231. This computation and concept is in flux and has changed in recent versions. Even a handful of issues exist currently for stale vs not-stale, like this one: https://github.com/hashicorp/terraform/issues/24078. All of this changing recently and some work to do on Hashicorp's side, being as much as you need to know about this right now.
+Ah! something in tim's changes now makes my plan stale, or outdated. We can see some indication in source of how we get to this error from terraform source code itself: <https://github.com/hashicorp/terraform/blob/master/backend/local/backend_local.go#L231>. This computation and concept is in flux and has changed in recent versions. Even a handful of issues exist currently for stale vs not-stale, like this one: <https://github.com/hashicorp/terraform/issues/24078>. All of this changing recently and some work to do on Hashicorp's side, being as much as you need to know about this right now.
 
 The real takeaway from this, at this level, is to just know that this is a protection against clobbering changes unknowingly, Terraform working towards a path of more predictable and safe operations related to apply. And that when we see this, we simply know that we need to generate a plan (file) again, so let's do it
 

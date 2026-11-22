@@ -5,7 +5,7 @@
 
 description: Demos for the terraform system
 
-project website: https://veltzer.github.io/demos-devops-terraform
+project website: <https://veltzer.github.io/demos-devops-terraform>
 
 author: Mark Veltzer
 

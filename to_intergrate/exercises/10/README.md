@@ -23,7 +23,7 @@ terraform {
 
 _ASIDE: The above is the first time we're seeing the root `terraform` block or stanza. In many cases, it's sole use will
 be for defining a remote backend, but it also allows you to do things like define a required terraform version via
-semantic version syntax. See https://www.terraform.io/docs/configuration/terraform.html for more info_
+semantic version syntax. See <https://www.terraform.io/docs/configuration/terraform.html> for more info_
 
 If we look at the s3 backend definition above, what we see are two things that define where state should exist:
 

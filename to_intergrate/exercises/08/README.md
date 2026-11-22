@@ -325,8 +325,8 @@ ${data.aws_availability_zones.available.names}
 We're gonna do a little bit of experimenting as a way to finish off this exercise. This will give you an opportunity to play
 a bit with things that look interesting to you in the HCL syntax, variable, and data usage areas:
 
-1. Conditionals like ternary syntax, other expressions: https://www.terraform.io/docs/configuration/expressions.html
+1. Conditionals like ternary syntax, other expressions: <https://www.terraform.io/docs/configuration/expressions.html>
 1. Interpolation, figuring what you can and can't do here
-1. Built-in functions: https://www.terraform.io/docs/configuration/functions.html
+1. Built-in functions: <https://www.terraform.io/docs/configuration/functions.html>
 
 Maybe try some of the above out with `terraform console`?

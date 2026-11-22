@@ -115,7 +115,7 @@ necessary in many cases.
 So, should the block be defined in the module or the thing using the module? The answer depends, but Hashicorp recommends that
 only the _root_ module, or calling Terraform define provider blocks. In this way, those using a module can decide on what
 version of the provider they need to use. Modules will inherit provider definitions implicitly by default. See
-https://www.terraform.io/docs/configuration/modules.html#providers-within-modules for more info.
+<https://www.terraform.io/docs/configuration/modules.html#providers-within-modules> for more info.
 
 Let's add the provider block for the `template` provider and re-run init. Add the following to our root main.tf file at the top:
 
