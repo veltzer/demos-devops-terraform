@@ -1,6 +1,7 @@
 # Exercise #3: Plans and Applies
 
 So now we are actually going to get into it and make some infrastructure happen. For this exercise, we are going to:
+
 1) run initial commands and setup our working directory
 1) run an apply and understand the apply output and what it means,
 1) and then go ahead and create an s3 bucket and a terraform apply.

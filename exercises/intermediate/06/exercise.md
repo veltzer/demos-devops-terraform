@@ -323,6 +323,7 @@ The project would be one that, say, manages resources of all the following types
 Now, putting all of these concerns into a single project should immediately raise red flags. How might we split this up to distribute maintenance responsibilities and keeping efforts isolated and limited across teams? There are obviously dozens if not endless approaches, but let me present one based on a hypothetical organizational structure:
 
 The teams:
+
 * **Compute Ops and Admins**: those in charge of managing compute resources, so those things that are standard VMs, web servers, etc.
 * **DB Ops and Admins**: the team managing database-related resources
 * **Security Ops and Admins**: managing resources related to security both on-prem and in the cloud

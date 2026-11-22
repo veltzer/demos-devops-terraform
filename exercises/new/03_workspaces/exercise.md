@@ -1,6 +1,7 @@
 # Using workspaces
 
 ## Stages
+
 * Turn off everything you built so far.
 * Read the "workspaces" web page in terraform documentation.
 * Take the tf you used to launch a machine.
