@@ -26,7 +26,7 @@ variable "student_name" {
 If the "default" parameter is left out of the stanza, then the variable becomes a required variable, which means
 that terraform will not be able to execute if the variable's value is not supplied through one of the methods below.
 
-### Adding the values statically in the variables stanza.
+### Adding the values statically in the variables stanza
 
 You might notice that there is no "value" parameter in the syntax for the variable object.  
 This is because the variables stanzas are not meant to be inputs themselves, but rather placeholders

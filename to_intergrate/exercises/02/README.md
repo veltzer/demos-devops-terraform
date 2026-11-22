@@ -38,7 +38,7 @@ The possible properties of a variable:
 
 We've only set the description, so there's no default value, and it will use the default type of: `string`.
 
-### Adding the values statically in the variables stanza.
+### Adding the values statically in the variables stanza
 
 You might notice that there is no "value" parameter in the syntax for the variable object.  
 This is because the variables stanzas are not meant to be inputs themselves, but rather placeholders
