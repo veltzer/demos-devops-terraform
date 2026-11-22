@@ -97,11 +97,14 @@ Let's try a few things.
 
 * create a file called terraform.tfvars in this directory
 * insert the following code into it:
+
 ```hcl
 # swap "[your alias]" with your provided alias
 student_alias = "[your alias]"
 ```
+
 * then run this in the same directory
+
 ```bash
 terraform plan
 ``` 

@@ -284,6 +284,7 @@ aws_instance.instance: Creation complete after 24s [id=i-0ca5be7bc21a9342d]
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
+
 jane's workflow in this scenario is one of running `terraform plan` to see what changes her config would make and then `terraform apply -auto-approve`, which has historically been somewhat common. Again, the idea of the `apply` command enforcing the need to accept the plan is relatively new. But this workflow of jane's represents something of a more-normal workflow in the past. So, let's see it fail.
 
 If we look at a version of terraform as recent as `0.9.11`, we'll notice the auto-approve argument wasn't there for the `apply` command:

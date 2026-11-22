@@ -42,14 +42,17 @@ few things.
 
 * create a file called terraform.tfvars in this directory
 * insert the following code into it:
+
 ```hcl
 # swap "yourname" with your actual name or other identifying text
 student_name = "yourname"
 ```
+
 * then change the value in main.tf for the s3 bucket name from "mlucas-" to "${var.student_name}"
 this is the a special syntax that terraform calls interpolation that allows for variable referencing, as
 well as other advanced features.
 * then run this in the same directory
+
 ```bash
 terraform plan
 ``` 

@@ -37,6 +37,7 @@ terraform init
 terraform apply
 terraform show
 ```
+
 The above should show that you have a bucket now named `dws-di-[your student alias]-alt` that was created in the
 us-west-2 region.
 

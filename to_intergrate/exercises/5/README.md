@@ -32,4 +32,5 @@ next, just a Terraform apply and show.
 terraform apply
 terraform show
 ```
+
 You've done this correctly if the output of the show command indicates that there are 2 s3 buckets and each is in a different region.

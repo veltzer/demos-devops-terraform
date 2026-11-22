@@ -126,6 +126,7 @@ provider "template" {
 ```
 
 Then we can re-run init:
+
 ```bash
 rm -rf .terraform
 terraform init

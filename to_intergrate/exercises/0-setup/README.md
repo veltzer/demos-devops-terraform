@@ -68,6 +68,7 @@ git clone https://github.com/davewadestein/terraform-workshop .
 ## Set up your environment credentials to connect to AWS
 
 place the following in your `~/.bash_profile` file at the bottom, and replace the values in brackets with your generated creds:
+
 ```text
 export AWS_ACCESS_KEY_ID=[The access key ID you created above]
 export AWS_SECRET_ACCESS_KEY=[The secret access key you created above]
@@ -75,12 +76,14 @@ export AWS_DEFAULT_REGION=us-east-2
 ```
 
 Then source your new .bash_profile and ensure environment has the appropriate env vars set:
+
 ```text
 source ~/.bash_profile
 env | grep AWS
 ```
 
 The printenv above should output something like:
+
 ```text
 AWS_SECRET_ACCESS_KEY=xxxxxxx
 AWS_DEFAULT_REGION=us-east-2
