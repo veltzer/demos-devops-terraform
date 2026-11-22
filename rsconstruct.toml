@@ -57,6 +57,8 @@ src_dirs = ["examples/packer-experiment", "exercises/basic", "scripts-teaching/o
 # ─── xml / svg ───────────────────────────────────────────────────────────────
 
 [processor.checker.ixmllint]
+# warnings fail too, not only fatal errors
+strict = true
 src_dirs = ["examples/experiment-01-intermediate"]
 
 # ─── javascript ──────────────────────────────────────────────────────────────
