@@ -6,23 +6,30 @@
 # From: https://alestic.com/2010/12/ec2-user-data-output/
 exec > >({ tee /var/log/user-data.log || true; } | logger -t user-data -s 2>/dev/console || true) 2>&1
 
+# Terraform renders this file as a template and fills in the quoted values below.
+# Everything after this point reads them as ordinary bash variables, so a literal
+# ${name} is written $${name} (Terraform's escape), which lets shellcheck see where
+# each variable comes from.
+readonly server_http_port="${server_http_port}"
+readonly backend_url="${backend_url}"
+readonly server_text="${server_text}"
+
 # Since we need to make some live HTTP calls for the frontend, a simple one-liner static HTTP server won't do. Instead,
 # we do a hacky install of Sinatra here and use that to proxy requests
 sudo apt-get install -y ruby
 sudo gem install sinatra --no-rdoc --no-ri
 
-# Create the Sinatra app. The variables below are filled via Terraform interpolation.
-# shellcheck disable=SC2154
+# Create the Sinatra app.
 cat << EOF > app.rb
 require 'sinatra'
 require 'open-uri'
 
-set :port, ${server_http_port}
+set :port, $${server_http_port}
 set :bind, '0.0.0.0'
 
 get '/' do
-  open('${backend_url}') do |content|
-    "<h1>${server_text}</h1><p>Response from backend:</p><pre>" + content.read.to_s + "</pre>"
+  open('$${backend_url}') do |content|
+    "<h1>$${server_text}</h1><p>Response from backend:</p><pre>" + content.read.to_s + "</pre>"
   end
 end
 EOF

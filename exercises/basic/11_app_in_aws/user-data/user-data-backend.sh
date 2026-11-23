@@ -6,8 +6,12 @@
 # From: https://alestic.com/2010/12/ec2-user-data-output/
 exec > >({ tee /var/log/user-data.log || true; } | logger -t user-data -s 2>/dev/console || true) 2>&1
 
-# The variables below are filled in using Terraform interpolation
-# shellcheck disable=SC2154
-echo "{\"text\": \"${server_text}\"}" > index.html
-# shellcheck disable=SC2154
-nohup busybox httpd -f -p "${server_http_port}" &
+# Terraform renders this file as a template and fills in the quoted values below.
+# Everything after this point reads them as ordinary bash variables, so a literal
+# ${name} is written $${name} (Terraform's escape), which lets shellcheck see where
+# each variable comes from.
+readonly server_text="${server_text}"
+readonly server_http_port="${server_http_port}"
+
+echo "{\"text\": \"$${server_text}\"}" > index.html
+nohup busybox httpd -f -p "$${server_http_port}" &

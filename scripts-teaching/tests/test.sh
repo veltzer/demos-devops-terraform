@@ -13,7 +13,8 @@ then
 	echo "first arg should be the exercise number"
 	exit 1
 fi
-{ find . -print0 -name errored || true; } | xargs rm
+# remove the markers of the previous run, so the report at the end only lists new failures
+find . -name errored -type f -delete
 
 ((i=0))
 for username in $(echo "${values}" | jq -r '.students.value[].name')
