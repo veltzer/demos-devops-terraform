@@ -36,6 +36,10 @@ do
         -h | --help )           usage
                                 exit
                                 ;;
+        * )                     echo "unknown argument: $1" >&2
+                                usage
+                                exit 1
+                                ;;
     esac
     shift
 done
