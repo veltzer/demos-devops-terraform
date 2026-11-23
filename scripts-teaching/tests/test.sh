@@ -8,12 +8,12 @@ docker build -t terraform-workshop/terraform:latest .
 
 region="us-east-2"
 exercise_number="$1"
-if [ -z "${exercise_number}" ]
+if [[ -z "${exercise_number}" ]]
 then
 	echo "first arg should be the exercise number"
 	exit 1
 fi
-find . -print0 -name errored | xargs rm
+{ find . -print0 -name errored || true; } | xargs rm
 
 ((i=0))
 for username in $(echo "${values}" | jq -r '.students.value[].name')

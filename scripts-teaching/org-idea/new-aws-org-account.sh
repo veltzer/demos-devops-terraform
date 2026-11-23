@@ -15,7 +15,7 @@ roleName="OrganizationAccountAccessRole"
 destinationOUname=""
 region="us-east-1"
 
-while [ "$1" != "" ]
+while [[ "$1" != "" ]]
 do
     case $1 in
         -n | --account_name )   shift
@@ -44,13 +44,13 @@ do
     shift
 done
 
-if [ "${newAccName}" = "" ] || [ "${newAccEmail}" = "" ] || [ "${newProfile}" = "" ]
+if [[ "${newAccName}" = "" ]] || [[ "${newAccEmail}" = "" ]] || [[ "${newProfile}" = "" ]]
 then
   usage
   exit
 fi
 
-if aws organizations list-accounts --query 'Accounts[?Name==`'"${newAccName}"'`]' | grep "${newAccName}" &>/dev/null
+if { aws organizations list-accounts --query 'Accounts[?Name==`'"${newAccName}"'`]' || true; } | grep "${newAccName}" &>/dev/null
 then
 	echo "Account ${newAccName} already exists, exiting"
 	exit
@@ -66,9 +66,9 @@ orgStat=$(aws organizations describe-create-account-status --create-account-requ
 --query 'CreateAccountStatus.[State]' \
 --output text)
 
-while [ "${orgStat}" != "SUCCEEDED" ]
+while [[ "${orgStat}" != "SUCCEEDED" ]]
 do
-  if [ "${orgStat}" = "FAILED" ]
+  if [[ "${orgStat}" = "FAILED" ]]
   then
     echo "Account Failed to Create"
     exit 1
@@ -100,7 +100,7 @@ do
   sleep 5
   aws cloudformation list-stacks --profile "${newProfile}" > /dev/null 2>&1
   actOut=$?
-  if [ "${actOut}" -eq 0 ]
+  if [[ "${actOut}" -eq 0 ]]
   then
     break
   fi
@@ -108,7 +108,7 @@ do
   ((cfcntr=cfcntr+1))
 done
 
-if [ "${cfcntr}" -gt 10 ]
+if [[ "${cfcntr}" -gt 10 ]]
 then
   echo "CF Service not available"
   exit 1
@@ -123,12 +123,12 @@ fi
 
 echo "Waiting for CF Stack to Finish ..."
 cfStat=$(aws cloudformation describe-stacks --stack-name VPC --profile "${newProfile}" --query 'Stacks[0].[StackStatus]' --output text)
-while [ "${cfStat}" != "CREATE_COMPLETE" ]
+while [[ "${cfStat}" != "CREATE_COMPLETE" ]]
 do
   sleep 5
   echo "."
   cfStat=$(aws cloudformation describe-stacks --stack-name VPC --profile "${newProfile}" --query 'Stacks[0].[StackStatus]' --output text)
-  if [ "${cfStat}" = "CREATE_FAILED" ]
+  if [[ "${cfStat}" = "CREATE_FAILED" ]]
   then
     echo "VPC Failed to Create"
     exit 1
@@ -139,12 +139,12 @@ echo "VPC Created"
 ecoh "Create Role and Policy"
 aws cloudformation create-stack --stack-name Roles --template-body file://CF-IAM.json --capabilities CAPABILITY_NAMED_IAM --profile "${newProfile}" > /dev/null 2>&1
 cfStat=$(aws cloudformation describe-stacks --stack-name Roles --profile "${newProfile}" --query 'Stacks[0].[StackStatus]' --output text)
-while [ "${cfStat}" != "CREATE_COMPLETE" ]
+while [[ "${cfStat}" != "CREATE_COMPLETE" ]]
 do
   sleep 5
   echo "."
   cfStat=$(aws cloudformation describe-stacks --stack-name Roles --profile "${newProfile}" --query 'Stacks[0].[StackStatus]' --output text)
-  if [ "${cfStat}" = "CREATE_FAILED" ]
+  if [[ "${cfStat}" = "CREATE_FAILED" ]]
   then
     echo "Role Failed to Create"
     exit 1
@@ -158,7 +158,7 @@ configRole="arn:aws:iam::${accID}:role/service-role/config-rule-role"
 aws configservice put-configuration-recorder --configuration-recorder "name=default,roleARN=${configRole}" --recording-group "allSupported=true,includeGlobalResourceTypes=true" --profile "${newProfile}" > /dev/null 2>&1
 aws configservice put-config-rule --config-rule file://CF-ConfigRules.json --profile "${newProfile}" > /dev/null 2>&1
 
-if [ "${destinationOUname}" != "" ]
+if [[ "${destinationOUname}" != "" ]]
 then
   echo "Moving New Account to OU"
   rootOU=$(aws organizations list-roots --query 'Roots[0].[Id]' --output text)

@@ -9,7 +9,7 @@ do
 		echo "Instructions repo:     https://github.com/davewadestein/terraform-workshop"
 		echo "Console URL:           https://introterraform.signin.aws.amazon.com/console"
 		echo "Username/Alias:        ${username}"
-		password=$(echo "${values}" | jq -r '.passwords.value[]['"${i}"']' | base64 --decode | gpg -dq)
+		password=$({ echo "${values}" | jq -r '.passwords.value[]['"${i}"']' | base64 --decode || true; } | gpg -dq)
 		echo "AWS Console Password:  ${password}"
 		region=$(echo "${values}" | jq -r '.students.value['"${i}"'].region')
 		echo "Exercise 11 Region:    ${region}"

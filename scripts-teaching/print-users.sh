@@ -2,7 +2,7 @@
 
 values=$(terraform output -json)
 
-if [ -z "$1" ]
+if [[ -z "$1" ]]
 then
 	echo "First argument to this script should be one of: introduction, intermediate"
 	echo "in order to determine how to output the user values"
@@ -14,7 +14,7 @@ do
   echo "Instructions repo:     https://github.com/rockholla/terraform-packer-workshop"
   echo "Console URL:           https://rockholla-di.signin.aws.amazon.com/console"
   echo "Username/Alias:        ${username}"
-  password=$(echo "${values}" | jq -r '.passwords.value[]['"${i}"']' | base64 --decode | gpg -dq)
+  password=$({ echo "${values}" | jq -r '.passwords.value[]['"${i}"']' | base64 --decode || true; } | gpg -dq)
   echo "AWS Console Password:  ${password}"
   region=$(echo "${values}" | jq -r '.students.value['"${i}"'].region')
   if [[ "$1" == "introduction" ]]; then

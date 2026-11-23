@@ -12,7 +12,7 @@ export AWS_ACCESS_KEY_ID="${access_key}"
 export AWS_SECRET_ACCESS_KEY="${secret_key}"
 export TF_VAR_student_alias="${username}"
 
-if [ ! -d "./workspace/${username}/${exercise_number}" ]
+if [[ ! -d "./workspace/${username}/${exercise_number}" ]]
 then
 	cp -r "../../exercises/${exercise_number}" "./workspace/${username}/${exercise_number}"
 fi
