@@ -84,3 +84,8 @@ src_dirs = ["examples/experiment-01-intermediate"]
 src_dirs = ["scripts-teaching/org-idea"]
 args = ["-c", ".oxlintrc.repo.json"]
 dep_inputs = [".oxlintrc.repo.json"]
+
+# every lint suppression names a rule and says why (see the fleet's CLAUDE.md)
+[processor.checker.suppressions]
+src_dirs = [".github", "config", "examples", "exercises", "scripts-teaching", "to_intergrate"]
+src_files = [".hadolint.yaml", ".yamllint.yaml", "README.md"]
