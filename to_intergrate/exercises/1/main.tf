@@ -2,7 +2,7 @@
 
 # Declare the provider being used, in this case it's AWS.
 provider "aws" {
-  region = "${var.region}"
+  region = var.region
 }
 
 # declare a resource stanza so we can create something.

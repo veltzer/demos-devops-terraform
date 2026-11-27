@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
-  region = "${var.aws_region}"
+  region = var.aws_region
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "remote_state" {
-  bucket = "${var.bucket_name}"
+  bucket = var.bucket_name
   acl    = "private"
 
   versioning {
@@ -41,7 +41,7 @@ resource "aws_s3_bucket" "remote_state" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_dynamodb_table" "terraform_locks" {
-  name           = "${var.dynamodb_lock_table_name}"
+  name           = var.dynamodb_lock_table_name
   read_capacity  = 1
   write_capacity = 1
   hash_key       = "LockID"

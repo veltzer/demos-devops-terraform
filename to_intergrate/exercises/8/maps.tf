@@ -1,19 +1,19 @@
 output "map_lookup" {
-  value = "${lookup(var.map1, "key1", "no_key" )}"
+  value = lookup(var.map1, "key1", "no_key")
 }
 
 output "values" {
-  value = "${values(var.map1)}"
+  value = values(var.map1)
 }
 
 output "zipmap" {
-  value = "${zipmap(var.list1, var.list2)}"
+  value = zipmap(var.list1, var.list2)
 }
 
 output "keys" {
-  value = "${keys(var.map1)}"
+  value = keys(var.map1)
 }
 
 output "maps_merge" {
-  value = "${merge(var.map1, var.map2)}"
+  value = merge(var.map1, var.map2)
 }

@@ -4,8 +4,8 @@ variable "network_on" {
 }
 
 variable "enable_security" {
-  type      = bool
-  default   = true
+  type    = bool
+  default = true
 }
 
 provider "template" {
@@ -15,8 +15,8 @@ provider "template" {
 data "template_file" "config" {
   template = file("template.tmpl")
   vars = {
-    network_on       = var.network_on
-    enable_security  = var.enable_security
+    network_on      = var.network_on
+    enable_security = var.enable_security
   }
 }
 

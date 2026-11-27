@@ -90,3 +90,12 @@ dep_inputs = [".oxlintrc.repo.json"]
 [processor.checker.suppressions]
 src_dirs = [".github", "config", "examples", "exercises", "scripts-teaching", "to_intergrate"]
 src_files = [".hadolint.yaml", ".yamllint.yaml", "README.md"]
+
+# ─── terraform ───────────────────────────────────────────────────────────────
+
+# every Terraform file parses and is formatted as `terraform fmt` formats it
+[processor.checker.script.terraform_fmt]
+command = "terraform"
+args = ["fmt", "-check", "-diff", "-no-color"]
+src_dirs = ["examples", "exercises", "scripts-teaching", "to_intergrate"]
+src_extensions = [".tf", ".tfvars"]

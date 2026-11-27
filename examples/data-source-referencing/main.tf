@@ -8,11 +8,11 @@ data "aws_ami" "test" {
 }
 
 output "aws_ami_test_singleton" {
-  value = "${data.aws_ami.test.id}"
+  value = data.aws_ami.test.id
 }
 
 output "aws_ami_test_list" {
-  value = "${data.aws_ami.test[*].id}"
+  value = data.aws_ami.test[*].id
 }
 
 # the below will not work for the aws_ami data type because:

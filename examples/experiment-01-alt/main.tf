@@ -1,6 +1,6 @@
 provider "aws" {
   version = "~> 2.0"
-  region  = "${var.region}"
+  region  = var.region
 }
 
 data "aws_ami" "ubuntu" {
@@ -50,23 +50,23 @@ resource "tls_private_key" "nginx_server" {
 
 resource "aws_key_pair" "nginx_server" {
   key_name   = "force_nginx_server"
-  public_key = "${tls_private_key.nginx_server.public_key_openssh}"
+  public_key = tls_private_key.nginx_server.public_key_openssh
 }
 
 resource "aws_instance" "nginx_server" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
 
-  key_name = "${aws_key_pair.nginx_server.key_name}"
+  key_name = aws_key_pair.nginx_server.key_name
 
   security_groups = ["${aws_security_group.force_nginx.name}"]
 
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
-      host        = "${self.public_ip}"
+      host        = self.public_ip
       user        = "ubuntu"
-      private_key = "${tls_private_key.nginx_server.private_key_pem}"
+      private_key = tls_private_key.nginx_server.private_key_pem
     }
     scripts = ["./provisioner.sh"]
   }

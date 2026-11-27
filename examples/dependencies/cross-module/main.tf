@@ -1,11 +1,11 @@
 module "key_pair_1" {
-  source = "./key-pair"
+  source        = "./key-pair"
   student_alias = var.student_alias
-  id = "parent"
+  id            = "parent"
 }
 
 module "key_pair_2" {
-  source = "./key-pair"
+  source        = "./key-pair"
   student_alias = var.student_alias
-  id = "${module.key_pair_1.key_pair_id}-child"
+  id            = "${module.key_pair_1.key_pair_id}-child"
 }

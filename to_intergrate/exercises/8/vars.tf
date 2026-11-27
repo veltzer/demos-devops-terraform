@@ -1,5 +1,5 @@
 variable "list1" {
-  type = "list"
+  type = list(string)
   default = [
     "val12456ybvfdertyhjn",
     "val2",
@@ -8,7 +8,7 @@ variable "list1" {
 }
 
 variable "list2" {
-  type = "list"
+  type = list(string)
   default = [
     "val12",
     "val22",
@@ -17,7 +17,7 @@ variable "list2" {
 }
 
 variable "map1" {
-  type = "map"
+  type = map(string)
   default = {
     "key1" = "val1",
     "key2" = "val2",
@@ -27,7 +27,7 @@ variable "map1" {
 }
 
 variable "map2" {
-  type = "map"
+  type = map(string)
   default = {
     "key12" = "val12",
     "key22" = "val22",
@@ -37,11 +37,11 @@ variable "map2" {
 }
 
 variable "string1" {
-  type = "string"
+  type    = string
   default = "string1"
 }
 
 variable "string2" {
-  type = "string"
+  type    = string
   default = "stRINg2"
 }

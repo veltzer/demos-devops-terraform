@@ -1,7 +1,7 @@
 variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "ami_id" {
-  type = "string"
+  type = string
 }

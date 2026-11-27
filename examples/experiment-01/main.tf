@@ -44,10 +44,10 @@ resource "aws_security_group" "force_nginx" {
 }
 
 resource "aws_instance" "nginx_server" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
 
-  user_data = "${file("user-data.sh")}"
+  user_data = file("user-data.sh")
 
   security_groups = ["${aws_security_group.force_nginx.name}"]
 

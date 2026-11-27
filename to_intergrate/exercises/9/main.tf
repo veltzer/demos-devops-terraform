@@ -7,12 +7,12 @@ variable "enable_bucket" {
 }
 
 resource "aws_s3_bucket" "counted_bucket" {
-  count = 2
+  count         = 2
   bucket_prefix = "counted-"
 }
 
 resource "aws_s3_bucket" "conditional_bucket" {
-  count = "${var.enable_bucket}"
+  count         = var.enable_bucket
   bucket_prefix = "conditional-"
 }
 
@@ -20,12 +20,12 @@ resource "aws_s3_bucket" "conditional_bucket" {
 
 locals {
   # 1 if yes and 0 if no
-  should_i_create = 0
-  create_condition = "${local.should_i_create == 0 ? 0 : 1}"
+  should_i_create  = 0
+  create_condition = local.should_i_create == 0 ? 0 : 1
 }
 
 resource "aws_s3_bucket" "conditional_bucket2" {
-  count = "${local.create_condition}"
+  count         = local.create_condition
   bucket_prefix = "conditional-"
 }
 

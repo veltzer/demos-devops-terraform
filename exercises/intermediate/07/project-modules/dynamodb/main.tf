@@ -18,7 +18,7 @@ resource "aws_dynamodb_table" "project" {
 }
 
 resource "aws_dynamodb_table_item" "project" {
-  count = length(var.table_items)
+  count      = length(var.table_items)
   table_name = aws_dynamodb_table.project.name
   hash_key   = aws_dynamodb_table.project.hash_key
   range_key  = aws_dynamodb_table.project.range_key

@@ -21,5 +21,5 @@ data "terraform_remote_state" "local" {
 }
 
 output "other_bucket" {
-  value = "${data.terraform_remote_state.local.bucket_name}"
+  value = data.terraform_remote_state.local.bucket_name
 }

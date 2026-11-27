@@ -1,6 +1,6 @@
 provider "aws" {
   version = "~> 2.0"
-  region  = "${var.region}"
+  region  = var.region
 }
 
 data "aws_ami" "nginx_server" {
@@ -39,7 +39,7 @@ resource "aws_security_group" "nginx_server" {
 }
 
 resource "aws_instance" "nginx_server" {
-  ami           = "${data.aws_ami.nginx_server.id}"
+  ami           = data.aws_ami.nginx_server.id
   instance_type = "t2.micro"
 
   security_groups = ["${aws_security_group.nginx_server.name}"]

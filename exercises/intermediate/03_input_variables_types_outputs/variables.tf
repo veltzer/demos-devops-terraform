@@ -40,7 +40,7 @@ variable "set_string_var" {
 variable "object_person_var" {
   type = object({
     name = string,
-    age = number
+    age  = number
   })
 }
 
@@ -56,7 +56,7 @@ variable "tuple_line_item_var" {
 variable "list_object_people_var" {
   type = list(object({
     name = string,
-    age = number
+    age  = number
   }))
 }
 

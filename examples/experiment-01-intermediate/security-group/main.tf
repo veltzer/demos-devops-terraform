@@ -5,7 +5,7 @@ terraform {
 }
 
 resource "aws_security_group" "server" {
-  name        = var.name
+  name = var.name
 
   dynamic "ingress" {
     iterator = port

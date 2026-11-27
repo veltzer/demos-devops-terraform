@@ -4,7 +4,7 @@ variable "unique_prefix" {
 
 variable "keys" {
   type = list(object({
-    name        = string
-    public_key  = string
+    name       = string
+    public_key = string
   }))
 }

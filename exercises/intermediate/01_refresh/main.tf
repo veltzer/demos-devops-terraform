@@ -6,9 +6,9 @@ terraform {
 
 # see the options and configuration for the AWS provider at: https://www.terraform.io/docs/providers/aws/index.html
 provider "aws" {
-  version = "~> 2.0" # this version constraint says that we need to use the most recent 2.x version of the provider
-  region  = "${var.region}" # we're using 0.12, and newer versions will warn us if we write this "${var.region}" instead of var.region
-                           # but 0.11 and versions before don't support the syntax here
+  version = "~> 2.0"   # this version constraint says that we need to use the most recent 2.x version of the provider
+  region  = var.region # we're using 0.12, and newer versions will warn us if we write this "${var.region}" instead of var.region
+  # but 0.11 and versions before don't support the syntax here
 }
 
 data "aws_vpc" "default" {
@@ -37,6 +37,6 @@ resource "aws_eip" "my_eip" {
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "3.13.0"
-  name = var.student_alias
-  vpc_id = data.aws_vpc.default.id
+  name    = var.student_alias
+  vpc_id  = data.aws_vpc.default.id
 }

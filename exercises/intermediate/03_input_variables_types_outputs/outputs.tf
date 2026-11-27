@@ -51,6 +51,6 @@ output "untyped_var" {
 }
 
 output "generated_password" {
-  value = "${local.generated_password}"
+  value     = local.generated_password
   sensitive = true
 }

@@ -17,9 +17,9 @@ module "security_group" {
 }
 
 module "dynamodb_table" {
-  source    = "github.com/terraform-aws-modules/terraform-aws-dynamodb-table?ref=v0.6.0"
-  name      = "${var.student_alias}-table"
-  hash_key  = "id"
+  source   = "github.com/terraform-aws-modules/terraform-aws-dynamodb-table?ref=v0.6.0"
+  name     = "${var.student_alias}-table"
+  hash_key = "id"
 
   attributes = [
     {
