@@ -107,4 +107,4 @@ As a reminder on the few details of that previous exercise:
 
 * Provision this instance to install some web server
 * Make sure we can access the web server from the outside world
-* Use online docs for help, use each other, and I’m here too if you need!
+* Use online docs for help, use each other, and I'm here too if you need!
